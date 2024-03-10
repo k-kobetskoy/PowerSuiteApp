@@ -55,7 +55,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return { 
+  return {
     interactionType: InteractionType.Redirect,
     authRequest: {
       scopes: [...environment.apiConfig.scopes]
@@ -65,14 +65,14 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     HomeComponent,
     ProfileComponent,
     FailedComponent,
-      ProfileComponent,
-      FailedComponent
-   ],
+    ProfileComponent,
+    FailedComponent
+  ],
   imports: [
     BrowserModule,
     NoopAnimationsModule, // Animations cause delay which interfere with E2E tests
