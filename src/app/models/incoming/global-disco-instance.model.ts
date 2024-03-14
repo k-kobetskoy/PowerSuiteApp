@@ -1,0 +1,22 @@
+export interface IGlobalDiscoInstanceModel {
+    IsUserSysAdmin: boolean,
+    Region: string,
+    Purpose: string,
+    StatusMessage: number,
+    TrialExpirationDate: string,
+    OrganizationType: number,
+    TenantId: string,
+    EnvironmentId: string,
+    DatacenterId: string,
+    DatacenterName: string,
+    Id: string,
+    UniqueName: string,
+    UrlName: string,
+    FriendlyName: string,
+    State: number,
+    Version: string,
+    Url: string,
+    ApiUrl: string,
+    LastUpdated: string,
+    SchemaType: string
+}

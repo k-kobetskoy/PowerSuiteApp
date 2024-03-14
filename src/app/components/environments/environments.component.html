@@ -1,8 +1,4 @@
 
 <div *ngFor="let environment of environmentsList; index as i">
 <p>{{environment.friendlyName}} ({{environment.urlName}})</p>
-<button (click)="selectEnvironment(environment.apiUrl)">Connect</button>
 </div>
-
-
-

@@ -1,0 +1,28 @@
+{
+    "msal": {
+      "auth": {
+        "clientId": "69111799-c2ca-490f-929f-4e5ee63b9792",
+        "authority": "https://login.microsoftonline.com/common/oauth2/authorize?resource=https://globaldisco.crm.dynamics.com",
+        "redirectUri": "http://localhost:4200/",
+        "postLogoutRedirectUri": "http://localhost:4200/",
+        "navigateToLoginRequestUrl": true
+      },
+      "cache": {
+        "cacheLocation": "localStorage",
+        "storeAuthStateInCookie": true
+      }
+    },
+    "guard": {
+      "interactionType": "redirect",
+      "authRequest": {
+        "scopes": ["https://globaldisco.crm.dynamics.com/user_impersonation"]
+      },
+      "loginFailedRoute": "/login-failed" 
+    },
+    "interceptor": {
+      "interactionType": "redirect",
+      "protectedResourceMap": [
+        ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"]]
+      ]
+    }
+  }

@@ -11,5 +11,4 @@ export class FailedComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
