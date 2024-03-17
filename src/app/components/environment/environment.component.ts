@@ -40,18 +40,18 @@ export class EnvironmentComponent implements OnInit {
         storeAuthStateInCookie: true
       }
     }) 
-    // , {
-    //   interactionType: InteractionType.Popup,
-    //   authRequest: {
-    //     scopes: [`https://${this.environmentUrl}/user_impersonation`]
-    //   },
-    //   loginFailedRoute: "/login-failed"
-    // }, {
-    //   interactionType: "redirect",
-    //   protectedResourceMap: [
-    //     [`https://${this.environmentUrl}/api/data/v9.2`, [`https://${this.environmentUrl}/user_impersonation`]]
-    //   ]
-    // };
+    , {
+      interactionType: InteractionType.Popup,
+      authRequest: {
+        scopes: [`https://${this.environmentUrl}/user_impersonation`]
+      },
+      loginFailedRoute: "/login-failed"
+    }, {
+      interactionType: "redirect",
+      protectedResourceMap: [
+        [`https://${this.environmentUrl}/api/data/v9.2`, [`https://${this.environmentUrl}/user_impersonation`]]
+      ]
+    };
   }
 
   mapResponse(response$: Observable<IEntityDefinitionsResponseModel>) {
