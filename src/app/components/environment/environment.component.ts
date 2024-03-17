@@ -39,7 +39,7 @@ export class EnvironmentComponent implements OnInit {
         cacheLocation: "localStorage",
         storeAuthStateInCookie: true
       }
-    }), 
+    }) 
     // , {
     //   interactionType: InteractionType.Popup,
     //   authRequest: {
