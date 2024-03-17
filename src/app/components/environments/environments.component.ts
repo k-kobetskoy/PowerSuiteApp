@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IUserEnvironmentModel } from '../../models/user-environment.model';
 import { GlolobalDiscoDataService } from 'src/app/services/repositories/global-disco-data.serivce';
-import { IGlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco-instances-response.model';
-import { Observable } from 'rxjs';
-
+import { IGlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-environments',
@@ -11,9 +10,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./environments.component.css']
 })
 
-export class EnvironmentsComponent implements OnInit {
+export class EnvironmentsComponent implements OnInit, OnDestroy {
 
   environmentsList: IUserEnvironmentModel[] = []
+  private sub: Subscription = new Subscription
 
   constructor(private dataService: GlolobalDiscoDataService) { }
 
@@ -21,9 +21,13 @@ export class EnvironmentsComponent implements OnInit {
     let response$ = this.dataService.getAll();
     this.mapResponse(response$)
   }
+  
+  ngOnDestroy() {
+    this.sub.unsubscribe
+  }
 
-  mapResponse(response$: Observable<IGlobalDiscoInstancesResponseModel>) {
-    response$.subscribe(resp => {
+  private mapResponse(response$: Observable<IGlobalDiscoInstancesResponseModel>) {
+    this.sub = response$.subscribe(resp => {
       for (let environment of resp.value) {
         this.environmentsList.push({
           apiUrl: environment.ApiUrl,
