@@ -13,8 +13,7 @@ export class EnvironmentDataService {
 
     constructor(private http: HttpClient) { }
 
-    getEntityDefinitions(apiUrl: string): Observable<IEntityDefinitionsResponseModel> {
-        console.log(`https://${apiUrl}/api/data/v9.2/EntityDefinitions?$select=${parameters.join(',')}`)
+    getEntityDefinitions(apiUrl: string): Observable<IEntityDefinitionsResponseModel> {        
         return this.http.get<IEntityDefinitionsResponseModel>(`https://${apiUrl}/api/data/v9.2/EntityDefinitions?$select=${parameters.join(',')}`)
     }
 }

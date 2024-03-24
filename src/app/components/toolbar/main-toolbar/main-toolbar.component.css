@@ -1,0 +1,76 @@
+.main-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 32px;
+    background-color: #252525;
+  }
+
+  .logo-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%; 
+    background-color: #ffcc00; 
+  }
+  
+  .menu {
+    max-width: 400px;
+    background-color: #ffcc00; 
+  }
+  
+  .burger-menu {
+    display: none;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+.center-section {
+    height: 40px;
+    width: 300px;
+    background-color: #99ccff;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%; 
+    background-color: #ff6666;
+  }
+  
+  .user-details {
+    max-width: 200px;
+    background-color: #ff6666;
+  }
+
+  @media (max-width: 960px) {
+    .main-toolbar {
+      justify-content: space-between;
+    }
+  
+    .logo-menu {
+      display: none;
+    }
+  
+    .burger-menu {
+      display: flex;
+    }
+  
+    .menu {
+      display: none; 
+    }
+  
+    .user-details {
+      display: flex; 
+    }
+  }

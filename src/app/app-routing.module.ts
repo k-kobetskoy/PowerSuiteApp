@@ -6,9 +6,11 @@ import { EnvironmentsComponent } from './components/environments/environments.co
 import { HomeComponent } from './components/home/home.component';
 import { FailedComponent } from './components/failed/failed.component';
 import { EnvironmentComponent } from './components/environment/environment.component';
+import { FetchMasterComponent } from './components/content/fetch-master/fetch-master.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: '/tools/fetch', pathMatch: 'full' },
+  { path: 'tools/fetch', component: FetchMasterComponent},
   { path: 'environmens', component: EnvironmentsComponent, canActivate: [MsalGuard] },
   { path: 'environmens/:environment', component: EnvironmentComponent, canActivate: [MsalGuard] },
   { path: 'login-failed', component: FailedComponent }

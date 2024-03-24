@@ -1,0 +1,25 @@
+.button{
+    background-color: rgba(255, 255, 255, .1);
+    border: 3px solid #ffffff0e;
+    border-radius: 25px;
+    height: 50px;
+    width: 254px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button:hover{
+    background-color: rgba(255, 255, 255, .15);
+    border: 3px solid #ffffff11;
+    cursor:pointer;
+}
+a {
+    color: #ffffffb6;
+    text-decoration: none;
+    font-size: .96rem;
+}
+
+a:hover {
+    color:#ffffffe8; 
+    text-decoration:none;   
+}

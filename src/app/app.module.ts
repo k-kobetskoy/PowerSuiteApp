@@ -17,13 +17,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
 import { FailedComponent } from './components/failed/failed.component';
+import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
+import { MainSectionComponent } from './components/content/main-section/main-section.component';
+import { FetchMasterComponent } from './components/content/fetch-master/fetch-master.component';
+import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
+import { MenuComponent } from './components/toolbar/menu/menu.component';
+import { UserInfoComponent } from './components/toolbar/user-info/user-info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     EnvironmentsComponent,
-    FailedComponent
+    FailedComponent,
+    MainToolbarComponent,
+    MainSectionComponent,
+    FetchMasterComponent,
+    ConnectionsComponent,
+    MenuComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,
