@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Hi Kostia {{data.selectedEnv}}</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+
+  <div *ngFor="let environment of data.envList; index as i">
+    <p>{{environment.friendlyName}} ({{environment.urlName}}) <a mat-button [routerLink]="[environment.apiUrl | slice: 8]">Connect</a> </p> 
+    
+
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+</div>

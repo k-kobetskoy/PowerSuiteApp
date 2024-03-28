@@ -1,25 +1,43 @@
 .button{
-    background-color: rgba(255, 255, 255, .1);
-    border: 3px solid #ffffff0e;
-    border-radius: 25px;
-    height: 50px;
-    width: 254px;
+    background-color: #222222;
+    height: 60px;
+    width: 324px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .button:hover{
-    background-color: rgba(255, 255, 255, .15);
-    border: 3px solid #ffffff11;
+    background-color: #272727;   
     cursor:pointer;
 }
-a {
-    color: #ffffffb6;
+.button a {
+    color: #C9D7D8;
     text-decoration: none;
-    font-size: .96rem;
+    font-size: .9rem;
+}
+.button p{
+    color: #C9D7D8;
 }
 
 a:hover {
-    color:#ffffffe8; 
+    color:#dfe8e9; 
     text-decoration:none;   
+}
+
+.envName{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.envName h3, p{
+    color: #222222;
+}
+
+.envName:hover{
+    cursor:pointer;
+}
+.envName:hover * {
+    color: #444444;
 }

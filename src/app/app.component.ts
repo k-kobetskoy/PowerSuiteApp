@@ -3,8 +3,6 @@ import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfigur
 import { AuthenticationResult, InteractionStatus, PopupRequest, RedirectRequest, EventMessage, EventType } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
-
 
 @Component({
   selector: 'app-root',

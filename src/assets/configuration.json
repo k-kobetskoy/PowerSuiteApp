@@ -13,14 +13,14 @@
       }
     },
     "guard": {
-      "interactionType": "redirect",
+      "interactionType": "popup",
       "authRequest": {
         "scopes": ["https://globaldisco.crm.dynamics.com/user_impersonation"]
       },
       "loginFailedRoute": "/login-failed" 
     },
     "interceptor": {
-      "interactionType": "redirect",
+      "interactionType": "popup",
       "protectedResourceMap": [
         ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"]]
       ]

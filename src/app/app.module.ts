@@ -2,12 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -23,6 +17,9 @@ import { FetchMasterComponent } from './components/content/fetch-master/fetch-ma
 import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
 import { MenuComponent } from './components/toolbar/menu/menu.component';
 import { UserInfoComponent } from './components/toolbar/user-info/user-info.component';
+import {ButtonModule} from 'primeng/button';
+import { ConnectionsDialogComponent } from './components/toolbar/connections-dialog/connections-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -35,17 +32,16 @@ import { UserInfoComponent } from './components/toolbar/user-info/user-info.comp
     FetchMasterComponent,
     ConnectionsComponent,
     MenuComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    ConnectionsDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ButtonModule,
     AppRoutingModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatListModule,
     HttpClientModule,
+    MatDialogModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [],

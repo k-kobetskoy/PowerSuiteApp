@@ -18,7 +18,7 @@ export class EnvironmentsComponent implements OnInit, OnDestroy {
   constructor(private dataService: GlolobalDiscoDataService) { }
 
   ngOnInit() {
-    let response$ = this.dataService.getAll();
+    let response$ = this.dataService.getAll()
     this.mapResponse(response$)
   }
   

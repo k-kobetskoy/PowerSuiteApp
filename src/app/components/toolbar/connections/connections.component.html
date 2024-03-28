@@ -1,9 +1,17 @@
 <div>
-  <a (click)="connect()" *ngIf="!connectionEstablished">
+  <a  class="button" (click)="connect()" *ngIf="!connectionEstablished; else elseBlock">    
+      <p>Connect to environment</p>    
+  </a>
   
-  <div class="button" >
-    <p>Connect to environment</p>
-  </div> 
+  <ng-template #elseBlock>  
+    <a (click)="connect()" class="envName">
+      <h3>{{envFriendlyName}}</h3>
+      <p class="small">{{envName}}</p>    
+      <div>
+  
+    </div>
+    </a>
+  
+  </ng-template>
 
-</a>
 </div>
