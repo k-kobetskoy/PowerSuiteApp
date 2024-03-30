@@ -1,6 +1,6 @@
 import { IUserEnvironmentModel } from "./user-environment.model"
 
 export interface IConnectionsDialogData {
-    selectedEnv:any
+    selectedEnv:IUserEnvironmentModel
     envList: IUserEnvironmentModel[]
 }

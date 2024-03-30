@@ -1,14 +1,23 @@
-<h1 mat-dialog-title>Hi Kostia {{data.selectedEnv}}</h1>
+<h1 mat-dialog-title>Select environment</h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
 
-  <div *ngFor="let environment of data.envList; index as i">
-    <p>{{environment.friendlyName}} ({{environment.urlName}}) <a mat-button [routerLink]="[environment.apiUrl | slice: 8]">Connect</a> </p> 
-    
 
+  <!-- <p>{{environment.friendlyName}} ({{environment.urlName}}) <a mat-button [routerLink]="[environment.apiUrl | slice: 8]">Connect</a> </p>  -->
+
+
+  <mat-selection-list #environments [multiple]="false" [hideSingleSelectionIndicator]="true"> 
+
+    <mat-list-option *ngFor="let environment of data.envList" [value]="environment">
+      <span class="prevent-select" matListItemTitle>{{environment.friendlyName}}</span>
+      <span class="prevent-select" matListItemLine>{{environment.urlName}}</span>
+    </mat-list-option>
+
+  </mat-selection-list>
 
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="closeDialog()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+<div class="dialog-button-block">
+  <div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-flat-button color="primary" [disabled]='!environments.selectedOptions.hasValue()' [mat-dialog-close]='environments.selectedOptions.hasValue()?  environments.selectedOptions.selected[0].value : "none"' >Connect</button>
+  </div>
 </div>

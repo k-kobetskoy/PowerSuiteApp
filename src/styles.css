@@ -37,6 +37,13 @@ h3{
   font-size: .95rem;
 }
 
+
+.prevent-select {
+  -webkit-user-select: none;   
+  user-select: none;
+} 
+
+
 @media (max-width: 960px) {
   body {
     overflow-x: auto;

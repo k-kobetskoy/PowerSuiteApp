@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IGlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
 import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';
 
+
 @Component({
   selector: 'app-connections',
   templateUrl: './connections.component.html',
@@ -14,58 +15,59 @@ import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';
 export class ConnectionsComponent implements OnInit {
 
   connectionEstablished: boolean = false;
-  envFriendlyName: string = "Kostiantyn Kobetskyi's"
-  envName: string = 'org2d6763a7'
+  selectedEnvironment!: IUserEnvironmentModel
 
   environmentsList: IUserEnvironmentModel[] = []
-  private sub: Subscription = new Subscription
+  private subs: Subscription[] = []
 
-  constructor(private dialog: MatDialog,  private dataService: GlolobalDiscoDataService) { }
+  constructor(private dialog: MatDialog, private dataService: GlolobalDiscoDataService) { }
 
   ngOnInit() {
   }
 
-  // connect() {
-  //   this.connectionEstablished = !this.connectionEstablished
-  // }
-
   connect() {
     let response$ = this.dataService.getAll()
-    this.mapResponse(response$)       
+    this.mapResponse(response$)
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(ConnectionsDialogComponent, { data: { selectedEnv: {}, envList: this.environmentsList } })
 
-  openDialog(){
-    const dialogRef = this.dialog.open(ConnectionsDialogComponent, { data: { selectedEnv: 'haha', envList: this.environmentsList } })
+    this.subs.push(dialogRef.afterClosed().subscribe(result => {
+      this.selectedEnvironment = result
+    },
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed')
-      console.log(result)
-    })
+    (err)=>console.error(err),
+    () => this.establishConnection()
+    ))    
+  }
+  private establishConnection() {
+    this.connectionEstablished = true
   }
 
   private mapResponse(response$: Observable<IGlobalDiscoInstancesResponseModel>) {
-    this.sub = response$.subscribe(
-      
+    this.subs.push(response$.subscribe(
       resp => {
-      for (let environment of resp.value) {
-        this.environmentsList.push({
-          apiUrl: environment.ApiUrl,
-          friendlyName: environment.FriendlyName,
-          url: environment.Url,
-          urlName: environment.UrlName
-        })
-      }
-    }, 
-    
-    (err)=>console.error(err),
+        this.environmentsList = []
+        for (let environment of resp.value) {          
+          this.environmentsList.push({
+            apiUrl: environment.ApiUrl,
+            friendlyName: environment.FriendlyName,
+            url: environment.Url,
+            urlName: environment.UrlName
+          })
+        }
+      },
 
-    ()=>this.openDialog()    
-    )    
+      (err) => console.error(err),
+
+      () => this.openDialog()
+    ))
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe
+    this.subs.forEach(sub => {
+      sub.unsubscribe()
+    });
   }
-
 }
