@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ConnectionsComponent } from '../connections/connections.component';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -7,7 +8,10 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MainToolbarComponent implements OnInit {
 
-  @Input() userLogedIn: boolean = false;
+
+  @ViewChild(ConnectionsComponent) connectionsComponent: ConnectionsComponent | undefined
+
+  @Input() userLogedIn: boolean
 
   constructor() { }
 

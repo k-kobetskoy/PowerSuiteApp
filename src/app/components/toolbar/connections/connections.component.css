@@ -5,9 +5,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+    
+   
 }
 .button:hover{
-    background-color: #272727;   
+    background-color: #353535;
     cursor:pointer;
 }
 .button a {
@@ -17,6 +20,7 @@
 }
 .button p{
     color: #C9D7D8;
+    z-index:50
 }
 
 a:hover {
@@ -33,6 +37,7 @@ a:hover {
 
 .envName h3, p{
     color: #222222;
+    z-index:50
 }
 
 .envName:hover{

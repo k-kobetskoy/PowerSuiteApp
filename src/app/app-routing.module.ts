@@ -3,14 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
 import { EnvironmentsComponent } from './components/environments/environments.component';
-import { HomeComponent } from './components/home/home.component';
 import { FailedComponent } from './components/failed/failed.component';
 import { EnvironmentComponent } from './components/environment/environment.component';
-import { FetchMasterComponent } from './components/content/fetch-master/fetch-master.component';
+import { FetchParentComponent } from './components/content/fetch-master/fetch-parent/fetch-parent.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/tools/fetch', pathMatch: 'full' },
-  { path: 'tools/fetch', component: FetchMasterComponent},
+  { path: 'tools/fetch', component: FetchParentComponent},
   { path: 'environmens', component: EnvironmentsComponent, canActivate: [MsalGuard] },
   { path: 'environmens/:environment', component: EnvironmentComponent, canActivate: [MsalGuard] },
   { path: 'login-failed', component: FailedComponent }

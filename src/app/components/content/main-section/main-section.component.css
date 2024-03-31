@@ -6,12 +6,13 @@
   min-height: 0;
 }
 
-.main-section {
-    background-color: #6510ee;
+.main-section {    
     display: flex;
     justify-content: center;
     align-items: center;
     flex:1;    
+    flex-direction: column;
+    align-items: stretch;
   }
 
   @media (max-width: 960px) {

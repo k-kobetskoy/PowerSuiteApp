@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { FetchMasterComponent } from './fetch-master.component';
+import { RightSectionComponent } from './right-section.component';
 
-describe('FetchMasterComponent', () => {
-  let component: FetchMasterComponent;
-  let fixture: ComponentFixture<FetchMasterComponent>;
+describe('RightSectionComponent', () => {
+  let component: RightSectionComponent;
+  let fixture: ComponentFixture<RightSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FetchMasterComponent ]
+      declarations: [ RightSectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FetchMasterComponent);
+    fixture = TestBed.createComponent(RightSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

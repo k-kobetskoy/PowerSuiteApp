@@ -1,0 +1,47 @@
+app-fetch-parent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.fetch-parent-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+  background: rgb(255, 255, 255);
+}
+
+app-fetch-parent .as-split-gutter{
+  background-color: rgb(121, 168, 255);  
+  flex-basis: 2px !important;
+}
+
+app-fetch-parent .as-split-gutter-icon {
+  background-image: none !important;
+  background-color: rgb(247, 247, 247);
+}
+
+app-fetch-parent .as-split-gutter-icon:hover {
+  background-color: rgb(121, 168, 255);
+  background-image: none;
+  transform: scale(2)
+}
+
+as-split-area{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items:stretch;
+  justify-content: stretch;
+  align-content: stretch;
+  justify-items: stretch;
+}

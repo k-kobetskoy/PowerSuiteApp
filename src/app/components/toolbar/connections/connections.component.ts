@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
 import { GlolobalDiscoDataService } from 'src/app/services/repositories/global-disco-data.serivce';
@@ -14,15 +14,18 @@ import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';
 })
 export class ConnectionsComponent implements OnInit {
 
-  connectionEstablished: boolean = false;
-  selectedEnvironment!: IUserEnvironmentModel
+  selectedEnvironment: IUserEnvironmentModel | undefined
 
   environmentsList: IUserEnvironmentModel[] = []
   private subs: Subscription[] = []
+  myColor: string = '#4b4b4b';
 
   constructor(private dialog: MatDialog, private dataService: GlolobalDiscoDataService) { }
 
   ngOnInit() {
+    let selectedEnv = localStorage.getItem('selectedEnvironment')
+    if (selectedEnv)
+      this.selectedEnvironment = JSON.parse(selectedEnv)    
   }
 
   connect() {
@@ -34,22 +37,25 @@ export class ConnectionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConnectionsDialogComponent, { data: { selectedEnv: {}, envList: this.environmentsList } })
 
     this.subs.push(dialogRef.afterClosed().subscribe(result => {
-      this.selectedEnvironment = result
+      if (result) this.establishConnection(result)
     },
 
-    (err)=>console.error(err),
-    () => this.establishConnection()
-    ))    
+      (err) => console.error(err)
+    ))
   }
-  private establishConnection() {
-    this.connectionEstablished = true
+  private establishConnection(selectedEnv: IUserEnvironmentModel) {
+    //connect to env (msal)    
+    localStorage.setItem('selectedEnvironment', JSON.stringify(selectedEnv))
+
+    this.selectedEnvironment = selectedEnv
+    //redirect
   }
 
   private mapResponse(response$: Observable<IGlobalDiscoInstancesResponseModel>) {
     this.subs.push(response$.subscribe(
       resp => {
         this.environmentsList = []
-        for (let environment of resp.value) {          
+        for (let environment of resp.value) {
           this.environmentsList.push({
             apiUrl: environment.ApiUrl,
             friendlyName: environment.FriendlyName,
@@ -59,7 +65,7 @@ export class ConnectionsComponent implements OnInit {
         }
       },
 
-      (err) => console.error(err),
+      err => console.error(err),
 
       () => this.openDialog()
     ))

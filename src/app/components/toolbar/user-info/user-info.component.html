@@ -1,3 +1,7 @@
-<p>
-  user-info works!
-</p>
+
+<img [src]="imageToShow"
+     alt="Place image title"
+     *ngIf="!imageLoading; else noImageFound">
+<ng-template #noImageFound>
+  <p>   no imageFound  </p>
+</ng-template>
