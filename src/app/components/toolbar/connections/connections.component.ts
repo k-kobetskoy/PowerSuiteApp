@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
-import { GlolobalDiscoDataService } from 'src/app/services/repositories/global-disco-data.serivce';
+import { GlolobalDiscoDataService } from 'src/app/services/data/global-disco-data.serivce';
 import { Observable, Subscription } from 'rxjs';
 import { IGlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
 import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';

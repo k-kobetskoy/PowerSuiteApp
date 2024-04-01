@@ -18,7 +18,7 @@ export class ConnectionsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: IConnectionsDialogData,
   ) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     
   }
 

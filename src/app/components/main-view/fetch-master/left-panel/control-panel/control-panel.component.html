@@ -1,0 +1,8 @@
+<div *ngIf="selectedElement&&selectedElement.name==='Boots' else elseBlock">
+
+    <button mat-button (click)="addElement('Boots')">Add boots</button>
+</div>
+<ng-template #elseBlock>
+
+    <button [disabled]="!selectedElement" mat-button (click)="addElement('Other')">Add other</button>
+</ng-template>

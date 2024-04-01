@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GraphDataService } from 'src/app/services/repositories/graph-data.service';
+import { GraphDataService } from 'src/app/services/data/graph-data.service';
 
 @Component({
   selector: 'app-user-info',

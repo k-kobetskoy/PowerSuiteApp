@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
-import { EnvironmentsComponent } from './components/environments/environments.component';
-import { FailedComponent } from './components/failed/failed.component';
-import { EnvironmentComponent } from './components/environment/environment.component';
-import { FetchParentComponent } from './components/content/fetch-master/fetch-parent/fetch-parent.component';
+import { EnvironmentsComponent } from './components/[deprecated] environments/environments.component';
+import { FailedComponent } from './components/[deprecated] failed/failed.component';
+import { EnvironmentComponent } from './components/[deprecated] environment/environment.component';
+import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/tools/fetch', pathMatch: 'full' },
