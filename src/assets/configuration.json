@@ -26,4 +26,4 @@
         ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"], ["https://graph.microsoft.com/v1.0/me", ["user.read"]]]
       ]
     }
-  }
+}

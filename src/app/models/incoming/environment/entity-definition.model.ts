@@ -1,7 +1,7 @@
-import { IDisplayNameModel } from "./display-name.model"
+import { DisplayNameModel } from "./display-name.model"
 
-export interface IEntityDefinitionModel {
+export interface EntityDefinitionModel {
     LogicalName: string,
     MetadataId: string,
-    DisplayName: IDisplayNameModel
+    DisplayName: DisplayNameModel
 }

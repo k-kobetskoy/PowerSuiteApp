@@ -1,5 +1,5 @@
-import { IEntityDefinitionModel } from "./entity-definition.model";
+import { EntityDefinitionModel } from "./entity-definition.model";
 
-export interface IEntityDefinitionsResponseModel {
-    value: IEntityDefinitionModel[]
+export interface EntityDefinitionsResponseModel {
+    value: EntityDefinitionModel[]
 }

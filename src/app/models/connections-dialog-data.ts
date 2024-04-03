@@ -1,6 +1,6 @@
-import { IUserEnvironmentModel } from "./user-environment.model"
+import { UserEnvironmentModel } from "./user-environment.model"
 
-export interface IConnectionsDialogData {
-    selectedEnv:IUserEnvironmentModel
-    envList: IUserEnvironmentModel[]
+export interface ConnectionsDialogData {
+    selectedEnv:UserEnvironmentModel
+    envList: UserEnvironmentModel[]
 }

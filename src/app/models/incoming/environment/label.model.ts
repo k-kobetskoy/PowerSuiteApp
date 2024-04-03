@@ -1,4 +1,4 @@
-export interface ILabelModel {
+export interface LabelModel {
     Label: string,
     LanguageCode: number,
     IsManaged: boolean,

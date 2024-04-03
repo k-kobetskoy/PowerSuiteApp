@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { GraphDataService } from 'src/app/services/data/graph-data.service';
 
 @Component({
@@ -8,16 +9,24 @@ import { GraphDataService } from 'src/app/services/data/graph-data.service';
 })
 export class UserInfoComponent implements OnInit {
 
-
   imageToShow: any
   imageLoading: boolean
 
-  constructor(private graphDataService: GraphDataService) { }
+  constructor(private graphDataService: GraphDataService, private authService: AuthService) { }
 
   ngOnInit() {
     this.getImage()
   }
 
+
+  userIsLoggedIn(){
+    return this.authService.loginDisplay
+  }
+
+
+  logOut() {
+    this.authService.logout(true)
+    }
 
 
   getImage() {

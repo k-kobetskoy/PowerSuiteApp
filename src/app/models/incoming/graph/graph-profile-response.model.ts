@@ -1,4 +1,4 @@
-export interface IGraphProfileInfoModel {
+export interface GraphProfileInfoModel {
     businessPhones: [],
     displayName: string,
     givenName: string,

@@ -30,6 +30,8 @@ import { AngularSplitModule } from 'angular-split';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { TreeModule } from '@ali-hm/angular-tree-component';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import { TreeModule } from '@ali-hm/angular-tree-component';
     ControlPanelComponent,
     TreePanelComponent,
     CodeEditorComponent,
-    CodeEditorFooterComponent
+    CodeEditorFooterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,8 @@ import { TreeModule } from '@ali-hm/angular-tree-component';
     MatTabsModule,
     MatIconModule,
     TreeModule,
+    FormsModule,
+    CdkTreeModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [],

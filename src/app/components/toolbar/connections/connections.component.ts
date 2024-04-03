@@ -1,10 +1,11 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
 import { GlolobalDiscoDataService } from 'src/app/services/data/global-disco-data.serivce';
 import { Observable, Subscription } from 'rxjs';
-import { IGlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
-import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';
+import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
+import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -14,18 +15,26 @@ import { IUserEnvironmentModel } from 'src/app/models/user-environment.model';
 })
 export class ConnectionsComponent implements OnInit {
 
-  selectedEnvironment: IUserEnvironmentModel | undefined
+  selectedEnvironment: UserEnvironmentModel | undefined
 
-  environmentsList: IUserEnvironmentModel[] = []
+  environmentsList: UserEnvironmentModel[] = []
   private subs: Subscription[] = []
   myColor: string = '#4b4b4b';
 
-  constructor(private dialog: MatDialog, private dataService: GlolobalDiscoDataService) { }
+  constructor(private dialog: MatDialog, private dataService: GlolobalDiscoDataService, private authService: AuthService,private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     let selectedEnv = localStorage.getItem('selectedEnvironment')
-    if (selectedEnv)
-      this.selectedEnvironment = JSON.parse(selectedEnv)    
+    if (selectedEnv) { this.selectedEnvironment = JSON.parse(selectedEnv) }
+    this.subs.push(this.authService.userIsLoggedIn$.subscribe((x) => {
+      if(!x){
+        selectedEnv = undefined
+        localStorage.removeItem('selectedEnvironment')
+        sessionStorage.clear()
+        console.log('selected env '+ selectedEnv)
+        this.cd.detectChanges()
+      }
+    }))
   }
 
   connect() {
@@ -43,15 +52,17 @@ export class ConnectionsComponent implements OnInit {
       (err) => console.error(err)
     ))
   }
-  private establishConnection(selectedEnv: IUserEnvironmentModel) {
-    //connect to env (msal)    
+  private establishConnection(selectedEnv: UserEnvironmentModel) {
+    //connect to env (msal)
     localStorage.setItem('selectedEnvironment', JSON.stringify(selectedEnv))
+
+    console.log(selectedEnv)
 
     this.selectedEnvironment = selectedEnv
     //redirect
   }
 
-  private mapResponse(response$: Observable<IGlobalDiscoInstancesResponseModel>) {
+  private mapResponse(response$: Observable<GlobalDiscoInstancesResponseModel>) {
     this.subs.push(response$.subscribe(
       resp => {
         this.environmentsList = []

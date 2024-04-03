@@ -1,4 +1,4 @@
-export interface IGlobalDiscoInstanceModel {
+export interface GlobalDiscoInstanceModel {
     IsUserSysAdmin: boolean,
     Region: string,
     Purpose: string,

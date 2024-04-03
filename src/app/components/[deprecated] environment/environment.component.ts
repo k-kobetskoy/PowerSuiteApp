@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MSAL_INTERCEPTOR_CONFIG, MsalService } from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { Observable, Subscription } from 'rxjs';
-import { IEntityDefinitionModel } from 'src/app/models/incoming/environment/entity-definition.model';
-import { IEntityDefinitionsResponseModel } from 'src/app/models/incoming/environment/entity-definitions-response.model';
+import { EntityDefinitionModel } from 'src/app/models/incoming/environment/entity-definition.model';
+import { EntityDefinitionsResponseModel } from 'src/app/models/incoming/environment/entity-definitions-response.model';
 import { EnvironmentDataService } from 'src/app/services/data/environment-data.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class EnvironmentComponent implements OnInit {
 
   environmentUrl!: string | null
   sub: Subscription = new Subscription
-  entities: IEntityDefinitionModel[] = []
+  entities: EntityDefinitionModel[] = []
 
 
   constructor(private route: ActivatedRoute, private dataService: EnvironmentDataService, private authService: MsalService) { }
@@ -54,7 +54,7 @@ export class EnvironmentComponent implements OnInit {
     };
   }
 
-  mapResponse(response$: Observable<IEntityDefinitionsResponseModel>) {
+  mapResponse(response$: Observable<EntityDefinitionsResponseModel>) {
     this.sub = response$.subscribe(resp => {
       for (let entity of resp.value) {
         this.entities.push({

@@ -1,6 +1,6 @@
-import { ILabelModel } from "./label.model"
+import { LabelModel } from "./label.model"
 
-export interface IDisplayNameModel {
-    LocalizedLabels: ILabelModel[],
-    UserLocalizedLabel: ILabelModel
+export interface DisplayNameModel {
+    LocalizedLabels: LabelModel[],
+    UserLocalizedLabel: LabelModel
 }

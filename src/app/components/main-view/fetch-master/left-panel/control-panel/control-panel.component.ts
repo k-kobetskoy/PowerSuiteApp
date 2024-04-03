@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { optionValue } from '../tree-panel/tree-panel.component';
+import { Constants } from 'src/app/config/constants';
+import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
 
 @Component({
   selector: 'app-control-panel',
@@ -8,16 +9,28 @@ import { optionValue } from '../tree-panel/tree-panel.component';
 })
 export class ControlPanelComponent implements OnInit {
 
-  @Input() selectedElement: optionValue
+  @Input() selectedElement: FetchNode
 
-  @Output() addElementEvent = new EventEmitter<string>()
+  @Output() addNodeEvent = new EventEmitter<FetchNode>()
 
 
   addElement(elementName: string) {
     if (this.selectedElement)
       console.log(this.selectedElement)
 
-      this.addElementEvent.emit(elementName)
+
+      let node : FetchNode= {
+        id: null,
+        name: elementName,
+        order: null,
+        type: Constants.nodeTypes.get('attribute'),
+        actions: [],
+        inputs: [],
+        children: [],
+        selfClosing: false
+      }
+      console.log(node)
+      this.addNodeEvent.emit(node)
   }
 
   constructor() { }

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TreePanelComponent, optionValue } from '../left-panel/tree-panel/tree-panel.component';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { TreePanelComponent } from '../left-panel/tree-panel/tree-panel.component';
 import { ControlPanelComponent } from '../left-panel/control-panel/control-panel.component';
+import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
 
 @Component({
   selector: 'app-fetch-parent',
@@ -10,19 +11,19 @@ import { ControlPanelComponent } from '../left-panel/control-panel/control-panel
 })
 export class FetchParentComponent implements OnInit {
 
-  @ViewChild(TreePanelComponent) leftTopPanel: TreePanelComponent
-  @ViewChild(ControlPanelComponent) leftBottomPanel: ControlPanelComponent
+  @ViewChild(TreePanelComponent) treePanel: TreePanelComponent
+  @ViewChild(ControlPanelComponent) controlPanel: ControlPanelComponent
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  setSelectedElement(selectedElement: optionValue) {
-    this.leftBottomPanel.selectedElement = selectedElement
+  setSelectedElement(selectedElement: FetchNode) {
+    this.controlPanel.selectedElement = selectedElement
   }
 
-  addTreeNode(newNode: string) {
-    this.leftTopPanel.addElement(newNode)
+  addTreeNode(newNode: FetchNode) {
+    this.treePanel.addNode(newNode)
   }
 }

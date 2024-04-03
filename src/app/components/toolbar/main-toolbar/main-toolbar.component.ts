@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ConnectionsComponent } from '../connections/connections.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -11,9 +12,8 @@ export class MainToolbarComponent implements OnInit {
 
   @ViewChild(ConnectionsComponent) connectionsComponent: ConnectionsComponent | undefined
 
-  @Input() userLogedIn: boolean
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }

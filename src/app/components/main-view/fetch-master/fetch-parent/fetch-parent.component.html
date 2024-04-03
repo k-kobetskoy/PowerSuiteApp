@@ -5,10 +5,10 @@
 
       <as-split direction="vertical" gutterSize="2">
         <as-split-area [size]="65" order="3" minSize="30">
-          <app-tree-panel (onElemenSelect)="setSelectedElement($event)"></app-tree-panel>
+          <app-tree-panel (onNodeSelect)="setSelectedElement($event)"></app-tree-panel>
         </as-split-area>
         <as-split-area [size]="35" order="4" minSize="20">
-          <app-control-panel (addElementEvent)="addTreeNode($event)"></app-control-panel>
+          <app-control-panel (addNodeEvent)="addTreeNode($event)"></app-control-panel>
         </as-split-area>
       </as-split>
 

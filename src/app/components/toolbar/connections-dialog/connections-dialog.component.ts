@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IConnectionsDialogData } from 'src/app/models/connections-dialog-data';
+import { ConnectionsDialogData } from 'src/app/models/connections-dialog-data';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class ConnectionsDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IConnectionsDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: ConnectionsDialogData,
   ) { }
 
   ngOnInit() {

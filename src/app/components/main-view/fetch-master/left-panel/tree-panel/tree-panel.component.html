@@ -1,12 +1,43 @@
 <div class="tree-container">
   <div class="button-block"></div>
-  <tree-root [nodes]="nodes" [options]="options"></tree-root>
+
+
+  <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree-root">
+    <!-- This is the tree node template for leaf nodes -->
+    <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+      <!-- use a disabled button to provide padding for tree leaf -->
+      <a></a>
+      <div class="node-element-select-area" (click)="select(node)"
+        [ngClass]="{active: this.selectedNode===node, inactive: this.selectNode!==node}">
+        <div class="tree-element-icon"></div>
+        <p class="small prevent-select">{{node.name}}</p>
+      </div>
+    </cdk-nested-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node parent-node-element">
+      
+
+        <a cdkTreeNodeToggle (click)="toggleNode(node)">
+          <mat-icon class="arrow-icon">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </a>
+        <div class="node-element-select-area" (click)="select(node)"
+          [ngClass]="{active: this.selectedNode===node, inactive: this.selectNode!==node}">
+
+
+          <mat-icon class="tree-element-icon">
+
+          </mat-icon>
+
+
+
+          <p class="small prevent-select">{{node.name}}</p>
+        </div>
+        <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+          <ng-container cdkTreeNodeOutlet></ng-container>
+        </div>
+    
+    </cdk-nested-tree-node>
+  </cdk-tree>
 </div>
-
-
-
-<!-- <mat-selection-list #shoes [multiple]="false" (selectionChange)="select(shoes.selectedOptions.selected[0].value)">
-  <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
-    {{shoe.name}}
-  </mat-list-option>
-</mat-selection-list> -->

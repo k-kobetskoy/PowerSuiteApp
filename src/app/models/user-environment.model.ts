@@ -1,4 +1,4 @@
-export interface IUserEnvironmentModel {
+export interface UserEnvironmentModel {
   apiUrl: string
   friendlyName: string
   url: string

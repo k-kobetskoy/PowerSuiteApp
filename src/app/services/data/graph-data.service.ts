@@ -2,11 +2,11 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, tap } from "rxjs";
 import { Constants } from "src/app/config/constants";
-import { IGraphProfileInfoModel } from "src/app/models/incoming/graph/graph-profile-response.model";
+import { GraphProfileInfoModel } from "src/app/models/incoming/graph/graph-profile-response.model";
 
-let baseUrl = Constants.GRAPH_API_ENDPOINT
-let profile = Constants.GRAPH_PROFILE_INFO
-let photo = Constants.GRAPH_PHOTO
+let baseUrl = Constants.urls.get('GRAPH_API_ENDPOINT')
+let profile = Constants.urls.get('GRAPH_PROFILE_INFO')
+let photo = Constants.urls.get('GRAPH_PHOTO')
 
 @Injectable({providedIn: 'root'})
 
@@ -14,12 +14,12 @@ export class GraphDataService{
 
     constructor(private http: HttpClient) {}
 
-    getProfileInfo(): Observable<IGraphProfileInfoModel>{
-        const profileInfo: IGraphProfileInfoModel = JSON.parse(localStorage.getItem(`${baseUrl}/${profile}`)!)
+    getProfileInfo(): Observable<GraphProfileInfoModel>{
+        const profileInfo: GraphProfileInfoModel = JSON.parse(localStorage.getItem(`${baseUrl}/${profile}`)!)
 
         if (!profileInfo) {
-            return this.http.get<IGraphProfileInfoModel>(`${baseUrl}/${profile}`).pipe(
-              tap((data: IGraphProfileInfoModel) => {
+            return this.http.get<GraphProfileInfoModel>(`${baseUrl}/${profile}`).pipe(
+              tap((data: GraphProfileInfoModel) => {
                 localStorage.setItem(`${baseUrl}/${profile}`, JSON.stringify(data))
               })
             )
