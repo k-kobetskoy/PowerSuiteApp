@@ -17,7 +17,7 @@ export class NodesService {
 
     let root = { ...Constants.initialRootNode }
 
-    root.children.push({...Constants.initialEnitityNode})
+    root.children.push({...Constants.initialEnitityNode.parent = root})
 
     nodes.push(root)
 

@@ -1,69 +1,12 @@
-import { ArrayDataSource } from '@angular/cdk/collections';
-import { CdkTree, CdkTreeNodeOutlet, FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
+import { CdkTree, CdkTreeNodeOutlet, NestedTreeControl, TreeControl } from '@angular/cdk/tree';
 import { ChangeDetectorRef, Component, EventEmitter, IterableDiffers, OnInit, Output, TrackByFunction, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Constants } from 'src/app/config/constants';
 import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { FetchNodeTree } from 'src/app/models/fetch-master/fetch-node-tree';
 import { NodesService } from 'src/app/services/fetch-master/nodes.service';
 
 
-
-const TREE_DATA: ExampleFlatNode[] = [
-  {
-    name: 'Fruit',
-    expandable: true,
-    level: 0,
-  },
-  {
-    name: 'Apple',
-    expandable: false,
-    level: 1,
-  },
-  {
-    name: 'Banana',
-    expandable: false,
-    level: 1,
-  },
-  {
-    name: 'Fruit loops',
-    expandable: false,
-    level: 1,
-  },
-  {
-    name: 'Vegetables',
-    expandable: true,
-    level: 0,
-  },
-  {
-    name: 'Green',
-    expandable: true,
-    level: 1,
-  },
-  {
-    name: 'Broccoli',
-    expandable: false,
-    level: 2,
-  },
-  {
-    name: 'Brussels sprouts',
-    expandable: false,
-    level: 2,
-  },
-  {
-    name: 'Orange',
-    expandable: true,
-    level: 1,
-  },
-  {
-    name: 'Pumpkins',
-    expandable: false,
-    level: 2,
-  },
-  {
-    name: 'Carrots',
-    expandable: false,
-    level: 2,
-  },
-];
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -73,7 +16,7 @@ interface ExampleFlatNode {
   isExpanded?: boolean;
 }
 
-
+const TREE_DATA = []
 
 @Component({
   selector: 'app-tree-panel',
@@ -89,28 +32,21 @@ export class TreePanelComponent implements OnInit {
   @ViewChild('treeNodeOutlet') treeNodeOutlet: CdkTreeNodeOutlet
 
 
-  nodeTree: FetchNode[]
+
+  nodeTree: FetchNodeTree
   selectedNode: FetchNode
-  treeControl = new NestedTreeControl<FetchNode>(node => node.children)
-  dataChange: BehaviorSubject<FetchNode[]> = new BehaviorSubject<FetchNode[]>([])
-  dataSource: FetchNode[]
+  dataSource: Observable<FetchNodeTree>
 
 
-  // ------------flat tree ----------------//
+  constructor(private nodesService: NodesService) {  }
 
-  flattreeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level,
-    node => node.expandable,
-  );
-
-  test(node){
-    console.log(node)
+  ngOnInit() {
+    this.nodeTree = new FetchNodeTree()
+    this.dataSource = of(this.nodeTree)
   }
-  trackBy2: TrackByFunction<ExampleFlatNode> = (index, node)=>node.name
-  
-  dataSource2 = of(TREE_DATA)
-  
+
   flathasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  treeControl: TreeControl<FetchNode, FetchNode>;
 
 
 
@@ -137,40 +73,28 @@ export class TreePanelComponent implements OnInit {
     }
     return true;
   }
-  removeNode2(){
-    TREE_DATA.pop()
+  removeNode2() {
+    
   }
 
-  addNode2(){
-    
-    
-    let node ={
+  addNode2() {
+    let node : FetchNode = {
       name: 'Pumpkins1111',
       expandable: false,
-      level: 2,    
+      level: 0,
+      next: null,
+      type: Constants.attribute,
+      nextExists: false
     }
-    TREE_DATA.push(node)
-    
-    
-    
-    console.log(TREE_DATA)
-  
+    this.nodeTree.addNode(this.nodeTree.root, node)
+
+    for(let d of this.nodeTree){
+      console.log(d)
+    }
   }
 
-// ------------flat tree ----------------//
 
-  track: TrackByFunction<FetchNode> = (index, node) => node.id;
-
-  constructor(private cd: ChangeDetectorRef, private nodesService: NodesService, private differs: IterableDiffers) {
-    this.dataChange.subscribe(data=>this.dataSource = data)
-    
-    this.nodeTree = this.nodesService.getInitialNodes()
-    this.dataChange.next(this.nodeTree)
-  }
-
-  ngOnInit() {
-
-  }
+ 
 
   hasChild = (_: number, node: FetchNode) => !!node.children && node.children.length > 0
 
@@ -194,9 +118,6 @@ export class TreePanelComponent implements OnInit {
     if (this.selectNode) {
       this.nodesService.addChild(this.selectedNode, node)
     }
-    this.dataChange.next(this.nodeTree)
-    
-    // this.cd.detectChanges()
   }
 
 }

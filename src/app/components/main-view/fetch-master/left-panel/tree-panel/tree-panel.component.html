@@ -1,29 +1,60 @@
 <div class="tree-container">
   <div class="button-block"></div>
+  <!-- 
 
-
-  <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree-root" [trackBy]="track" #tree>
-    <!-- This is the tree node template for leaf nodes -->
+  <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree-root" #tree>
+    
     <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
-      <!-- use a disabled button to provide padding for tree leaf -->
+     
       <a></a>
       <div class="node-element-select-area" (click)="selectNode(node)"
-        [ngClass]="{active: this.selectedNode===node, inactive: this.selectNode!==node}">
+        [ngClass]="{active: this.selectedNode===node, inactive: this.selectedNode!==node}">
         <div class="tree-element-icon"></div>
         <p class="small prevent-select">{{node.name}}</p>
       </div>
     </cdk-nested-tree-node>
-    <!-- This is the tree node template for expandable nodes -->
-    <cdk-nested-tree-node  *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node parent-node-element" >
-      
+    
+    <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node parent-node-element">
 
-        <a  cdkTreeNodeToggle (click)="toggleNode(node)" >
-          <mat-icon class="arrow-icon">
-            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-          </mat-icon>
-        </a>
+
+      <a cdkTreeNodeToggle (click)="toggleNode(node)">
+        <mat-icon class="arrow-icon">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </a>
+      <div class="node-element-select-area" (click)="selectNode(node)"
+        [ngClass]="{active: this.selectedNode===node, inactive: this.selectNode!==node}">
+
+
+        <mat-icon class="tree-element-icon">
+
+        </mat-icon>
+
+
+
+        <p class="small prevent-select">{{node.name}}</p>
+      </div>
+      <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+        <ng-container cdkTreeNodeOutlet #treeNodeOutlet></ng-container>
+      </div>
+
+    </cdk-nested-tree-node>
+  </cdk-tree> -->
+
+  <!-- 
+<div *ngFor="let d of  fetchNodeTree">
+<p class="small prevent-select">{{d.name}}</p>
+</div> -->
+
+
+
+
+  <div *ngFor="let node of dataSource | async">
+    <div *ngIf="node&&node.expandable">
+      <div class="example-tree-node parent-node-element">
+
         <div class="node-element-select-area" (click)="selectNode(node)"
-          [ngClass]="{active: this.selectedNode===node, inactive: this.selectNode!==node}">
+          [ngClass]="{active: this.selectedNode===node, inactive: this.selectedNode!==node}">
 
 
           <mat-icon class="tree-element-icon">
@@ -31,38 +62,36 @@
           </mat-icon>
 
 
+          <p class="small prevent-select" appNodeStyle [appPadding]="node.level"> root node {{node.name}} + {{node.level}}</p>
 
-          <p class="small prevent-select">{{node.name}}</p>
         </div>
-        <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
-          <ng-container cdkTreeNodeOutlet #treeNodeOutlet ></ng-container>
-        </div>
-    
-    </cdk-nested-tree-node>
-  </cdk-tree>
 
 
 
+      </div>
 
-  
-<div *ngFor="let node3 of dataSource2 | async">
-  <div *ngIf="node3&&node3.expandable">
-    <div class="example-tree-node parent-node-element">      
-      <p appNodeStyle [appPadding]="node3.level" (click)="test(node3)">{{node3.name}} + {{node3.level}}</p>
-    
-    
-    
-    
     </div>
-    
-  </div>
-  <div *ngIf="node3&&!node3.expandable">
-    <p appNodeStyle [appPadding]="node3.level" (click)="test(node3)"> leaf node {{node3.name}} + {{node3.level}}</p>
+    <div *ngIf="node&&!node.expandable">
+      
+      <div class="node-element-select-area" (click)="selectNode(node)"
+      [ngClass]="{active: this.selectedNode===node, inactive: this.selectedNode!==node}">
+
+
+      <mat-icon class="tree-element-icon">
+
+      </mat-icon>
+
+
+      <p class="small prevent-select" appNodeStyle [appPadding]="node.level"> leaf node {{node.name}} + {{node.level}}</p>
+
+    </div>
+
+
+    </div>
+
   </div>
 
-</div>
-
-<button mat-button (click)="addNode2()">addnode</button>
-<button mat-button (click)="removeNode2()">remove node</button>
+  <button mat-button (click)="addNode2()">addnode</button>
+  <button mat-button (click)="removeNode2()">remove node</button>
 
 </div>

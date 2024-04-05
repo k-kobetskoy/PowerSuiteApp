@@ -15,17 +15,9 @@ export class NodeStyleDirective implements OnInit {
   }
   
   ngOnInit(): void {
-    this.hostPadding = `${this.padding*20}`
-    this.r.setStyle(this.el.nativeElement, 'padding-left',  `${this.padding*5}`)
-    this.r.setStyle(this.el.nativeElement, 'color', `red`)
-    
+    this.hostPadding = `${this.padding*20}`    
   }
 
-
-  @HostListener ('mouseover') init(){
-    this.r.setStyle(this.el.nativeElement, 'padding-left',  `${this.padding*5}`)
-    this.r.setStyle(this.el.nativeElement, 'color', `blue`)
-  }
 
 
 }
