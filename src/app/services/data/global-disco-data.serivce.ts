@@ -5,8 +5,8 @@ import { Constants } from 'src/app/config/constants';
 import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
 
 
-let baseUrl = Constants.urls.get('GLOBAL_DISCO_API_ENDPOINT')
-let instances = Constants.urls.get('GLOBAL_DISCO_INSTANCES')
+let baseUrl = Constants.GlobalDiscoApiEndpoint
+let instances = Constants.GlobalDiscoInstances
 
 @Injectable({
   providedIn: 'root'

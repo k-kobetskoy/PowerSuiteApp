@@ -24,6 +24,6 @@ export class FetchParentComponent implements OnInit {
   }
 
   addTreeNode(newNode: FetchNode) {
-    this.treePanel.addNode(newNode)
+    this.treePanel.addNodeToTree(newNode)
   }
 }

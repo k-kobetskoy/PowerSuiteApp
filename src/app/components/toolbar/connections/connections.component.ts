@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
 import { GlolobalDiscoDataService } from 'src/app/services/data/global-disco-data.serivce';

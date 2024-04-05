@@ -1,8 +1,24 @@
-<div *ngIf="selectedElement&&selectedElement.name==='Boots' else elseBlock">
 
-    <button mat-button (click)="addElement('Boots')">Add boots</button>
+
+
+
+
+
+<div *ngIf="selectedElement; else elseBlock" [ngSwitch]="selectedElement.type">
+
+
+<app-attribute-editor *ngSwitchCase="constatnts.attribute" (createNode)="addElement('attribute')"></app-attribute-editor>
+<app-condition-editor *ngSwitchCase="constatnts.condition" (createNode)="addElement('condition')"></app-condition-editor>
+<app-entity-editor *ngSwitchCase="constatnts.entity" (createNode)="addElement('entity')"></app-entity-editor>
+<app-filter-editor *ngSwitchCase="constatnts.filter" (createNode)="addElement('filter')"></app-filter-editor>
+<app-linked-entity-editor *ngSwitchCase="constatnts.linkEntity" (createNode)="addElement('linked-entity')"></app-linked-entity-editor>
+<app-order-editor *ngSwitchCase="constatnts.order" (createNode)="addElement('order')"></app-order-editor>
+<app-root-editor *ngSwitchCase="constatnts.root" (onNodeCreate)="addElement('root')"></app-root-editor>
+<app-value-editor *ngSwitchCase="constatnts.value" (createNode)="addElement('value')"></app-value-editor>
+<app-default-editor *ngSwitchDefault></app-default-editor>    
 </div>
-<ng-template #elseBlock>
 
-    <button [disabled]="!selectedElement" mat-button (click)="addElement('Other')">Add other</button>
+
+<ng-template #elseBlock>
+    <app-default-editor></app-default-editor>   
 </ng-template>

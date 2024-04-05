@@ -15,8 +15,10 @@ body {
 }
 
 body {  
-  font-family: "Work Sans", sans-serif; 
-  
+   font-family: "Work Sans", sans-serif;  
+  /* font-family: "interstate-mono", monospace; */
+  /* font-family: "fira-mono", monospace; */
+  /* font-family: "source-code-pro", monospace; */
   /* font-family: "mundial", sans-serif; */
   /* font-family: "owners-text", sans-serif; */
   /* font-family: 'SF Pro Display', sans-serif; */

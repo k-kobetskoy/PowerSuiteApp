@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Constants } from 'src/app/config/constants';
 import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { FetchNodeType } from 'src/app/models/fetch-master/fetch-node-type';
 
 @Component({
   selector: 'app-control-panel',
@@ -13,6 +15,10 @@ export class ControlPanelComponent implements OnInit {
 
   @Output() addNodeEvent = new EventEmitter<FetchNode>()
 
+  constatnts = Constants
+  
+
+
 
   addElement(elementName: string) {
     if (this.selectedElement)
@@ -23,9 +29,9 @@ export class ControlPanelComponent implements OnInit {
         id: null,
         name: elementName,
         order: null,
-        type: Constants.nodeTypes.get('attribute'),
+        type: Constants.attribute,
         actions: [],
-        inputs: [],
+        inputs: [],      
         children: [],
         selfClosing: false
       }

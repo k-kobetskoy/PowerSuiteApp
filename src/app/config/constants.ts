@@ -1,52 +1,46 @@
 import { Injectable } from '@angular/core';
 import { FetchNode } from '../models/fetch-master/fetch-node';
 import { FetchNodeType } from '../models/fetch-master/fetch-node-type';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 
 export class Constants {
 
+    public static readonly GlobalDiscoApiEndpoint: string = 'https://globaldisco.crm.dynamics.com/api/discovery/v2.0'
+    public static readonly GlobalDiscoInstances: string = 'Instances'
+    public static readonly GraphApiEndpoint: string = 'https://graph.microsoft.com/v1.0'
+    public static readonly GraphProfileInfo: string = 'me'
+    public static readonly GraphPhoto: string = 'me/photo/$value'
 
-    public static readonly maxNodeId : string = 'maxNodeId'
+    public static value: FetchNodeType = { name: 'value', childRule: [] }
+    public static order: FetchNodeType = { name: 'order', childRule: [] }
+    public static attribute: FetchNodeType = { name: 'attribute', childRule: [] }
+    public static condition: FetchNodeType = { name: 'condition', childRule: ['value'] }
+    public static filter: FetchNodeType = { name: 'filter', childRule: ['condition', 'filter'] }
+    public static linkEntity: FetchNodeType = { name: 'linkEntity', childRule: ['attribute', 'filter', 'order', 'linkEntity'] }
+    public static entity: FetchNodeType = { name: 'entity', childRule: ['attribute', 'filter', 'order', 'linkEntity'] }
+    public static root: FetchNodeType = { name: 'root', childRule: ['entity'] }
 
-    public static readonly urls = new Map([
-        ['GLOBAL_DISCO_API_ENDPOINT', 'https://globaldisco.crm.dynamics.com/api/discovery/v2.0'],
-        ['GLOBAL_DISCO_INSTANCES', 'Instances'],
-        ['GRAPH_API_ENDPOINT', 'https://graph.microsoft.com/v1.0'],
-        ['GRAPH_PROFILE_INFO', 'me'],
-        ['GRAPH_PHOTO', 'me/photo/$value']])
-
-
-    public static readonly nodeTypes = new Map([
-        ['value', { name: 'value', childRule: [] }],
-        ['order', { name: 'order', childRule: [] }],
-        ['attribute', { name: 'attribute', childRule: [] }],
-        ['condition', { name: 'condition', childRule: ['value'] }],
-        ['filter', { name: 'filter', childRule: ['condition', 'filter'] }],
-        ['linkEntity', { name: 'linkEntity', childRule: ['attribute', 'filter', 'order', 'linkEntity'] }],
-        ['entity', { name: 'entity', childRule: ['attribute', 'filter', 'order', 'linkEntity'] }],
-        ['root', { name: 'root', childRule: ['entity'] }],
-    ])
-
-    public static readonly initialEnitityNode : FetchNode = {
-        id: 2,
+    public static readonly initialEnitityNode: FetchNode = {
+        id: '2',
         name: '(Entity)',
         order: 1,
-        type: Constants.nodeTypes.get('entity'),
+        type: Constants.entity,
         actions: [],
         inputs: [],
+        selfClosing: true,
         children: [],
-        selfClosing: true
     }
 
     public static readonly initialRootNode: FetchNode = {
-        id: 1,
+        id: '1',
         name: 'Root',
         order: 0,
-        type: Constants.nodeTypes.get('root'),
+        type: Constants.root,
         actions: [],
         inputs: [],
-        children: [Constants.initialEnitityNode],
+        children: [],
         selfClosing: false
     }
 }

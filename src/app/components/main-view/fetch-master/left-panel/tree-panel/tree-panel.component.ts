@@ -1,37 +1,79 @@
 import { ArrayDataSource } from '@angular/cdk/collections';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Constants } from 'src/app/config/constants';
+import { CdkTree, CdkTreeNodeOutlet, FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
+import { ChangeDetectorRef, Component, EventEmitter, IterableDiffers, OnInit, Output, TrackByFunction, ViewChild, ViewEncapsulation } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
-import { FetchNodeTree } from 'src/app/models/fetch-master/fetch-node-tree';
 import { NodesService } from 'src/app/services/fetch-master/nodes.service';
 
 
 
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-const TREE_DATA: FoodNode[] = [
+const TREE_DATA: ExampleFlatNode[] = [
   {
     name: 'Fruit',
-    children: [{ name: 'Apple' }, { name: 'Banana' }, { name: 'Fruit loops' }],
+    expandable: true,
+    level: 0,
+  },
+  {
+    name: 'Apple',
+    expandable: false,
+    level: 1,
+  },
+  {
+    name: 'Banana',
+    expandable: false,
+    level: 1,
+  },
+  {
+    name: 'Fruit loops',
+    expandable: false,
+    level: 1,
   },
   {
     name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
-      },
-      {
-        name: 'Orange',
-        children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
-      },
-    ],
+    expandable: true,
+    level: 0,
+  },
+  {
+    name: 'Green',
+    expandable: true,
+    level: 1,
+  },
+  {
+    name: 'Broccoli',
+    expandable: false,
+    level: 2,
+  },
+  {
+    name: 'Brussels sprouts',
+    expandable: false,
+    level: 2,
+  },
+  {
+    name: 'Orange',
+    expandable: true,
+    level: 1,
+  },
+  {
+    name: 'Pumpkins',
+    expandable: false,
+    level: 2,
+  },
+  {
+    name: 'Carrots',
+    expandable: false,
+    level: 2,
   },
 ];
+
+/** Flat node with expandable and level information */
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+  isExpanded?: boolean;
+}
+
+
 
 @Component({
   selector: 'app-tree-panel',
@@ -42,50 +84,119 @@ const TREE_DATA: FoodNode[] = [
 export class TreePanelComponent implements OnInit {
 
 
-
-
-
-  selectedNode: FoodNode
-
-
-  selectedNode2: FetchNode
   @Output() onNodeSelect = new EventEmitter<FetchNode>()
-
-  nodeTree: FetchNodeTree = { id: this.nodesService.generateUniqueTreeId(), nodes: [Constants.initialRootNode] }
-  options = {};
-
-  treeControl = new NestedTreeControl<FoodNode>(node => node.children);
-  dataSource = new ArrayDataSource(TREE_DATA);
+  @ViewChild('tree') tree: CdkTree<ChangeDetectorRef, IterableDiffers>
+  @ViewChild('treeNodeOutlet') treeNodeOutlet: CdkTreeNodeOutlet
 
 
-  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
-  constructor(private cd: ChangeDetectorRef, private nodesService: NodesService) { }
+  nodeTree: FetchNode[]
+  selectedNode: FetchNode
+  treeControl = new NestedTreeControl<FetchNode>(node => node.children)
+  dataChange: BehaviorSubject<FetchNode[]> = new BehaviorSubject<FetchNode[]>([])
+  dataSource: FetchNode[]
 
+
+  // ------------flat tree ----------------//
+
+  flattreeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  test(node){
+    console.log(node)
+  }
+  trackBy2: TrackByFunction<ExampleFlatNode> = (index, node)=>node.name
+  
+  dataSource2 = of(TREE_DATA)
+  
+  flathasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+
+
+  getParentNode(node: ExampleFlatNode) {
+    const nodeIndex = TREE_DATA.indexOf(node);
+
+    for (let i = nodeIndex - 1; i >= 0; i--) {
+      if (TREE_DATA[i].level === node.level - 1) {
+        return TREE_DATA[i];
+      }
+    }
+
+    return null;
+  }
+
+
+  shouldRender(node: ExampleFlatNode) {
+    let parent = this.getParentNode(node);
+    while (parent) {
+      if (!parent.isExpanded) {
+        return false;
+      }
+      parent = this.getParentNode(parent);
+    }
+    return true;
+  }
+  removeNode2(){
+    TREE_DATA.pop()
+  }
+
+  addNode2(){
+    
+    
+    let node ={
+      name: 'Pumpkins1111',
+      expandable: false,
+      level: 2,    
+    }
+    TREE_DATA.push(node)
+    
+    
+    
+    console.log(TREE_DATA)
+  
+  }
+
+// ------------flat tree ----------------//
+
+  track: TrackByFunction<FetchNode> = (index, node) => node.id;
+
+  constructor(private cd: ChangeDetectorRef, private nodesService: NodesService, private differs: IterableDiffers) {
+    this.dataChange.subscribe(data=>this.dataSource = data)
+    
+    this.nodeTree = this.nodesService.getInitialNodes()
+    this.dataChange.next(this.nodeTree)
+  }
 
   ngOnInit() {
+
   }
 
-  select(node: FoodNode) {
-    this.selectedNode = node
-  }
+  hasChild = (_: number, node: FetchNode) => !!node.children && node.children.length > 0
 
-  toggleNode(node: FoodNode) {
-
+  toggleNode(node: FetchNode) {
     if (node !== this.selectedNode) {
       if (this.treeControl.getDescendants(node).includes(this.selectedNode)) {
         this.selectedNode = node
+        this.onNodeSelect.emit(node)
       }
     }
   }
 
-  selectNode(event: any) {
-    this.onNodeSelect.emit(event.node.data)
-    this.selectedNode = event.node.data
+  selectNode(node: FetchNode) {
+    this.onNodeSelect.emit(node)
+    this.selectedNode = node
   }
 
-  addNode(node: FetchNode) {
-    this.nodesService.addNodeToTree(this.selectedNode2, node, this.nodeTree)
-    this.nodeTree.nodes = [...this.nodeTree.nodes]
-    this.cd.detectChanges()
+
+  addNodeToTree(node: FetchNode) {
+
+    if (this.selectNode) {
+      this.nodesService.addChild(this.selectedNode, node)
+    }
+    this.dataChange.next(this.nodeTree)
+    
+    // this.cd.detectChanges()
   }
+
 }

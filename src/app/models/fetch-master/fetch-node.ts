@@ -2,9 +2,10 @@
 import { Action } from "./action"
 import { Input } from "./input"
 import { FetchNodeType as FetchNodeType } from "./fetch-node-type"
+import { Observable } from "rxjs"
 
-export interface FetchNode {
-    id: number | null
+export class FetchNode {
+    id: string | null
     name: string | null
     order: number | null
     type: FetchNodeType 

@@ -4,9 +4,9 @@ import { Observable, of, tap } from "rxjs";
 import { Constants } from "src/app/config/constants";
 import { GraphProfileInfoModel } from "src/app/models/incoming/graph/graph-profile-response.model";
 
-let baseUrl = Constants.urls.get('GRAPH_API_ENDPOINT')
-let profile = Constants.urls.get('GRAPH_PROFILE_INFO')
-let photo = Constants.urls.get('GRAPH_PHOTO')
+let baseUrl = Constants.GraphApiEndpoint
+let profile = Constants.GraphProfileInfo
+let photo = Constants.GraphPhoto
 
 @Injectable({providedIn: 'root'})
 

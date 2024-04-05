@@ -19,6 +19,15 @@ import { TreePanelComponent } from './components/main-view/fetch-master/left-pan
 import { ControlPanelComponent } from './components/main-view/fetch-master/left-panel/control-panel/control-panel.component';
 import { CodeEditorComponent } from './components/main-view/fetch-master/right-panel/code-editor/code-editor.component';
 import { CodeEditorFooterComponent } from './components/main-view/fetch-master/right-panel/code-editor-footer/code-editor-footer.component';
+import { AttributeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/attribute-editor/attribute-editor.component';
+import { ConditionEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/condition-editor/condition-editor.component';
+import { EntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/entity-editor/entity-editor.component';
+import { FilterEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/filter-editor/filter-editor.component';
+import { LinkedEntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/linked-entity-editor/linked-entity-editor.component';
+import { OrderEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/order-editor/order-editor.component';
+import { RootEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/root-editor/root-editor.component';
+import { ValueEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/value-editor/value-editor.component';
+import { DefaultEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/default-editor/default-editor.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -32,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TreeModule } from '@ali-hm/angular-tree-component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
+import { NodeStyleDirective } from './directives/node-style.directive';
 
 
 @NgModule({
@@ -51,8 +61,18 @@ import { FormsModule } from '@angular/forms';
     TreePanelComponent,
     CodeEditorComponent,
     CodeEditorFooterComponent,
-
+    AttributeEditorComponent,
+    ConditionEditorComponent,
+    EntityEditorComponent,
+    FilterEditorComponent,
+    LinkedEntityEditorComponent,
+    OrderEditorComponent,
+    RootEditorComponent,
+    ValueEditorComponent,
+    DefaultEditorComponent,
+    NodeStyleDirective,
   ],
+  
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
