@@ -9,26 +9,6 @@ export class NodesService {
   
   get data(): FetchNode[] { return this.dataChange.value }
 
-
-
-
-  getInitialNodes() {
-    var nodes: FetchNode[] = []
-
-    let root = { ...Constants.initialRootNode }
-
-    root.children.push({...Constants.initialEnitityNode.parent = root})
-
-    nodes.push(root)
-
-    return nodes
-  }
-
-  addChild(parent: FetchNode, node: FetchNode){
-    node.id = this.generateUniqueNodeId()
-    parent.children.push(node)
-  }
-
   generateUniqueTreeId(): string {
     return `tree-${new Date().getTime().toString()}`
   }

@@ -1,0 +1,12 @@
+.node-editor-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 10px 5px 10px 5px;
+}
+
+.quick-actions{
+    display: flex;
+    flex-direction: row;
+    
+}

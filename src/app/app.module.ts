@@ -42,6 +42,7 @@ import { TreeModule } from '@ali-hm/angular-tree-component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
 import { NodeStyleDirective } from './directives/node-style.directive';
+import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { NodeStyleDirective } from './directives/node-style.directive';
     ValueEditorComponent,
     DefaultEditorComponent,
     NodeStyleDirective,
+    BaseNodeEditorComponent,
   ],
   
   imports: [

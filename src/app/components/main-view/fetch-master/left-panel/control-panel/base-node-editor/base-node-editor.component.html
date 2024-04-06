@@ -1,0 +1,42 @@
+<div class="node-editor-container">
+  
+  <div class="quick-actions">
+    <button mat-flat-button *ngFor="let nodeName of childNodeRules[selectedNode.type]" (click)="createNewNode(nodeName)">{{nodeName}}</button>
+  </div>
+
+  <div [ngSwitch]="selectedNode.type">
+
+    <div *ngSwitchCase="nodeType.attribute">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.root">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.filter">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.entity">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.link">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.order">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.condition">
+
+    </div>
+
+    <div *ngSwitchCase="nodeType.value">
+
+    </div>
+
+  </div>
+</div>

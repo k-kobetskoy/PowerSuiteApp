@@ -20,10 +20,10 @@ export class FetchParentComponent implements OnInit {
   }
 
   setSelectedElement(selectedElement: FetchNode) {
-    this.controlPanel.selectedElement = selectedElement
+    this.controlPanel.selectedNode = selectedElement
   }
 
-  addTreeNode(newNode: FetchNode) {
-    this.treePanel.addNodeToTree(newNode)
+  addTreeNode(nodeName: string) {
+    this.treePanel.addBaseNodeToTree(nodeName)
   }
 }

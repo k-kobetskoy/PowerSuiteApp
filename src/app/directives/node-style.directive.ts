@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { Directive, HostBinding,  Input, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[appNodeStyle]'  
@@ -8,16 +8,9 @@ export class NodeStyleDirective implements OnInit {
 
   @HostBinding('style.padding-left.px') hostPadding
 
-
-  constructor(private el: ElementRef, private r: Renderer2) { 
-    
-
-  }
+  constructor() {}
   
   ngOnInit(): void {
-    this.hostPadding = `${this.padding*20}`    
+    this.hostPadding = `${this.padding*10}`    
   }
-
-
-
 }

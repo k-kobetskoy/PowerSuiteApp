@@ -1,7 +1,9 @@
-import { Constants } from "src/app/config/constants";
 import { FetchNode } from "./fetch-node";
+import { NodeFactoryService } from "src/app/services/fetch-master/nodes-factory.service";
+import { FetchNodeType } from "src/app/config/fetch-node-type";
 
 export class FetchNodeTree implements Iterable<FetchNode> {
+
     private _id: string
     private _root: FetchNode
 
@@ -9,31 +11,17 @@ export class FetchNodeTree implements Iterable<FetchNode> {
         return this._root;
     }
 
+    constructor(private nodeFactory: NodeFactoryService) {
 
-    constructor() {
-        this._root = { ...Constants.initialRootNode }
-        this.addNode(this._root, { ...Constants.initialEnitityNode })
+        this._root = this.nodeFactory.getNodeWithBaseFields(FetchNodeType.root)
+
+        this.add(this._root, this.nodeFactory.getNodeWithBaseFields(FetchNodeType.entity))
     }
 
-
-
-    addNode(parent: FetchNode, newNode: FetchNode) {
-
-        let connectionNode = this.getNodeToConnect(parent)
-
-
-        let newNextNode = connectionNode.next
-
-        connectionNode.next = newNode
-        newNode.next = newNextNode
-        newNode.level = parent.level +1
-        newNode.parent = connectionNode
-        // newNode.nextExists = !!newNode.next
-
-        if (connectionNode.level < newNode.level) {
-            connectionNode.expandable = true
-            connectionNode.isExpanded = true
-        }
+    addNode(parent: FetchNode, newNodeName: string): FetchNode {
+        let newNode = this.nodeFactory.getNodeWithBaseFields(newNodeName)
+        let result = this.add(parent, newNode)
+        return result
     }
 
     removeNode(node: FetchNode) {
@@ -41,30 +29,66 @@ export class FetchNodeTree implements Iterable<FetchNode> {
         node.parent.expandable = node.parent.level === node.next.level ? false : true
     }
 
-    private getNodeToConnect(parent: FetchNode): FetchNode {
+    private add(parent: FetchNode, newNode: FetchNode): FetchNode {
+
+        let upperNode = this.getUpperNode(parent, newNode.order)
+
+        let bottomNode = upperNode.next
+
+        let nodeToSelect = newNode
+
+        upperNode.next = newNode
+        newNode.next = bottomNode
+
+        newNode.level = parent.level + 1
+        newNode.parent = parent
+
+        if (upperNode.level < newNode.level) {
+            upperNode.expandable = true
+            upperNode.isExpanded = true
+        }
+
+        if (newNode.type == FetchNodeType.filter) {
+            nodeToSelect = this.add(newNode, this.nodeFactory.getNodeWithBaseFields(FetchNodeType.condition))
+        }
+
+        return nodeToSelect
+    }
+    
+    private getUpperNode(parent: FetchNode, newNodeOrder: number): FetchNode {
 
         if (!parent.next) {
             return parent
         }
-        if (parent.next.level === parent.level) {
+        if (parent.next.level <= parent.level) {
             return parent
         }
 
         let current = parent
 
-        while (current.next) {
-            
-            if (current.next.level < current.level) {
-                return current
-            }
-            if (current.next.type.order > current.type.order) {
-                return current
-            }
+        while (current) {
+            if (!current.next) { break }
+            if (current.next.order > newNodeOrder) { break }
+            current = this.takeNextWithTheSameParentOrLast(current.next)
+        }
+
+        return current
+    }
+
+    private takeNextWithTheSameParentOrLast(node: FetchNode): FetchNode {
+        if (!node.next) {
+            return node
+        }
+
+        let current = node
+
+        while (current) {
+            if (!current.next) { break }
+            if (current.next.level === node.level) { break }
             current = current.next
         }
         return current
     }
-
 
     [Symbol.iterator](): Iterator<FetchNode, any, undefined> {
 

@@ -1,22 +1,37 @@
 
 import { Action } from "./action"
 import { Input } from "./input"
-import { FetchNodeType as FetchNodeType } from "./fetch-node-type"
 
 export class FetchNode {
-    id?: string | null
-    name?: string | null
-    order?: number | null
-    type: FetchNodeType
-    actions?: Action[] | null
-    inputs?: Input[] | null
-    children?: FetchNode[] =[]
-    selfClosing?: boolean | null
-    expandable: boolean = false
-    level?: number =0
-    isExpanded?: boolean = true
-    next: FetchNode | null = null
-    nextExists: boolean = false
-    parent?: FetchNode | null = null
+    id?: string 
+    name?: string 
+    order: number 
+    type?: string 
+    actions?: Action[] 
+    inputs?: Input[] 
+    selfClosing?: boolean 
+    expandable: boolean 
+    level?: number
+    isExpanded?: boolean 
+    next?: FetchNode | null
+    parent?: FetchNode
+    visible: boolean
 
+    constructor(
+        name: string,
+        order: number,
+        type: string,
+        selfClosing: boolean,
+        expandable: boolean,
+        ) {
+            this.level = 0
+            this.visible= true
+            this.name = name
+            this.order = order
+            this.type = type
+            this.selfClosing = selfClosing
+            this.expandable = expandable
+            this.isExpanded= true
+            this.next= null
+    }
 }

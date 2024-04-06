@@ -8,7 +8,7 @@
           <app-tree-panel (onNodeSelect)="setSelectedElement($event)"></app-tree-panel>
         </as-split-area>
         <as-split-area [size]="35" order="4" minSize="20">
-          <app-control-panel (addNodeEvent)="addTreeNode($event)"></app-control-panel>
+          <app-control-panel (onNodeCreate)="addTreeNode($event)"></app-control-panel>
         </as-split-area>
       </as-split>
 
