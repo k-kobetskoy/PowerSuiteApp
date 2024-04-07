@@ -54,52 +54,31 @@ export class FetchNodeTree implements Iterable<FetchNode> {
 
         return nodeToSelect
     }
-    
+
     private getUpperNode(parent: FetchNode, newNodeOrder: number): FetchNode {
 
-        if (!parent.next) {
-            return parent
-        }
-        if (parent.next.level <= parent.level) {
-            return parent
-        }
-
         let current = parent
+        let newNodeLevel = parent.level +1
 
         while (current) {
             if (!current.next) { break }
-            if (current.next.order > newNodeOrder) { break }
-            current = this.takeNextWithTheSameParentOrLast(current.next)
-        }
-
-        return current
-    }
-
-    private takeNextWithTheSameParentOrLast(node: FetchNode): FetchNode {
-        if (!node.next) {
-            return node
-        }
-
-        let current = node
-
-        while (current) {
-            if (!current.next) { break }
-            if (current.next.level === node.level) { break }
+            if (current.next.order > newNodeOrder && current.next.level===newNodeLevel) { break }
+            if (current.next.level <= parent.level) { break }            
             current = current.next
         }
+
         return current
     }
 
     [Symbol.iterator](): Iterator<FetchNode, any, undefined> {
 
-
-        let curr = this._root
+        let current = this._root
 
         return {
             next: () => {
-                if (curr) {
-                    let val = curr
-                    curr = curr.next
+                if (current) {
+                    let val = current
+                    current = current.next
                     return { done: false, value: val };
                 } else {
                     return { done: true, value: null };
