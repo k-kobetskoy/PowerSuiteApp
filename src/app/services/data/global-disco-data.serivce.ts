@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Constants } from 'src/app/config/constants';
 import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
 import { GlobalDiscoInstanceModel } from 'src/app/models/incoming/global-disco/global-disco-instance.model';
+import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class GlolobalDiscoDataService {
@@ -14,15 +15,13 @@ export class GlolobalDiscoDataService {
     return this._environmentsSubject$.asObservable();
   }
 
-  constructor(private http: HttpClient) {
-    this.getAll()
-  }
+  constructor(private http: HttpClient) { this.getAll() }
 
-  private getAll() : Observable<UserEnvironmentModel[]> {
-    return this.http.get<GlobalDiscoInstanceModel[]>(`${Constants.GlobalDiscoApiEndpoint}/${Constants.GlobalDiscoInstances}`)
+  private getAll() {
+    this.http.get<GlobalDiscoInstancesResponseModel>(`${Constants.GlobalDiscoApiEndpoint}/${Constants.GlobalDiscoInstances}`)
       .pipe(
         map((data) => {
-          return data.map(element => {
+          return data.value.map(element => {
             return {
               apiUrl: element.ApiUrl,
               friendlyName: element.FriendlyName,
@@ -30,7 +29,9 @@ export class GlolobalDiscoDataService {
               urlName: element.UrlName
             }
           })
-        }), tap(environments => this._environmentsSubject$.next(environments))
-      )
+        }), tap(
+          environments => this._environmentsSubject$.next(environments)
+        )
+      ).subscribe()
   }
 }

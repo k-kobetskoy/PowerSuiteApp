@@ -4,17 +4,16 @@ import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
 import { AuthService } from '../auth.service';
 import { UserInfoModel } from 'src/app/models/user-info.model';
 import { LocalStorageKeys } from 'src/app/config/local-storage-keys';
-import { GraphDataService } from './graph-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserDataService {
 
   private _envSubject$ = new BehaviorSubject<UserEnvironmentModel>(null)
-  private _envsSubject$ = new BehaviorSubject<UserEnvironmentModel[]>([]);
+  private _envsSubject$ = new BehaviorSubject<UserEnvironmentModel[]>([])
   private _userInfoSubject$ = new BehaviorSubject<UserInfoModel>(null)
 
   public get activeEnvironment$(): Observable<UserEnvironmentModel> {
-    return this._envSubject$
+    return this._envSubject$.asObservable()
   }
 
   public get environmentsConnections$(): Observable<UserEnvironmentModel[]> {
@@ -25,8 +24,8 @@ export class UserDataService {
     return this._userInfoSubject$.asObservable();
   }
 
-  constructor(private authService: AuthService, private graphDataService: GraphDataService) {
-    this.subscribeToUserStateChanges()
+  constructor(private authService: AuthService) {
+    this.subscribeToUserStateChanges()    
   }
 
   subscribeToUserStateChanges() {
@@ -50,7 +49,10 @@ export class UserDataService {
   connectToEnvironment(activeEnvironment: UserEnvironmentModel) {
     this._envSubject$.next(activeEnvironment)
     localStorage.setItem(LocalStorageKeys.ActiveEnvironmentModel, JSON.stringify(activeEnvironment))
-    let envs = localStorage.getItem(JSON.parse(LocalStorageKeys.EnvironmentsConnectionsModels))
-    localStorage.setItem(LocalStorageKeys.EnvironmentsConnectionsModels, JSON.stringify([activeEnvironment, ...envs]) )
+    let envs = <UserEnvironmentModel[]>JSON.parse(localStorage.getItem(LocalStorageKeys.EnvironmentsConnectionsModels)) 
+    if(envs){
+      localStorage.setItem(LocalStorageKeys.EnvironmentsConnectionsModels, JSON.stringify([activeEnvironment, ...envs]) )
+    }
+    localStorage.setItem(LocalStorageKeys.EnvironmentsConnectionsModels, JSON.stringify([activeEnvironment]) )
   }
 }

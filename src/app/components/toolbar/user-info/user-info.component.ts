@@ -15,7 +15,7 @@ export class UserInfoComponent implements OnInit {
   constructor(private graphDataService: GraphDataService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.getImage()
+    //this.getImage()
   }
 
 

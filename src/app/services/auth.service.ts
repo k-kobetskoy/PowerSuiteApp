@@ -11,7 +11,7 @@ export class AuthService {
   loginDisplay = false;
 
   private _userIsLoggedIn$ = new BehaviorSubject<boolean>(false);
-  
+
   public get userIsLoggedIn$() {
     return this._userIsLoggedIn$;
   }
@@ -19,7 +19,9 @@ export class AuthService {
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     @Inject(MSAL_INTERCEPTOR_CONFIG) private msalInterceptorConfig: MsalInterceptorConfiguration,
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService) { }
+    private msalBroadcastService: MsalBroadcastService) {
+    this.setLoginDisplay()
+  }
 
   private readonly _destroying$ = new Subject<void>();
 
@@ -51,13 +53,13 @@ export class AuthService {
         this.checkAndSetActiveAccount();
       })
 
-      this.msalBroadcastService.msalSubject$.subscribe({
-        next:(msalSubject)=>{
-          if(msalSubject.eventType ==='msal:acquireTokenFailure'){
-            this._userIsLoggedIn$.next(false)
-          }
+    this.msalBroadcastService.msalSubject$.subscribe({
+      next: (msalSubject) => {
+        if (msalSubject.eventType === 'msal:acquireTokenFailure') {
+          this._userIsLoggedIn$.next(false)
         }
-      })
+      }
+    })
   }
 
   setLoginDisplay() {
@@ -99,7 +101,7 @@ export class AuthService {
           this.authService.instance.setActiveAccount(response.account);
         });
     }
-    this.setLoginDisplay() 
+    this.setLoginDisplay()
   }
 
   logout(popup?: boolean) {
