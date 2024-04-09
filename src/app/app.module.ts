@@ -5,12 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/[deprecated] home/home.component';
-import { EnvironmentsComponent } from './components/[deprecated] environments/environments.component';
 import { ConnectionsDialogComponent } from './components/toolbar/connections-dialog/connections-dialog.component';
-import { FailedComponent } from './components/[deprecated] failed/failed.component';
 import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
-import { ViewContainerComponent } from './components/main-view/view-container/view-container.component';
 import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
 import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
 import { MenuComponent } from './components/toolbar/menu/menu.component';
@@ -48,11 +44,7 @@ import { BaseNodeEditorComponent } from './components/main-view/fetch-master/lef
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    EnvironmentsComponent,
-    FailedComponent,
     MainToolbarComponent,
-    ViewContainerComponent,
     FetchParentComponent,
     ConnectionsComponent,
     MenuComponent,

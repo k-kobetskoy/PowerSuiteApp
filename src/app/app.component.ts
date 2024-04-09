@@ -7,13 +7,15 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Angular 16 - MSAL Angular v3 Sample';
 
-  constructor(
-    private authService: AuthService) {
+  title = 'Angular 16 - MSAL Angular v3 Sample';
+  isIframe: boolean = false;
+
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.authService.init()
+    this.isIframe = window !== window.parent && !window.opener; // Remove this line to use Angular Universal    
   }
 }

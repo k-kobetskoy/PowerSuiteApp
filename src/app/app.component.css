@@ -6,3 +6,18 @@
   display: flex;
   flex-direction: column;
 }
+
+.view-container {    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex:1;    
+  flex-direction: column;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .main-section {
+      width: auto;
+  }
+}

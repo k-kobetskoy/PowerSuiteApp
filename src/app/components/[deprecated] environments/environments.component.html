@@ -1,7 +1,0 @@
-<div>
-
-<div *ngFor="let environment of environmentsList; index as i">
-<p>{{environment.friendlyName}} ({{environment.urlName}}) <a mat-button [routerLink]="[environment.apiUrl | slice: 8]">Connect</a> </p> 
-
-</div>
-</div>

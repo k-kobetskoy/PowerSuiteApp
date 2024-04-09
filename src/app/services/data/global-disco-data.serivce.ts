@@ -1,33 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from "rxjs";
+import { BehaviorSubject, Observable, map, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Constants } from 'src/app/config/constants';
-import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
+import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
+import { GlobalDiscoInstanceModel } from 'src/app/models/incoming/global-disco/global-disco-instance.model';
 
-
-let baseUrl = Constants.GlobalDiscoApiEndpoint
-let instances = Constants.GlobalDiscoInstances
-
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable({ providedIn: 'root' })
 export class GlolobalDiscoDataService {
 
-  constructor(private http: HttpClient) {}
+  private _environmentsSubject$ = new BehaviorSubject<UserEnvironmentModel[]>([]);
 
-  getAll(): Observable<GlobalDiscoInstancesResponseModel> {
+  public get environmentsList$() {
+    return this._environmentsSubject$.asObservable();
+  }
 
-    const environments: GlobalDiscoInstancesResponseModel = JSON.parse(sessionStorage.getItem(`${baseUrl}/${instances}`)!)
+  constructor(private http: HttpClient) {
+    this.getAll()
+  }
 
-    if (!environments) {
-      return this.http.get<GlobalDiscoInstancesResponseModel>(`${baseUrl}/${instances}`).pipe(
-        tap((data: GlobalDiscoInstancesResponseModel) => {
-          sessionStorage.setItem(`${baseUrl}/${instances}`, JSON.stringify(data))
-        })
+  private getAll() : Observable<UserEnvironmentModel[]> {
+    return this.http.get<GlobalDiscoInstanceModel[]>(`${Constants.GlobalDiscoApiEndpoint}/${Constants.GlobalDiscoInstances}`)
+      .pipe(
+        map((data) => {
+          return data.map(element => {
+            return {
+              apiUrl: element.ApiUrl,
+              friendlyName: element.FriendlyName,
+              url: element.Url,
+              urlName: element.UrlName
+            }
+          })
+        }), tap(environments => this._environmentsSubject$.next(environments))
       )
-    }
-    
-    return of(environments)
   }
 }

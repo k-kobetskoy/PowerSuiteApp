@@ -49,7 +49,6 @@ export function MSALGuardConfigFactory(config: ConfigService): MsalGuardConfigur
   return {
     interactionType: config.getSettings('guard').interactionType,
     authRequest: config.getSettings('guard').authRequest,
-    loginFailedRoute: config.getSettings('guard').loginFailedRoute
   };
 }
 

@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionsComponent } from '../connections/connections.component';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -9,11 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class MainToolbarComponent implements OnInit {
 
-
   @ViewChild(ConnectionsComponent) connectionsComponent: ConnectionsComponent | undefined
 
-
-  constructor(private authService: AuthService) { }
+  constructor() { }
 
   ngOnInit() {
   }

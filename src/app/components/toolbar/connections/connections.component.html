@@ -1,13 +1,12 @@
 <div>
-
-  <a matRipple [matRippleColor]="myColor" class="button"  (click)="connect()" *ngIf="!selectedEnvironment; else elseBlock">    
+  <a matRipple [matRippleColor]="rippleColor" class="button" (click)="getListOfEnvironments()" *ngIf="!(selectedEnvironment$ |async); else elseBlock">    
       <p>Connect to environment</p>
   </a>
   
   <ng-template #elseBlock>  
-    <a (click)="connect()" class="envName prevent-select">
-      <h3>{{selectedEnvironment.friendlyName}}</h3>
-      <p class="small">{{selectedEnvironment.urlName}}</p>
+    <a (click)="getListOfEnvironments()" class="envName prevent-select">
+      <h3>{{(selectedEnvironment$ | async).friendlyName}}</h3>
+      <p class="small">{{(selectedEnvironment$ | async).urlName}}</p>
       <div>  
     </div>
     </a>

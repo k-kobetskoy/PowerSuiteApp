@@ -2,8 +2,6 @@
     "msal": {
       "auth": {
         "clientId": "69111799-c2ca-490f-929f-4e5ee63b9792",
-        "authority": "https://login.microsoftonline.com/common/oauth2/authorize?resource=https://globaldisco.crm.dynamics.com",
-         
         "redirectUri": "http://localhost:4200/",
         "postLogoutRedirectUri": "http://localhost:4200/",
         "navigateToLoginRequestUrl": true
@@ -16,14 +14,14 @@
     "guard": {
       "interactionType": "popup",
       "authRequest": {
-        "scopes": ["https://globaldisco.crm.dynamics.com/user_impersonation", "https://graph.microsoft.com/User.Read"]
-      },
-      "loginFailedRoute": "/login-failed" 
+        "scopes": []
+      }
     },
     "interceptor": {
       "interactionType": "popup",
       "protectedResourceMap": [
-        ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"], ["https://graph.microsoft.com/v1.0/me", ["user.read"]]]
+        ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"]],        
+        ["https://graph.microsoft.com/v1.0/me", ["user.read"]]
       ]
     }
 }

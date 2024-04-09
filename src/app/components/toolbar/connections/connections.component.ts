@@ -1,12 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
 import { GlolobalDiscoDataService } from 'src/app/services/data/global-disco-data.serivce';
 import { Observable, Subscription } from 'rxjs';
-import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response.model';
 import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { Router } from '@angular/router';
+import { UserDataService } from 'src/app/services/data/user-data.service';
 
 @Component({
   selector: 'app-connections',
@@ -15,75 +15,54 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ConnectionsComponent implements OnInit {
 
-  selectedEnvironment: UserEnvironmentModel | undefined
+  @Output() onEnvironmentConnection = new EventEmitter<UserEnvironmentModel>()
 
-  environmentsList: UserEnvironmentModel[] = []
-  private subs: Subscription[] = []
-  myColor: string = '#4b4b4b';
+  selectedEnvironment$: Observable<UserEnvironmentModel>
+  environmentsList$: Observable<UserEnvironmentModel[]>
 
-  constructor(private dialog: MatDialog, private dataService: GlolobalDiscoDataService, private authService: AuthService,private cd: ChangeDetectorRef) { }
+  rippleColor: string = '#4b4b4b';
+  private _subs: Subscription[] = []
+
+  constructor(private dialog: MatDialog,
+    private globalDiscoDataService: GlolobalDiscoDataService,
+    private authService: AuthService,
+    private router: Router,
+    private userDataService: UserDataService) { }
 
   ngOnInit() {
-    let selectedEnv = localStorage.getItem('selectedEnvironment')
-    if (selectedEnv) { this.selectedEnvironment = JSON.parse(selectedEnv) }
-    this.subs.push(this.authService.userIsLoggedIn$.subscribe((x) => {
-      if(!x){
-        selectedEnv = undefined
-        localStorage.removeItem('selectedEnvironment')
-        sessionStorage.clear()
-        console.log('selected env '+ selectedEnv)
-        this.cd.detectChanges()
-      }
-    }))
+    this.selectedEnvironment$ = this.userDataService.activeEnvironment$   
   }
 
-  connect() {
-    let response$ = this.dataService.getAll()
-    this.mapResponse(response$)
+  getListOfEnvironments() {
+    this.environmentsList$ = this.globalDiscoDataService.environmentsList$
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(ConnectionsDialogComponent, { data: { selectedEnv: {}, envList: this.environmentsList } })
+    const dialogRef = this.dialog.open(ConnectionsDialogComponent, { data: { selectedEnv: {}, envList: this.environmentsList$ } })
 
-    this.subs.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) this.establishConnection(result)
+    this._subs.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) this.connectToEnvironment(result)
     },
-
       (err) => console.error(err)
     ))
   }
-  private establishConnection(selectedEnv: UserEnvironmentModel) {
-    //connect to env (msal)
-    localStorage.setItem('selectedEnvironment', JSON.stringify(selectedEnv))
 
-    console.log(selectedEnv)
+  private connectToEnvironment(selectedEnv: UserEnvironmentModel) {
+    this.authService.addProtectedResourceToInterceptorConfig(`${selectedEnv.apiUrl}/api/data/v9.2/`, [`${selectedEnv.apiUrl}/user_impersonation`])
 
-    this.selectedEnvironment = selectedEnv
-    //redirect
+    this.userDataService.connectToEnvironment(selectedEnv)
+
+    this.navigateToCurrentEnvUrl()
   }
 
-  private mapResponse(response$: Observable<GlobalDiscoInstancesResponseModel>) {
-    this.subs.push(response$.subscribe(
-      resp => {
-        this.environmentsList = []
-        for (let environment of resp.value) {
-          this.environmentsList.push({
-            apiUrl: environment.ApiUrl,
-            friendlyName: environment.FriendlyName,
-            url: environment.Url,
-            urlName: environment.UrlName
-          })
-        }
-      },
-
-      err => console.error(err),
-
-      () => this.openDialog()
-    ))
+  navigateToCurrentEnvUrl() {
+    this.selectedEnvironment$.subscribe(val =>
+      this.router.navigateByUrl(`${this.router.url}/${val.apiUrl.slice(8)}`)
+    )
   }
 
   ngOnDestroy() {
-    this.subs.forEach(sub => {
+    this._subs.forEach(sub => {
       sub.unsubscribe()
     });
   }
