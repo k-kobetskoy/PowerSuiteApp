@@ -85,6 +85,6 @@ import { BaseNodeEditorComponent } from './components/main-view/fetch-master/lef
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent]  
 })
 export class AppModule { }

@@ -29,9 +29,7 @@ export class FetchParentComponent implements OnInit {
   }
 
   setEnvUrlOnInit() {
-    console.log('INIT OF FETCH-PARENT' + this.counter++)
-    console.log('loginDisplay: ' + this.authService.loginDisplay)
-    if (this.authService.loginDisplay) {
+    if (this.authService.userIsLoggedIn) {
       let routeEnvParam = this.getRouteEnvParam()
       let selectedEnv = localStorage.getItem('selectedEnvironment')   
       if (selectedEnv) {

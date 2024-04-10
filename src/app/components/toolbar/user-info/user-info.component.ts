@@ -20,7 +20,7 @@ export class UserInfoComponent implements OnInit {
 
 
   userIsLoggedIn(){
-    return this.authService.loginDisplay
+    return this.authService.userIsLoggedIn
   }
 
 

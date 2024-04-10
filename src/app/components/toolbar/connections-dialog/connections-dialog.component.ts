@@ -17,17 +17,17 @@ import { UserDataService } from 'src/app/services/data/user-data.service';
 export class ConnectionsDialogComponent implements OnInit {
 
   environmentsList$: Observable<UserEnvironmentModel[]>
+  environmentsList: UserEnvironmentModel[]
 
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
-    private globalDiscoDataService: GlolobalDiscoDataService,
     private authService: AuthService,
     private userDataService: UserDataService,
-    private router: Router) { }
+    private router: Router) {}
 
   ngOnInit() {
-    this.environmentsList$ = this.globalDiscoDataService.environmentsList$   
-  }
+    this.environmentsList$ = this.userDataService.availableUserEnvironments$
+  }    
 
   connectToEnvironment(selectedEnv: UserEnvironmentModel) {
     this.authService.addProtectedResourceToInterceptorConfig(`${selectedEnv.apiUrl}/api/data/v9.2/`, [`${selectedEnv.apiUrl}/user_impersonation`])
