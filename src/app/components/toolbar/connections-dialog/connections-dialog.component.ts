@@ -2,8 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable} from 'rxjs';
+import { UrlRouteParams } from 'src/app/config/url-route-params';
 import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { UserDataService } from 'src/app/services/data/user-data.service';
 
 @Component({
@@ -18,18 +18,14 @@ export class ConnectionsDialogComponent implements OnInit {
   
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
-    private authService: AuthService,
     private userDataService: UserDataService,
-    private router: Router) {
-      this.userDataService.getListOfUserEnvironments()
-    }
+    private router: Router) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.environmentsList$ = this.userDataService.availableUserEnvironments$
   }
 
   connectToEnvironment(selectedEnv: UserEnvironmentModel) {
-    this.authService.addProtectedResourceToInterceptorConfig(`${selectedEnv.apiUrl}/api/data/v9.2/`, [`${selectedEnv.apiUrl}/user_impersonation`])
 
     this.userDataService.connectToEnvironment(selectedEnv)
 
@@ -39,7 +35,12 @@ export class ConnectionsDialogComponent implements OnInit {
   }
 
   navigateToEnvUrl(selectedEnv: UserEnvironmentModel) {
-    this.router.navigateByUrl(`${this.router.url}/${selectedEnv.apiUrl.slice(8)}`)
+    let envParam = selectedEnv.url.slice(8)
+
+    let urlTree = this.router.parseUrl(this.router.url);
+    urlTree.queryParams[UrlRouteParams.environment] = envParam;
+  
+    this.router.navigateByUrl(urlTree);
   }
 
   closeDialog(): void {

@@ -41,6 +41,7 @@ import { NodeStyleDirective } from './directives/node-style.directive';
 import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     BaseNodeEditorComponent,
     ConnectionsComponent,
     LoadingIndicatorComponent,
+    PageNotFoundComponent,
   ],
 
   imports: [
