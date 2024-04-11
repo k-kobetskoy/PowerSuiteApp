@@ -1,0 +1,11 @@
+app-loading-indicator {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.spinner-container {
+  display: flex;
+  align-self: center;
+  z-index: 90;
+}

@@ -1,10 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, concatAll, map, of, tap } from 'rxjs';
 import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
 import { AuthService } from '../auth.service';
 import { UserInfoModel } from 'src/app/models/user-info.model';
 import { LocalStorageKeys } from 'src/app/config/local-storage-keys';
 import { GlolobalDiscoDataService } from './global-disco-data.serivce';
+import { LoadingIndicationService } from '../loading-indication.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserDataService implements OnDestroy {
@@ -32,7 +33,9 @@ export class UserDataService implements OnDestroy {
     return this._userInfoSubject$.asObservable();
   }
 
-  constructor(private authService: AuthService, private globalDiscoveryDataService: GlolobalDiscoDataService) {
+  constructor(private authService: AuthService,
+    private globalDiscoveryDataService: GlolobalDiscoDataService,
+    private loadingIndicatorService: LoadingIndicationService) {
     this.subscribeToLoginChanges()
   }
 
@@ -42,11 +45,11 @@ export class UserDataService implements OnDestroy {
     })
 
     let userLoginEventSub = this.authService.userAdded$.subscribe(data => {
-      if (data) { 
+      if (data) {
         this.getListOfUserEnvironments()
       }
     })
-    
+
     this.subs.push(loginChangesSub, userLoginEventSub)
   }
 
@@ -63,9 +66,15 @@ export class UserDataService implements OnDestroy {
   }
 
   getListOfUserEnvironments() {
-    this.globalDiscoveryDataService.getAllUserEnvironments().subscribe(data=>{
-      this._userAvailableEvnironments$.next(data)
-    })
+    if (this._userAvailableEvnironments$.value.length === 0) {
+      let sub = this.globalDiscoveryDataService.getAllUserEnvironments()
+      .subscribe(
+        data => {
+          this._userAvailableEvnironments$.next(data)
+        }
+      )
+      this.loadingIndicatorService.showLoaderUntilComplete(sub)
+    }
   }
 
   connectToEnvironment(activeEnvironment: UserEnvironmentModel) {

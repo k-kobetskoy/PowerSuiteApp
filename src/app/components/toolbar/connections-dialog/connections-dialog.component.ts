@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable} from 'rxjs';
 import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { GlolobalDiscoDataService } from 'src/app/services/data/global-disco-data.serivce';
 import { UserDataService } from 'src/app/services/data/user-data.service';
-
 
 @Component({
   selector: 'app-connections-dialog',
@@ -17,17 +15,18 @@ import { UserDataService } from 'src/app/services/data/user-data.service';
 export class ConnectionsDialogComponent implements OnInit {
 
   environmentsList$: Observable<UserEnvironmentModel[]>
-  environmentsList: UserEnvironmentModel[]
-
+  
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
     private authService: AuthService,
     private userDataService: UserDataService,
-    private router: Router) {}
+    private router: Router) {
+      this.userDataService.getListOfUserEnvironments()
+    }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.environmentsList$ = this.userDataService.availableUserEnvironments$
-  }    
+  }
 
   connectToEnvironment(selectedEnv: UserEnvironmentModel) {
     this.authService.addProtectedResourceToInterceptorConfig(`${selectedEnv.apiUrl}/api/data/v9.2/`, [`${selectedEnv.apiUrl}/user_impersonation`])

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalInterceptorConfiguration, MsalService } from '@azure/msal-angular';
 import { EventMessage, InteractionStatus, RedirectRequest, PopupRequest, AuthenticationResult, EventType } from '@azure/msal-browser';
-import { BehaviorSubject, Subject, filter, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,15 +29,15 @@ export class AuthService {
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     @Inject(MSAL_INTERCEPTOR_CONFIG) private msalInterceptorConfig: MsalInterceptorConfiguration,
     private msalService: MsalService,
-    private msalBroadcastService: MsalBroadcastService) {    
+    private msalBroadcastService: MsalBroadcastService) {  
+    this.setLoginDisplay()
   }
 
   private readonly _destroying$ = new Subject<void>();
 
   init() {
     this.isIframe = window !== window.parent && !window.opener; // Remove this line to use Angular Universal   
-    this.setLoginDisplay()
-
+    
     this.msalService.instance.enableAccountStorageEvents(); // Optional - This will enable ACCOUNT_ADDED and ACCOUNT_REMOVED events emitted when a user logs in or out of another tab or window
     this.msalBroadcastService.msalSubject$
       .pipe(filter((msg: EventMessage) => msg.eventType === EventType.ACCOUNT_ADDED || msg.eventType === EventType.ACCOUNT_REMOVED))
@@ -65,7 +65,7 @@ export class AuthService {
     this.msalBroadcastService.msalSubject$.subscribe({
       next: (eventMsg) => {
         if (eventMsg.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
-          this._userIsLoggedIn$.next(false)
+          this.setLoginDisplay()
         }
       }
     })
@@ -107,11 +107,13 @@ export class AuthService {
       this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest)
         .subscribe((response: AuthenticationResult) => {
           this.msalService.instance.setActiveAccount(response.account);
+          this._userAdded$.next(true)
         });
     } else {
       this.msalService.loginPopup()
         .subscribe((response: AuthenticationResult) => {
-          this.msalService.instance.setActiveAccount(response.account);
+          this.msalService.instance.setActiveAccount(response.account); 
+          this._userAdded$.next(true)         
         });
     }
     this.setLoginDisplay()

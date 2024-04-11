@@ -39,7 +39,8 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
 import { NodeStyleDirective } from './directives/node-style.directive';
 import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
-
+import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -65,8 +66,10 @@ import { BaseNodeEditorComponent } from './components/main-view/fetch-master/lef
     DefaultEditorComponent,
     NodeStyleDirective,
     BaseNodeEditorComponent,
+    ConnectionsComponent,
+    LoadingIndicatorComponent,
   ],
-  
+
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -82,9 +85,10 @@ import { BaseNodeEditorComponent } from './components/main-view/fetch-master/lef
     TreeModule,
     FormsModule,
     CdkTreeModule,
+    MatProgressSpinnerModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [],
-  bootstrap: [AppComponent, MsalRedirectComponent]  
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }
