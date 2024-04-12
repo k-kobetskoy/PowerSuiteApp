@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ConnectionsComponent implements OnInit, OnDestroy {
 
-  subs: Subscription[]
+  subs: Subscription[] = []
 
   @Output() onEnvironmentConnection = new EventEmitter<UserEnvironmentModel>()
   selectedEnvironment$: Observable<UserEnvironmentModel>
@@ -32,7 +32,7 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
     if (!this.authService.userIsLoggedIn) {
       this.authService.loginPopup()
       this.subs.push(this.authService.userAdded$.pipe(filter(result => result === true))
-      .subscribe(_ => { this.createDialog() }))
+        .subscribe(_ => { this.createDialog() }))
     } else {
       this.createDialog()
     }
