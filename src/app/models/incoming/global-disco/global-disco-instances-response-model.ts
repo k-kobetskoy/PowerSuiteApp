@@ -1,4 +1,4 @@
-import { GlobalDiscoInstanceModel } from "./global-disco-instance.model";
+import { GlobalDiscoInstanceModel } from "./global-disco-instance-model";
 
 export interface GlobalDiscoInstancesResponseModel {
     value: GlobalDiscoInstanceModel[]

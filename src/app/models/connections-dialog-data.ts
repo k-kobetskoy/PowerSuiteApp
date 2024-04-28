@@ -1,4 +1,4 @@
-import { UserEnvironmentModel } from "./user-environment.model"
+import { UserEnvironmentModel } from "./user-environment-model"
 
 export interface ConnectionsDialogData {
     selectedEnv:UserEnvironmentModel

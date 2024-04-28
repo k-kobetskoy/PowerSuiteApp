@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { UserEnvironmentModel } from '../models/user-environment.model';
+import { UserEnvironmentModel } from '../models/user-environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
-import { UserDataService } from './data/user-data.service';
-import { LocalStorageKeys } from '../config/local-storage-keys';
+import { CacheKeys } from '../config/cache-keys';
 import { map } from 'rxjs';
+import { EnvironmentsRequestService } from './request/environments-request.service';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class NavigationService {
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userDataService: UserDataService) { }
+    private authService: AuthService,
+    private environmentsService: EnvironmentsRequestService) { }
 
 
   navigateToEnv(selectedEnv: UserEnvironmentModel) {
-    this.userDataService.connectToEnvironment(selectedEnv)
+    this.environmentsService.setActiveEnvironment(selectedEnv)
 
     let envParam = selectedEnv.url.slice(8)
 
@@ -31,8 +31,8 @@ export class NavigationService {
   handleUrlParamOnComponentInit(componentPath: string) {
 
     const param = this.getRouteEnvParam()
-    const userIsLoggedIn = this.userDataService.userIsLoggedIn
-    const activatedEnvironmentJSON = localStorage.getItem(LocalStorageKeys.ActiveEnvironmentModel)
+    const userIsLoggedIn = this.authService.userIsLoggedIn
+    const activatedEnvironmentJSON = localStorage.getItem(CacheKeys.ActiveEnvironment)
     const activatedEnvironmentModel: UserEnvironmentModel = activatedEnvironmentJSON ? JSON.parse(activatedEnvironmentJSON) : null
 
     if (param) {
@@ -70,12 +70,12 @@ export class NavigationService {
   }
 
   private findEnvironmentInUsersEnvironmentsAndConnect(urlParam: string) {
-    this.userDataService.availableUserEnvironments$
+    this.environmentsService.getAvailableUserEnvironments()
       .pipe(
         map(env => env.find(e => e.url === urlParam)))
       .subscribe(env => {
         if (env) {
-          this.userDataService.connectToEnvironment(env)
+          this.environmentsService.setActiveEnvironment(env)
         } else {
           this.router.navigateByUrl('**')
         }

@@ -1,4 +1,4 @@
-import { DisplayNameModel } from "./display-name.model"
+import { DisplayNameModel } from "./display-name-model"
 
 export interface EntityDefinitionModel {
     LogicalName: string,

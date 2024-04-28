@@ -10,9 +10,9 @@ export class LoadingIndicationService {
 
   loading$ = this.loadingSubject.asObservable();
 
-  showLoaderUntilComplete(sub: Subscription){
-      this.loadingSubject.next(true)
-      sub.add(()=>this.loadingSubject.next(false))
+  showLoaderUntilComplete(sub: Subscription) {
+    this.loadingOn()
+    sub.add(this.loadingOff())
   }
 
   loadingOn() {

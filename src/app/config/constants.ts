@@ -9,5 +9,7 @@ export class Constants {
     public static readonly GraphApiEndpoint: string = 'https://graph.microsoft.com/v1.0'
     public static readonly GraphProfileInfo: string = 'me'
     public static readonly GraphPhoto: string = 'me/photo/$value'
+
+    public static readonly MaxRecentActiveEnvironments: number = 4
 }
 

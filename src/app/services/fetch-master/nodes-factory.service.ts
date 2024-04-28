@@ -69,7 +69,6 @@ export class NodeFactoryService {
           false,
           true)
       default:
-        console.error(`Couldn't find node type with the name: ${typeName}`)
         throw new Error(`Couldn't find node type with the name: ${typeName}`)
     }
   }

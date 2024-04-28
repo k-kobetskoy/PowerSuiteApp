@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { Constants } from "src/app/config/constants";
-import { GraphProfileInfoModel } from "src/app/models/incoming/graph/graph-profile-response.model";
+import { UserInfoModel as UserInfoModel } from "src/app/models/incoming/graph/user-info-model";
 
 @Injectable({ providedIn: 'root' })
-export class GraphDataService {
+export class UserInfoRequestService {
 
   constructor(private http: HttpClient) { }
 
-  getProfileInfo(): Observable<GraphProfileInfoModel> {
-    return this.http.get<GraphProfileInfoModel>(`${Constants.GraphApiEndpoint}/${Constants.GraphProfileInfo}`)
+  getProfileInfo(): Observable<UserInfoModel> {
+    return this.http.get<UserInfoModel>(`${Constants.GraphApiEndpoint}/${Constants.GraphProfileInfo}`)
   }
 
   getProfileImage(): Observable<Blob> {

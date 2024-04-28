@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription, filter } from 'rxjs';
-import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
-import { UserDataService } from 'src/app/services/data/user-data.service';
+import { UserEnvironmentModel } from 'src/app/models/user-environment-model';
+import { UserDataService } from 'src/app/services/request/user-data.service';
 import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable} from 'rxjs';
-import { UserEnvironmentModel } from 'src/app/models/user-environment.model';
-import { UserDataService } from 'src/app/services/data/user-data.service';
+import { UserEnvironmentModel } from 'src/app/models/user-environment-model';
+import { UserDataService } from 'src/app/services/request/user-data.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { NavigationService } from 'src/app/services/navigation.service';
 export class ConnectionsDialogComponent implements OnInit {
 
   environmentsList$: Observable<UserEnvironmentModel[]>
-  
+
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
     private navigationService: NavigationService,

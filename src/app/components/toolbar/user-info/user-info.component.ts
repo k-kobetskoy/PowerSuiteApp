@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { GraphDataService } from 'src/app/services/data/graph-data.service';
+import { UserInfoRequestService } from 'src/app/services/request/user-info-request.service';
 
 @Component({
   selector: 'app-user-info',
@@ -12,7 +12,7 @@ export class UserInfoComponent implements OnInit {
   imageToShow: any
   imageLoading: boolean
 
-  constructor(private graphDataService: GraphDataService, private authService: AuthService) { }
+  constructor(private graphDataService: UserInfoRequestService, private authService: AuthService) { }
 
   ngOnInit() {
     //this.getImage()
