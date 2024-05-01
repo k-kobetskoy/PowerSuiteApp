@@ -1,0 +1,14 @@
+<div>
+  <a matRipple [matRippleColor]="rippleColor" class="button" (click)="openDialog()"
+    *ngIf="!(activeEnvironment$ |async); else elseBlock">
+    <p>Connect to environment</p>
+  </a>
+  <ng-template #elseBlock>
+    <a (click)="openDialog()" class="envName prevent-select">
+      <h3>{{(activeEnvironment$| async).friendlyName}}</h3>
+      <p class="small">{{(activeEnvironment$ |async).urlName}}</p>
+      <div>
+      </div>
+    </a>
+  </ng-template>
+</div>

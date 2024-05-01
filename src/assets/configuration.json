@@ -1,0 +1,27 @@
+{
+    "msal": {
+      "auth": {
+        "clientId": "69111799-c2ca-490f-929f-4e5ee63b9792",
+        "redirectUri": "http://localhost:4200/",
+        "postLogoutRedirectUri": "http://localhost:4200/",
+        "navigateToLoginRequestUrl": true
+      },
+      "cache": {
+        "cacheLocation": "localStorage",
+        "storeAuthStateInCookie": true
+      }
+    },
+    "guard": {
+      "interactionType": "popup",
+      "authRequest": {
+        "scopes": []
+      }
+    },
+    "interceptor": {
+      "interactionType": "popup",
+      "protectedResourceMap": [
+        ["https://globaldisco.crm.dynamics.com/api/discovery/v2.0/", ["https://globaldisco.crm.dynamics.com/user_impersonation"]],        
+        ["https://graph.microsoft.com/v1.0/me", ["https://graph.microsoft.com/User.Read"]]
+      ]
+    }
+}

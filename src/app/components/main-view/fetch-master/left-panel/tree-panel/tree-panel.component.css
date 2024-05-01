@@ -1,0 +1,103 @@
+app-tree-panel {
+  height: 100%;
+}
+
+app-tree-panel .tree-container {
+  display: flex;
+  flex-direction: column;
+}
+
+app-tree-panel .tree{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 4px 4px 4px 10px;
+}
+
+app-tree-panel .button-block {
+  display: flex;
+  height: 40px;
+  background-color: #e9e9e9;
+}
+
+app-tree-panel .tree-node {
+  display: flex;
+  align-items: center;
+}
+
+app-tree-panel .node-element-select-area {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex:1;
+}
+
+app-tree-panel .active {
+  background-color: rgb(0, 153, 255) !important;
+}
+
+app-tree-panel .active>p {
+  color: white;
+}
+
+app-tree-panel .inactive {
+  background-color: rgb(255, 255, 255);
+}
+
+app-tree-panel p {
+  display: flex;
+  flex: 1;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+app-tree-panel a {
+  display: flex;
+  align-items: center;
+  
+  width: 16px;
+  height: 16px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  height: 100%;
+}
+
+app-tree-panel .tree-element-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  font-size: medium;
+}
+
+app-tree-panel .parent-node-element {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+app-tree-panel .arrow-icon {
+  display: flex;
+  flex:1;
+  color: rgb(131, 131, 131);
+  font-size: 16px;
+}
+
+app-tree-panel .mat-icon {
+  height: 16px;
+  width: 16px;
+}
+
+app-tree-panel .arrow-icon:hover {
+  color: rgb(104, 104, 104);
+  cursor: pointer;
+}
+
+app-tree-panel .arrow-icon:active {
+  color: rgb(104, 104, 104);
+  cursor: pointer;
+  transform: scale(0.9);
+}
+
+app-tree-panel .node-element-select-area:hover {
+  background-color: #e6e6e6;
+}

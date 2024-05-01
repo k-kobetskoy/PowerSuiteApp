@@ -1,0 +1,9 @@
+app-code-editor {
+    display: flex;
+    flex:1;
+}
+
+app-code-editor .code-editor-content{
+    display: flex;
+    flex: 1;
+}

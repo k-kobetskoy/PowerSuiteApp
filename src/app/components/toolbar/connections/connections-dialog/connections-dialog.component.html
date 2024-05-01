@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Select environment</h1>
+<div mat-dialog-content class="mat-dialog-content">
+  <app-loading-indicator [diameter]="50"></app-loading-indicator>
+  <!-- <mat-spinner appLoaderVisibility></mat-spinner> -->
+  <mat-selection-list #environments [multiple]="false" [hideSingleSelectionIndicator]="true">
+    
+    <mat-list-option *ngFor="let environment of environmentsList$ | async" [value]="environment">
+      <span class="prevent-select" matListItemTitle>{{environment.friendlyName}}</span>
+      <span class="prevent-select" matListItemLine>{{environment.urlName}}</span>    
+    </mat-list-option>
+  
+  </mat-selection-list>
+
+</div>
+<div class="dialog-button-block">
+  <div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-flat-button color="primary" [disabled]='!environments.selectedOptions.hasValue()'
+      (click)="connectToEnvironment(environments.selectedOptions.selected[0].value)">Connect</button>
+  </div>
+</div>

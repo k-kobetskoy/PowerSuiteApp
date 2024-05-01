@@ -1,27 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
 import { BrowserUtils } from '@azure/msal-browser';
-import { ProfileComponent } from './profile/profile.component';
-import { HomeComponent } from './home/home.component';
-import { FailedComponent } from './failed/failed.component';
+import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
 
 const routes: Routes = [
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [MsalGuard]
-  },
-  {
-    path: '',
-    component: HomeComponent
-  },
-  {
-    path: 'login-failed',
-    component: FailedComponent
-  }
+  { path: '', redirectTo: 'querybuilder', pathMatch: 'full' },
+  { path: 'querybuilder', component: FetchParentComponent },  
+  { path: '**', redirectTo: 'querybuilder', pathMatch: 'full' }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
     // Don't perform initial navigation in iframes or popups

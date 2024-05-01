@@ -1,0 +1,23 @@
+.container {
+  min-width: 960px;
+  width: calc(100vw - calc(100vw - 100%));
+  min-height: 740px;
+  height: calc(100vh - calc(100vh - 100%));
+  display: flex;
+  flex-direction: column;
+}
+
+.view-container {    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex:1;    
+  flex-direction: column;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .main-section {
+      width: auto;
+  }
+}

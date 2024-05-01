@@ -1,0 +1,7 @@
+<div *ngIf="selectedNode; else elseBlock">
+    <app-base-node-editor [selectedNode]="selectedNode" (onNodeCreate)="createNode($event)"></app-base-node-editor>
+</div>
+
+<ng-template #elseBlock>
+    <app-default-editor></app-default-editor>
+</ng-template>

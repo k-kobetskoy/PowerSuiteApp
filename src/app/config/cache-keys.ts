@@ -1,0 +1,7 @@
+
+export class CacheKeys {
+    public static readonly UserProfileInfo: string = 'UserProfileInfo'
+    public static readonly ActiveEnvironment: string = 'ActiveEnvironment'
+    public static readonly RecentActiveEnvironments: string = 'EnvironmentConnections'
+    public static readonly AvailableEnvironments: string = 'AvailableEnvironments'
+}

@@ -1,0 +1,48 @@
+app-connections-dialog .mdc-list-item--with-trailing-radio.mdc-list-item {
+    padding-right: 30px;
+}
+
+app-connections-dialog {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+}
+
+app-connections-dialog .mat-dialog-content{
+    display: flex;
+    flex: 1;    
+}
+
+
+
+app-connections-dialog .mat-mdc-dialog-surface .mdc-dialog__surface {
+    display: flex;
+}
+
+app-connections-dialog .mat-mdc-list-item-title.mdc-list-item__primary-text {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: .9rem;
+}
+
+app-connections-dialog .mat-mdc-dialog-title.mdc-dialog__title {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+app-connections-dialog .mat-mdc-list-item-line.mdc-list-item__secondary-text {
+    font-weight: 500;
+    font-size: .8rem;
+}
+
+.dialog-button-block {
+    padding: 10px 20px 10px 20px;
+}
+
+app-connections-dialog .mat-mdc-dialog-actions {
+    justify-content: space-between;
+}

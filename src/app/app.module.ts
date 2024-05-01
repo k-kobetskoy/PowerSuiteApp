@@ -1,111 +1,97 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ConnectionsDialogComponent } from './components/toolbar/connections/connections-dialog/connections-dialog.component';
+import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
+import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
+import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
+import { MenuComponent } from './components/toolbar/menu/menu.component';
+import { UserInfoComponent } from './components/toolbar/user-info/user-info.component';
+import { TreePanelComponent } from './components/main-view/fetch-master/left-panel/tree-panel/tree-panel.component';
+import { ControlPanelComponent } from './components/main-view/fetch-master/left-panel/control-panel/control-panel.component';
+import { CodeEditorComponent } from './components/main-view/fetch-master/right-panel/code-editor/code-editor.component';
+import { CodeEditorFooterComponent } from './components/main-view/fetch-master/right-panel/code-editor-footer/code-editor-footer.component';
+import { AttributeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/attribute-editor/attribute-editor.component';
+import { ConditionEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/condition-editor/condition-editor.component';
+import { EntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/entity-editor/entity-editor.component';
+import { FilterEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/filter-editor/filter-editor.component';
+import { LinkedEntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/linked-entity-editor/linked-entity-editor.component';
+import { OrderEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/order-editor/order-editor.component';
+import { RootEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/root-editor/root-editor.component';
+import { ValueEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/value-editor/value-editor.component';
+import { DefaultEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/default-editor/default-editor.component';
 
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation, LogLevel } from '@azure/msal-browser';
-import { MsalGuard, MsalInterceptor, MsalBroadcastService, MsalInterceptorConfiguration, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent } from '@azure/msal-angular';
-import { FailedComponent } from './failed/failed.component';
-import { environment } from 'src/environments/environment';
+import { MsalRedirectComponent } from '@azure/msal-angular';
+import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
+import { AngularSplitModule } from 'angular-split';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { TreeModule } from '@ali-hm/angular-tree-component';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { FormsModule } from '@angular/forms';
+import { NodeStyleDirective } from './directives/node-style.directive';
+import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
+import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
-export function loggerCallback(logLevel: LogLevel, message: string) {
-  console.log(message);
-}
-
-export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication({
-    auth: {
-      clientId: environment.msalConfig.auth.clientId,
-      authority: environment.msalConfig.auth.authority,
-      redirectUri: '/',
-      postLogoutRedirectUri: '/'
-    },
-    cache: {
-      cacheLocation: BrowserCacheLocation.LocalStorage
-    },
-    system: {
-      allowNativeBroker: false, // Disables WAM Broker
-      loggerOptions: {
-        loggerCallback,
-        logLevel: LogLevel.Info,
-        piiLoggingEnabled: false
-      }
-    }
-  });
-}
-
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set(environment.apiConfig.uri, environment.apiConfig.scopes);
-
-  return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap
-  };
-}
-
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return { 
-    interactionType: InteractionType.Redirect,
-    authRequest: {
-      scopes: [...environment.apiConfig.scopes]
-    },
-    loginFailedRoute: '/login-failed'
-  };
-}
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
-    HomeComponent,
-    ProfileComponent,
-    FailedComponent,
-      ProfileComponent,
-      FailedComponent
-   ],
+    MainToolbarComponent,
+    FetchParentComponent,
+    ConnectionsComponent,
+    MenuComponent,
+    UserInfoComponent,
+    ConnectionsDialogComponent,
+    ControlPanelComponent,
+    TreePanelComponent,
+    CodeEditorComponent,
+    CodeEditorFooterComponent,
+    AttributeEditorComponent,
+    ConditionEditorComponent,
+    EntityEditorComponent,
+    FilterEditorComponent,
+    LinkedEntityEditorComponent,
+    OrderEditorComponent,
+    RootEditorComponent,
+    ValueEditorComponent,
+    DefaultEditorComponent,
+    NodeStyleDirective,
+    BaseNodeEditorComponent,
+    ConnectionsComponent,
+    LoadingIndicatorComponent,
+    PageNotFoundComponent,
+  ],
+
   imports: [
     BrowserModule,
-    NoopAnimationsModule, // Animations cause delay which interfere with E2E tests
+    BrowserAnimationsModule,
     AppRoutingModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatListModule,
-    MatMenuModule,
     HttpClientModule,
-    MsalModule
+    MatDialogModule,
+    MatButtonModule,
+    MatListModule,
+    MatRippleModule,
+    AngularSplitModule,
+    MatTabsModule,
+    MatIconModule,
+    TreeModule,
+    FormsModule,
+    CdkTreeModule,
+    MatProgressSpinnerModule,
+    MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
-    },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService
-  ],
+  providers: [],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

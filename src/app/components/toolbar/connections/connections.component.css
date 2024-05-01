@@ -1,0 +1,48 @@
+.button{
+    background-color: #222222;
+    height: 60px;
+    width: 324px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    
+   
+}
+.button:hover{
+    background-color: #353535;
+    cursor:pointer;
+}
+.button a {
+    color: #C9D7D8;
+    text-decoration: none;
+    font-size: .9rem;
+}
+.button p{
+    color: #C9D7D8;
+    z-index:50
+}
+
+a:hover {
+    color:#dfe8e9; 
+    text-decoration:none;   
+}
+
+.envName{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.envName h3, p{
+    color: #222222;
+    z-index:50
+}
+
+.envName:hover{
+    cursor:pointer;
+}
+.envName:hover * {
+    color: #444444;
+}
