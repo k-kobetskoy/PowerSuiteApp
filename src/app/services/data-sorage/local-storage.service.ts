@@ -1,14 +1,17 @@
 import { Injectable } from "@angular/core";
-import { IDataStorageService } from "./Idata-storage-service";
+import { IDataStorageService } from "./abstract/i-data-storage-service";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class LocalStorageService implements IDataStorageService {
 
     constructor() { }
 
     getItem<T>(key: string): T | null {
         let value = localStorage.getItem(key)
-        return value === null ? null : JSON.parse(value)
+
+        if (value) return JSON.parse(value)
+
+        return null
     }
 
     setItem<T>(item: T, key: string): void {

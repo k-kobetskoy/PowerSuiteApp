@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FetchNodeOrder } from 'src/app/config/fetch-node-order.enum';
 import { FetchNodeType } from 'src/app/config/fetch-node-type';
+import { NotImplementError } from 'src/app/models/errors/not-implement-error';
 import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
 
 @Injectable({
@@ -69,7 +70,7 @@ export class NodeFactoryService {
           false,
           true)
       default:
-        throw new Error(`Couldn't find node type with the name: ${typeName}`)
+        throw new NotImplementError(`Couldn't find node type with the name: ${typeName}`)
     }
   }
 }

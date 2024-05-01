@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ConnectionsDialogComponent } from './components/toolbar/connections-dialog/connections-dialog.component';
+import { ConnectionsDialogComponent } from './components/toolbar/connections/connections-dialog/connections-dialog.component';
 import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
 import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
 import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
@@ -40,8 +40,9 @@ import { FormsModule } from '@angular/forms';
 import { NodeStyleDirective } from './directives/node-style.directive';
 import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+
 
 @NgModule({
   declarations: [

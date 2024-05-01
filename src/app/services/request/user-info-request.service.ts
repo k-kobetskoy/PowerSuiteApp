@@ -9,11 +9,11 @@ export class UserInfoRequestService {
 
   constructor(private http: HttpClient) { }
 
-  getProfileInfo(): Observable<UserInfoModel> {
+  getProfileInfo=(): Observable<UserInfoModel> =>{
     return this.http.get<UserInfoModel>(`${Constants.GraphApiEndpoint}/${Constants.GraphProfileInfo}`)
   }
 
-  getProfileImage(): Observable<Blob> {
+  getProfileImage=(): Observable<Blob>=> {
     return this.http.get(`${Constants.GraphApiEndpoint}/${Constants.GraphPhoto}`, { responseType: 'blob' })
   }
 }

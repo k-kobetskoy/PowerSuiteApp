@@ -3,6 +3,8 @@ import { ChangeDetectorRef, Component, EventEmitter, IterableDiffers, OnInit, Ou
 import { Observable, of } from 'rxjs';
 import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
 import { FetchNodeTree } from 'src/app/models/fetch-master/fetch-node-tree';
+import { AppEvents } from 'src/app/services/event-bus/app-events';
+import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { NodeFactoryService } from 'src/app/services/fetch-master/nodes-factory.service';
 
 @Component({
@@ -13,47 +15,47 @@ import { NodeFactoryService } from 'src/app/services/fetch-master/nodes-factory.
 })
 export class TreePanelComponent implements OnInit {
 
-
   @Output() onNodeSelect = new EventEmitter<FetchNode>()
   @ViewChild('tree') tree: CdkTree<ChangeDetectorRef, IterableDiffers>
   @ViewChild('treeNodeOutlet') treeNodeOutlet: CdkTreeNodeOutlet
 
-
-
   nodeTree: FetchNodeTree
   selectedNode: FetchNode
-  dataSource: Observable<FetchNodeTree>
+  dataSource$: Observable<FetchNodeTree>
 
 
-  constructor(private nodeFactory: NodeFactoryService) { }
+  constructor(
+    private nodeFactory: NodeFactoryService,
+    private eventBus: EventBusService) { }
 
   ngOnInit() {
     this.nodeTree = new FetchNodeTree(this.nodeFactory)
-    this.dataSource = of(this.nodeTree)
+    this.dataSource$ = of(this.nodeTree)
+    this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
   }
 
   toggleNode(node: FetchNode) {
-    
+
     if (!node.expandable) { return }
     node.isExpanded = !node.isExpanded
 
     let parent = node
     let nextNestedChild = node.next
-    let checkSelectedNode = parent!=this.selectedNode && parent.level< this.selectedNode.level
+    let checkSelectedNode = parent != this.selectedNode && parent.level < this.selectedNode.level
 
-    while (nextNestedChild && nextNestedChild.level > parent.level) {                
-      if(!parent.isExpanded){
-        if(checkSelectedNode){
-          if(this.selectedNode === nextNestedChild){
+    while (nextNestedChild && nextNestedChild.level > parent.level) {
+      if (!parent.isExpanded) {
+        if (checkSelectedNode) {
+          if (this.selectedNode === nextNestedChild) {
             this.selectedNode = parent
             this.onNodeSelect.emit(parent)
-          }          
+          }
         }
         nextNestedChild.visible = false
-      }else{              
-        nextNestedChild.visible = nextNestedChild.parent.isExpanded &&nextNestedChild.parent.visible ? true : false
+      } else {
+        nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible ? true : false
       }
-     
+
       nextNestedChild = nextNestedChild.next
     }
   }

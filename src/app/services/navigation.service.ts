@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { UserEnvironmentModel } from '../models/user-environment-model';
+import { EnvironmentModel } from '../models/environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
-import { CacheKeys } from '../config/cache-keys';
-import { map } from 'rxjs';
 import { EnvironmentsRequestService } from './request/environments-request.service';
 import { AuthService } from './auth.service';
 
@@ -16,8 +14,7 @@ export class NavigationService {
     private authService: AuthService,
     private environmentsService: EnvironmentsRequestService) { }
 
-
-  navigateToEnv(selectedEnv: UserEnvironmentModel) {
+  navigateToEnv(selectedEnv: EnvironmentModel) {
     this.environmentsService.setActiveEnvironment(selectedEnv)
 
     let envParam = selectedEnv.url.slice(8)
@@ -30,31 +27,36 @@ export class NavigationService {
 
   handleUrlParamOnComponentInit(componentPath: string) {
 
-    const param = this.getRouteEnvParam()
+    const currentEnvironmentUrl = this.getCurrentEnvironmentUrl()
     const userIsLoggedIn = this.authService.userIsLoggedIn
-    const activatedEnvironmentJSON = localStorage.getItem(CacheKeys.ActiveEnvironment)
-    const activatedEnvironmentModel: UserEnvironmentModel = activatedEnvironmentJSON ? JSON.parse(activatedEnvironmentJSON) : null
+    let environment: EnvironmentModel
 
-    if (param) {
-      this.handleExistingRouteParam(`https://${param}`, userIsLoggedIn, activatedEnvironmentModel)
+    this.environmentsService.getActiveEnvironment().subscribe(result => {
+      environment = result
+    })
+
+    const activatedEnvironment: EnvironmentModel = environment ? environment : null
+
+    if (currentEnvironmentUrl) {
+      this.handleExistingRouteParam(currentEnvironmentUrl, userIsLoggedIn, activatedEnvironment)
     } else {
-      this.handleEmptyRouteParam(componentPath, userIsLoggedIn, activatedEnvironmentModel)
+      this.handleEmptyRouteParam(componentPath, userIsLoggedIn, activatedEnvironment)
     }
   }
 
-  private handleExistingRouteParam(fullUrlParam: string, userIsLoggedIn: boolean, activatedEnvironment: UserEnvironmentModel) {
+  private handleExistingRouteParam(currentEnvironmentUrl: string, userIsLoggedIn: boolean, activatedEnvironment: EnvironmentModel) {
     if (userIsLoggedIn) {
-      if (fullUrlParam === activatedEnvironment.url) {
+      if (currentEnvironmentUrl === activatedEnvironment.url) {
         return
       } else {
-        this.findEnvironmentInUsersEnvironmentsAndConnect(fullUrlParam)
+        this.findEnvironmentInUsersEnvironmentsAndConnect(activatedEnvironment.url)
       }
     } else {
-      this.findEnvironmentInUsersEnvironmentsAndConnect(fullUrlParam)
+      this.findEnvironmentInUsersEnvironmentsAndConnect(activatedEnvironment.url)
     }
   }
 
-  private handleEmptyRouteParam(componentPath: string, userIsLoggedIn: boolean, activatedEnvironment: UserEnvironmentModel) {
+  private handleEmptyRouteParam(componentPath: string, userIsLoggedIn: boolean, activatedEnvironment: EnvironmentModel) {
     if (userIsLoggedIn) {
       if (activatedEnvironment) {
         const queryParams: Params = { [UrlRouteParams.environment]: activatedEnvironment.url.slice(8) }
@@ -71,18 +73,20 @@ export class NavigationService {
 
   private findEnvironmentInUsersEnvironmentsAndConnect(urlParam: string) {
     this.environmentsService.getAvailableUserEnvironments()
-      .pipe(
-        map(env => env.find(e => e.url === urlParam)))
-      .subscribe(env => {
-        if (env) {
-          this.environmentsService.setActiveEnvironment(env)
+      .subscribe(environments => {
+        if (environments) {
+          let matchingEnvironment = environments.find(item => item.url === urlParam)
+          this.environmentsService.setActiveEnvironment(matchingEnvironment)
         } else {
           this.router.navigateByUrl('**')
         }
       })
   }
 
-  private getRouteEnvParam(): string {
-    return this.route.snapshot.paramMap.get(UrlRouteParams.environment)
+
+  getCurrentEnvironmentUrl(): string {
+    const param = this.route.snapshot.paramMap.get(UrlRouteParams.environment)
+
+    return param ? `https://${param}` : null
   }
 }

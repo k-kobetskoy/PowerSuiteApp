@@ -1,91 +1,82 @@
 import { Inject, Injectable } from '@angular/core';
 import { MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalInterceptorConfiguration, MsalService } from '@azure/msal-angular';
-import { EventMessage, InteractionStatus, RedirectRequest, PopupRequest, AuthenticationResult, EventType } from '@azure/msal-browser';
-import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
+import { EventMessage, InteractionStatus, PopupRequest, AuthenticationResult, EventType } from '@azure/msal-browser';
+import { Subject, filter, takeUntil } from 'rxjs';
+import { EventBusService } from './event-bus/event-bus.service';
+import { EventData } from '../models/event-data';
+import { AppEvents } from './event-bus/app-events';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   isIframe = false;
-  private _loginDisplay = false;
+  private _loginDisplay: boolean = false;
+  private _acquireTokenFailure: boolean = false
 
   public get userIsLoggedIn() {
     return this._loginDisplay;
-  }
-  
-  private _userIsLoggedIn$ = new BehaviorSubject<boolean>(false);
-
-  public get userIsLoggedIn$() {
-    return this._userIsLoggedIn$.asObservable();
-  }
-
-  private _userAdded$ = new BehaviorSubject<boolean>(false);
-
-  public get userAdded$() {
-    return this._userAdded$.asObservable();
   }
 
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     @Inject(MSAL_INTERCEPTOR_CONFIG) private msalInterceptorConfig: MsalInterceptorConfiguration,
     private msalService: MsalService,
-    private msalBroadcastService: MsalBroadcastService) {  
+    private msalBroadcastService: MsalBroadcastService,
+    private eventBus: EventBusService) {
+
     this.setLoginDisplay()
   }
 
   private readonly _destroying$ = new Subject<void>();
 
   init() {
-    this.isIframe = window !== window.parent && !window.opener; // Remove this line to use Angular Universal   
-    
+    this.isIframe = window !== window.parent && !window.opener; // Remove this line to use Angular Universal
+
     this.msalService.instance.enableAccountStorageEvents(); // Optional - This will enable ACCOUNT_ADDED and ACCOUNT_REMOVED events emitted when a user logs in or out of another tab or window
     this.msalBroadcastService.msalSubject$
-      .pipe(filter((msg: EventMessage) => msg.eventType === EventType.ACCOUNT_ADDED || msg.eventType === EventType.ACCOUNT_REMOVED))
+      .pipe(filter((msg: EventMessage) =>
+        msg.eventType === EventType.LOGIN_SUCCESS || msg.eventType === EventType.ACCOUNT_REMOVED || msg.eventType === EventType.ACQUIRE_TOKEN_FAILURE))
       .subscribe((result: EventMessage) => {
-        if(result.eventType === EventType.ACCOUNT_ADDED){
-          this._userAdded$.next(true)
+        if (result.eventType === EventType.ACCOUNT_REMOVED) {
+          this.eventBus.emitAndSaveLast(new EventData(AppEvents.USER_REMOVED, null))
         }
-        if (this.msalService.instance.getAllAccounts().length === 0) {
-          window.location.pathname = "/";
-        } else {        
-          this.setLoginDisplay();
+        if (result.eventType === EventType.LOGIN_SUCCESS) {
+          console.warn('msalBroadcastService : EventType.LOGIN_SUCCESS')
+          this.eventBus.emit(new EventData(AppEvents.LOGIN_SUCCESS, null))
         }
-      });
+        if (result.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
+          console.warn('msalBroadcastService : EventType.ACQUIRE_TOKEN_FAILURE')
+          this._acquireTokenFailure = true
+        }
+      })
 
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None),
         takeUntil(this._destroying$)
       )
-      .subscribe(() => {        
-        this.setLoginDisplay();
-        this.checkAndSetActiveAccount();
+      .subscribe(() => {
+        this.checkAndSetActiveAccount()
+        this.setLoginDisplay()
       })
-
-    this.msalBroadcastService.msalSubject$.subscribe({
-      next: (eventMsg) => {
-        if (eventMsg.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
-          this.setLoginDisplay()
-        }
-      }
-    })
   }
 
   setLoginDisplay() {
-    let newValue = this.msalService.instance.getAllAccounts().length > 0
-    let oldValue = this._loginDisplay
-    if(newValue!=oldValue){
-      this._loginDisplay = newValue    
-      this._userIsLoggedIn$.next(this._loginDisplay)
+    let activeAccount = this.msalService.instance.getActiveAccount()
+    //todo: check all accounts and set active if active is absent???
+    
+    this.isTokenValid(activeAccount?.idTokenClaims?.exp)
+    this._loginDisplay = !!activeAccount && !this._acquireTokenFailure
+  }
+
+  isTokenValid(expirationDate: number): boolean {
+
+    console.warn(`Token Expiration: ${new Date((expirationDate * 1000))} Token: ${expirationDate}`)
+    if (expirationDate) {
+      return Math.floor(Date.now() / 1000) < expirationDate
     }
+    return false
   }
 
   checkAndSetActiveAccount() {
-    /**
-     * If no active account set but there are accounts signed in, sets first account to active account
-     * To use active account set here, subscribe to inProgress$ first in your component
-     * Note: Basic usage demonstrated. Your app may require more complicated account selection logic
-     */
     let activeAccount = this.msalService.instance.getActiveAccount();
 
     if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
@@ -94,40 +85,24 @@ export class AuthService {
     }
   }
 
-  loginRedirect() {
-    if (this.msalGuardConfig.authRequest) {
-      this.msalService.loginRedirect({ ...this.msalGuardConfig.authRequest } as RedirectRequest);
-    } else {
-      this.msalService.loginRedirect();
-    }
-  }
-
   loginPopup() {
     if (this.msalGuardConfig.authRequest) {
       this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest)
         .subscribe((response: AuthenticationResult) => {
           this.msalService.instance.setActiveAccount(response.account);
-          this._userAdded$.next(true)
         });
     } else {
       this.msalService.loginPopup()
         .subscribe((response: AuthenticationResult) => {
-          this.msalService.instance.setActiveAccount(response.account); 
-          this._userAdded$.next(true)         
+          this.msalService.instance.setActiveAccount(response.account)
         });
     }
-    this.setLoginDisplay()
   }
 
-  logout(popup?: boolean) {
-    if (popup) {
-      this.msalService.logoutPopup({
-        mainWindowRedirectUri: "/"
-      });
-    } else {
-      this.msalService.logoutRedirect();
-    }
-    this.setLoginDisplay()
+  logoutPopup() {
+    this.msalService.logoutPopup({
+      mainWindowRedirectUri: "/"
+    })
   }
 
   addProtectedResourceToInterceptorConfig(resource: string, permissionScopes: string[]) {

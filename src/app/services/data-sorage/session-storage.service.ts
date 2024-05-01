@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core"
-import { IDataStorageService } from "./Idata-storage-service"
+import { IDataStorageService } from "./abstract/i-data-storage-service"
 
 @Injectable({providedIn: 'root'})
 export class SessionStorageService implements IDataStorageService {

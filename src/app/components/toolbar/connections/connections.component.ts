@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription, filter } from 'rxjs';
-import { UserEnvironmentModel } from 'src/app/models/user-environment-model';
-import { UserDataService } from 'src/app/services/request/user-data.service';
-import { ConnectionsDialogComponent } from '../connections-dialog/connections-dialog.component';
+import { Observable, Subscription } from 'rxjs';
+import { EnvironmentModel } from 'src/app/models/environment-model';
+import { ConnectionsDialogComponent } from './connections-dialog/connections-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { EnvironmentsRequestService } from 'src/app/services/request/environments-request.service';
+import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
+import { AppEvents } from 'src/app/services/event-bus/app-events';
 
 @Component({
   selector: 'app-connections',
@@ -15,24 +17,28 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = []
 
-  @Output() onEnvironmentConnection = new EventEmitter<UserEnvironmentModel>()
-  selectedEnvironment$: Observable<UserEnvironmentModel>
+  @Output() onEnvironmentConnection = new EventEmitter<EnvironmentModel>()
+  activeEnvironment$: Observable<EnvironmentModel>
 
   rippleColor: string = '#4b4b4b';
 
   constructor(private dialog: MatDialog,
-    private userDataService: UserDataService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private environmentsService: EnvironmentsRequestService,
+    private eventBus: EventBusService) { }
 
   ngOnInit() {
-    this.selectedEnvironment$ = this.userDataService.activeEnvironment$
+    this.activeEnvironment$ = this.environmentsService.getActiveEnvironment()
+    this.eventBus.onLast(AppEvents.USER_REMOVED, () => this.environmentsService.removeActiveEnvironment())
   }
 
   openDialog() {
     if (!this.authService.userIsLoggedIn) {
       this.authService.loginPopup()
-      this.subs.push(this.authService.userAdded$.pipe(filter(result => result === true))
-        .subscribe(_ => { this.createDialog() }))
+      this.eventBus.on(AppEvents.LOGIN_SUCCESS, () => {
+        console.warn('eventBus : on AppEvents.USER_ADDED')
+        this.createDialog()
+      })
     } else {
       this.createDialog()
     }
@@ -42,7 +48,7 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
     this.dialog.open(ConnectionsDialogComponent, {
       height: '600px',
       width: '420px',
-    });
+    })
   }
 
   ngOnDestroy(): void {

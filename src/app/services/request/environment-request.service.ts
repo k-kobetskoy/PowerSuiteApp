@@ -12,7 +12,7 @@ let parameters = ['LogicalName', 'DisplayName']
 export class EnvironmentRequestService {
     constructor(private http: HttpClient) { }
 
-    getEntityDefinitions(apiUrl: string): Observable<EntityDefinitionsResponseModel> {
+    getEntityDefinitions = (apiUrl: string): Observable<EntityDefinitionsResponseModel>=> {
         return this.http.get<EntityDefinitionsResponseModel>(`https://${apiUrl}/api/data/v9.2/EntityDefinitions?$select=${parameters.join(',')}`)
     }
 }

@@ -19,14 +19,14 @@ export class UserInfoComponent implements OnInit {
   }
 
 
-  userIsLoggedIn(){
+  userIsLoggedIn() {
     return this.authService.userIsLoggedIn
   }
 
 
   logOut() {
-    this.authService.logout(true)
-    }
+    this.authService.logoutPopup()
+  }
 
 
   getImage() {
@@ -53,7 +53,4 @@ export class UserInfoComponent implements OnInit {
       reader.readAsDataURL(image);
     }
   }
-
-
-
 }
