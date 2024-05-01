@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
 import { FetchNodeType } from 'src/app/config/fetch-node-type';
 import { FetchNodeChildRule } from 'src/app/config/fetch-node-child-rule';
 
@@ -10,7 +10,7 @@ import { FetchNodeChildRule } from 'src/app/config/fetch-node-child-rule';
 })
 export class BaseNodeEditorComponent implements OnInit {
 
-  @Input() selectedNode: FetchNode
+  @Input() selectedNode: QueryNode
   @Output() onNodeCreate = new EventEmitter<string>()
 
   nodeType = FetchNodeType
@@ -18,7 +18,7 @@ export class BaseNodeEditorComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {    
+  ngOnInit() {
 
   }
 

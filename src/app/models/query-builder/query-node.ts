@@ -2,19 +2,19 @@
 import { Action } from "./action"
 import { Input } from "./input"
 
-export class FetchNode {
-    id?: string 
-    name?: string 
-    order: number 
-    type?: string 
-    actions?: Action[] 
-    inputs?: Input[] 
-    selfClosing?: boolean 
-    expandable: boolean 
+export class QueryNode {
+    id?: string
+    name?: string
+    order: number
+    type?: string
+    actions?: Action[]
+    inputs?: Input[]
+    selfClosing?: boolean
+    expandable: boolean
     level?: number
-    isExpanded?: boolean 
-    next?: FetchNode | null
-    parent?: FetchNode
+    isExpanded?: boolean
+    next?: QueryNode | null
+    parent?: QueryNode
     visible: boolean
 
     constructor(

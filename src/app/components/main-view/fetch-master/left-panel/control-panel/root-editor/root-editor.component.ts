@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Constants } from 'src/app/config/constants';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
 
 @Component({
   selector: 'app-root-editor',
@@ -16,7 +16,7 @@ export class RootEditorComponent implements OnInit {
   }
 
 
-  createNode(){  
+  createNode(){
       this.onNodeCreate.emit()
   }
 }

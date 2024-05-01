@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
 
 @Component({
   selector: 'app-control-panel',
@@ -8,7 +8,7 @@ import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
 })
 export class ControlPanelComponent implements OnInit {
 
-  @Input() selectedNode: FetchNode
+  @Input() selectedNode: QueryNode
   @Output() onNodeCreate = new EventEmitter<string>()
 
   createNode(nodeName: string) {

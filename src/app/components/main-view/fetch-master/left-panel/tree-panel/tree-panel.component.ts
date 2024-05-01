@@ -1,11 +1,11 @@
 import { CdkTree, CdkTreeNodeOutlet } from '@angular/cdk/tree';
 import { ChangeDetectorRef, Component, EventEmitter, IterableDiffers, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
-import { FetchNodeTree } from 'src/app/models/fetch-master/fetch-node-tree';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
+import { QueryNodeTree } from 'src/app/models/query-builder/query-node-tree';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
-import { NodeFactoryService } from 'src/app/services/fetch-master/nodes-factory.service';
+import { NodeFactoryService } from 'src/app/services/query-builder/nodes-factory.service';
 
 @Component({
   selector: 'app-tree-panel',
@@ -15,13 +15,13 @@ import { NodeFactoryService } from 'src/app/services/fetch-master/nodes-factory.
 })
 export class TreePanelComponent implements OnInit {
 
-  @Output() onNodeSelect = new EventEmitter<FetchNode>()
+  @Output() onNodeSelect = new EventEmitter<QueryNode>()
   @ViewChild('tree') tree: CdkTree<ChangeDetectorRef, IterableDiffers>
   @ViewChild('treeNodeOutlet') treeNodeOutlet: CdkTreeNodeOutlet
 
-  nodeTree: FetchNodeTree
-  selectedNode: FetchNode
-  dataSource$: Observable<FetchNodeTree>
+  nodeTree: QueryNodeTree
+  selectedNode: QueryNode
+  dataSource$: Observable<QueryNodeTree>
 
 
   constructor(
@@ -29,12 +29,12 @@ export class TreePanelComponent implements OnInit {
     private eventBus: EventBusService) { }
 
   ngOnInit() {
-    this.nodeTree = new FetchNodeTree(this.nodeFactory)
+    this.nodeTree = new QueryNodeTree(this.nodeFactory)
     this.dataSource$ = of(this.nodeTree)
     this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
   }
 
-  toggleNode(node: FetchNode) {
+  toggleNode(node: QueryNode) {
 
     if (!node.expandable) { return }
     node.isExpanded = !node.isExpanded
@@ -60,7 +60,7 @@ export class TreePanelComponent implements OnInit {
     }
   }
 
-  selectNode(node: FetchNode) {
+  selectNode(node: QueryNode) {
     this.onNodeSelect.emit(node)
     this.selectedNode = node
   }

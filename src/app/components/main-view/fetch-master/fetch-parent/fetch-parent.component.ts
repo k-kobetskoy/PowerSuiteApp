@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TreePanelComponent } from '../left-panel/tree-panel/tree-panel.component';
 import { ControlPanelComponent } from '../left-panel/control-panel/control-panel.component';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
 import { Subscription } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation.service';
 
@@ -30,7 +30,7 @@ export class FetchParentComponent implements OnInit {
     this.navigationService.handleUrlParamOnComponentInit('/querybuilder')
   }
 
-  setSelectedElement(selectedElement: FetchNode) {
+  setSelectedElement(selectedElement: QueryNode) {
     this.controlPanel.selectedNode = selectedElement
   }
 

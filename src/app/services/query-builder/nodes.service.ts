@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Constants } from 'src/app/config/constants';
-import { FetchNode } from 'src/app/models/fetch-master/fetch-node';
+import { QueryNode } from 'src/app/models/query-builder/query-node';
 
 @Injectable({ providedIn: 'root' })
 export class NodesService {
-  dataChange = new BehaviorSubject<FetchNode[]>([]);
-  
-  get data(): FetchNode[] { return this.dataChange.value }
+  dataChange = new BehaviorSubject<QueryNode[]>([]);
+
+  get data(): QueryNode[] { return this.dataChange.value }
 
   generateUniqueTreeId(): string {
     return `tree-${new Date().getTime().toString()}`
