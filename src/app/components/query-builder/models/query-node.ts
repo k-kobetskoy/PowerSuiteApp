@@ -50,14 +50,14 @@ export class QueryNode implements IQueryNode {
 
         let parent = this;
         let nextNestedChild = this.next;
-      
+
         while (nextNestedChild && nextNestedChild.level > parent.level) {
-            if (!parent.isExpanded) {             
+            if (!parent.isExpanded) {
                 nextNestedChild.visible = false;
             } else {
-                nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible ? true : false;
+                nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible;
             }
             nextNestedChild = nextNestedChild.next;
-        }        
+        }
     }
 }

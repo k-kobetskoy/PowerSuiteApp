@@ -1,16 +1,16 @@
 import { Directive, HostBinding,  Input, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[appNodeStyle]'  
+  selector: '[appNodeStyle]'
 })
 export class NodeStyleDirective implements OnInit {
-  @Input('appPadding') padding : number 
+  @Input('appPadding') padding : number
 
-  @HostBinding('style.padding-left.px') hostPadding
+  @HostBinding('style.padding-left.px') hostPadding: string
 
   constructor() {}
   
   ngOnInit(): void {
-    this.hostPadding = `${this.padding*10}`    
+    this.hostPadding = `${this.padding*10}`
   }
 }

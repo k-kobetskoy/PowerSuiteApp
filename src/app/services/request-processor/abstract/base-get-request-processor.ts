@@ -12,8 +12,8 @@ export abstract class BaseGetRequestProcessor<T> implements IGetRequestProcessor
 
     protected loadingIndicatorService = inject(LoadingIndicationService)
 
-    protected httpGet(requestFuncion: () => Observable<T>): void {
-        this.subscription = requestFuncion()
+    protected httpGet(requestFunction: () => Observable<T>): void {
+        this.subscription = requestFunction()
             .subscribe(data => {
                 console.warn('BaseGetRequestProcessor : httpGet')
                 this.subject$.next(data)
@@ -22,7 +22,7 @@ export abstract class BaseGetRequestProcessor<T> implements IGetRequestProcessor
         this.loadingIndicatorService.showLoaderUntilComplete(this.subscription)
     }
 
-    abstract get(requestFuncion?: () => Observable<T>): Observable<T>
+    abstract get(requestFunction?: () => Observable<T>): Observable<T>
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe()

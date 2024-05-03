@@ -52,7 +52,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
             throw new Error('Node has no parent.');
         }
         node.parent.next = node.next
-        node.parent.expandable = node.parent.level === node.next.level ? false : true
+        node.parent.expandable = node.parent.level !== node.next.level
     }
 
     [Symbol.iterator](): Iterator<IQueryNode, any, undefined> {

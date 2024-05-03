@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TreePanelComponent } from './tree-panel/tree-panel.component';
-import { Subscription } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
@@ -11,15 +10,14 @@ import { NavigationService } from 'src/app/services/navigation.service';
 })
 export class QueryBuilder implements OnInit {
 
-  environmentUrl: string;
-  subs: Subscription[] = []
+  environmentUrl: string = '/querybuilder';
 
   @ViewChild(TreePanelComponent) treePanel: TreePanelComponent
 
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
-    this.navigationService.handleUrlParamOnComponentInit('/querybuilder')
+    this.navigationService.handleUrlParamOnComponentInit(this.environmentUrl)
   }
 
   addTreeNode(nodeName: string) {
