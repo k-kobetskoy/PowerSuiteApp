@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IQueryNode } from '../models/abstract/i-query-node';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
-import { AppEvents } from 'src/app/services/event-bus/app-events';
+import { QueryNodeTree } from '../models/query-node-tree';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-control-panel',
@@ -10,18 +11,15 @@ import { AppEvents } from 'src/app/services/event-bus/app-events';
 })
 export class ControlPanelComponent implements OnInit {
 
-  @Input() selectedNode: IQueryNode
-  @Output() onNodeCreate = new EventEmitter<string>()
+  selectedNode$: Observable<IQueryNode>
 
   createNode(nodeName: string) {
-    this.onNodeCreate.emit(nodeName)
+    this.nodeTree.addNode(nodeName)
   }
 
-  constructor(private eventBus: EventBusService) { }
-
-  ngOnInit() {
-    this.eventBus.onLast(AppEvents.NODE_SELECTED, (node: IQueryNode) => {
-      this.selectedNode = node
-    })
+  constructor(private eventBus: EventBusService, private nodeTree: QueryNodeTree) { 
+    this.selectedNode$ = this.nodeTree.selectedNode$
   }
+
+  ngOnInit() {  }
 }

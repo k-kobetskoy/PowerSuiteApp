@@ -1,35 +1,29 @@
 import { QueryNodeType } from "src/app/components/query-builder/models/constants/query-node-type";
 import { IQueryNode } from "./abstract/i-query-node";
-import { inject } from "@angular/core";
-import { EventBusService } from "src/app/services/event-bus/event-bus.service";
-import { AppEvents } from "src/app/services/event-bus/app-events";
-import { EventData } from "src/app/services/event-bus/event-data";
+import { Inject, inject } from "@angular/core";
 import { NodeAdderFactoryService } from "../services/query-adders/node-adder-factory.service";
+import { BehaviorSubject, Observable } from "rxjs";
 
-
+Inject({ providedIn: 'root' })
 export class QueryNodeTree implements Iterable<IQueryNode> {
 
     private _nodeAdderFactory = inject(NodeAdderFactoryService)
-    private _eventBus = inject(EventBusService)
-
 
     private _id: string
     private _root: IQueryNode
 
-    private _selectedNode: IQueryNode;
+    private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
 
-    public get selectedNode(): IQueryNode {
-        if (!this._selectedNode || !this._selectedNode.visible) {
-            this._selectedNode = null
-            this._eventBus.emitAndSaveLast(new EventData(AppEvents.NODE_SELECTED, null))
+    public get selectedNode$(): Observable<IQueryNode> {
+        if (!this._selectedNode$.value || !this._selectedNode$.value.visible) {
+            this._selectedNode$.next(null)
         }
-        return this._selectedNode;
+        return this._selectedNode$.asObservable();
     }
 
-    public set selectedNode(value: IQueryNode) {
-        if (value && value != this._selectedNode) {
-            this._selectedNode = value;
-            this._eventBus.emitAndSaveLast(new EventData(AppEvents.NODE_SELECTED, value))
+    public set selectedNode$(value: IQueryNode) {
+        if (value != this._selectedNode$.value) {
+            this._selectedNode$.next(value);
         }
     }
 
@@ -43,8 +37,8 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
 
     addNode(newNodeType: string): IQueryNode {
         let nodeAdder = this._nodeAdderFactory.getAdder(newNodeType)
-        this.selectedNode = nodeAdder.addNode(newNodeType, this._selectedNode)
-        return this.selectedNode
+        this.selectedNode$ = nodeAdder.addNode(newNodeType, this._selectedNode$.value)
+        return this._selectedNode$.value
     }
 
     removeNode(node: IQueryNode) {

@@ -33,6 +33,7 @@ import { QueryActionsComponent } from './components/query-builder/control-panel/
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 
 
 @NgModule({
@@ -73,7 +74,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatProgressSpinnerModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [],
+  providers: [QueryNodeTree],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

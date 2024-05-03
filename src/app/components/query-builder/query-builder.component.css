@@ -12,7 +12,7 @@ app-query-builder {
   align-items: stretch;
 }
 
-.fetch-parent-content {
+.query-builder {
   display: flex;
   justify-content: center;
   align-items: center;

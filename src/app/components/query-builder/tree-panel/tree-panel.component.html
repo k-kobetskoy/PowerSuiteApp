@@ -12,7 +12,7 @@
             </mat-icon>
           </a>
           <div class="node-element-select-area" (click)="selectNode(node)"
-            [ngClass]="{active: this.nodeTree.selectedNode===node, inactive: this.nodeTree.selectedNode!==node}">
+            [ngClass]="{active: (this.nodeTree.selectedNode$ | async) ===node, inactive: (this.nodeTree.selectedNode$ | async)!==node}">
             <mat-icon class="tree-element-icon">
             </mat-icon>
             <p class="small prevent-select">{{node.name}}.{{node.level}} o.{{node.order}}</p>
@@ -24,7 +24,7 @@
         <div appNodeStyle [appPadding]="node.level" class="tree-node">
           <a></a>
           <div class="node-element-select-area" (click)="selectNode(node)"
-            [ngClass]="{active: this.nodeTree.selectedNode===node, inactive: this.nodeTree.selectedNode!==node}">
+            [ngClass]="{active: (this.nodeTree.selectedNode$ | async)===node, inactive: (this.nodeTree.selectedNode$ | async)!==node}">
             <mat-icon class="tree-element-icon">
             </mat-icon>
             <p class="small prevent-select">{{node.name}}.{{node.level}} o.{{node.order}}</p>

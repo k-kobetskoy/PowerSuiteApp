@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TreePanelComponent } from './tree-panel/tree-panel.component';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
@@ -12,15 +11,9 @@ export class QueryBuilder implements OnInit {
 
   environmentUrl: string = '/querybuilder';
 
-  @ViewChild(TreePanelComponent) treePanel: TreePanelComponent
-
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit(this.environmentUrl)
-  }
-
-  addTreeNode(nodeName: string) {
-    this.treePanel.addNodeToTree(nodeName)
   }
 }

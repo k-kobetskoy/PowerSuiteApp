@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IQueryNode } from '../../models/abstract/i-query-node';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-query-actions',
@@ -8,14 +9,14 @@ import { IQueryNode } from '../../models/abstract/i-query-node';
 })
 export class QueryActionsComponent implements OnInit {
 
-  @Input() selectedNode: IQueryNode
+  @Input() selectedNode$: Observable<IQueryNode>
   @Output() onNodeCreate = new EventEmitter<string>()
 
   constructor() { }
 
   ngOnInit() {  }
 
-  createNewNode(nodeName: string) {
+  createNode(nodeName: string) {
     this.onNodeCreate.emit(nodeName)
   }
 }

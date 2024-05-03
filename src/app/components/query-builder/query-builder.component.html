@@ -1,14 +1,14 @@
-<div class="fetch-parent-content">
+<div class="query-builder">
   <as-split direction="horizontal" gutterSize="2">
     <as-split-area [size]="20" order="1" minSize="10">
       
 
       <as-split direction="vertical" gutterSize="2">
         <as-split-area [size]="65" order="3" minSize="30">
-          <app-tree-panel></app-tree-panel>
+          <app-tree-panel ></app-tree-panel>
         </as-split-area>
         <as-split-area [size]="35" order="4" minSize="20">
-          <app-control-panel (onNodeCreate)="addTreeNode($event)"></app-control-panel>
+          <app-control-panel></app-control-panel>
         </as-split-area>
       </as-split>
 
