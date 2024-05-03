@@ -14,21 +14,24 @@ import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 export class TreePanelComponent implements OnInit {
 
   dataSource$: Observable<QueryNodeTree>
+  selectedNode$: Observable<IQueryNode>
 
-  get nodeTree() {
-    return this.tree
-  }
-  
   constructor(
     private eventBus: EventBusService,
     private tree: QueryNodeTree) { }
 
   ngOnInit() {
-    this.dataSource$ = of(this.nodeTree)
+    this.dataSource$ = of(this.tree)
+    this.selectedNode$ = this.tree.selectedNode$
     this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
   }
 
   selectNode(node: IQueryNode) {
-    this.nodeTree.selectedNode$ = node
+    this.tree.selectedNode$ = node
   }
+
+  toggleNode(node: IQueryNode) {
+    this.tree.toggleNode(node)
+  }
+
 }

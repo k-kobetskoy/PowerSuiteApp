@@ -15,9 +15,6 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
     private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
 
     public get selectedNode$(): Observable<IQueryNode> {
-        if (!this._selectedNode$.value || !this._selectedNode$.value.visible) {
-            this._selectedNode$.next(null)
-        }
         return this._selectedNode$.asObservable();
     }
 
@@ -32,13 +29,21 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
     }
 
     constructor() {
+        this.init()
+    }
+
+    private init() {
         this._root = this.addNode(QueryNodeType.ROOT)
     }
 
     addNode(newNodeType: string): IQueryNode {
         let nodeAdder = this._nodeAdderFactory.getAdder(newNodeType)
-        this.selectedNode$ = nodeAdder.addNode(newNodeType, this._selectedNode$.value)
-        return this._selectedNode$.value
+        let newNodeToSelect = nodeAdder.addNode(newNodeType, this._selectedNode$.value)
+        if (this._selectedNode$.value) {
+            this.expandNode(this._selectedNode$.value)
+        }
+        this.selectedNode$ = newNodeToSelect
+        return newNodeToSelect
     }
 
     removeNode(node: IQueryNode) {
@@ -47,6 +52,35 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         }
         node.parent.next = node.next
         node.parent.expandable = node.parent.level !== node.next.level
+    }
+
+    expandNode(node: IQueryNode) {
+        node.expandable = true
+        if (!node.isExpanded) {
+            this.toggleNode(node)
+        }
+    }
+
+    toggleNode(node: IQueryNode) {
+        if (!node.expandable) { return; }
+
+        node.isExpanded = !node.isExpanded;
+
+        let parent = node;
+        let nextNestedChild = node.next;
+
+        while (nextNestedChild && nextNestedChild.level > parent.level) {
+            if (!parent.isExpanded) {
+                nextNestedChild.visible = false;
+            } else {
+                nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible;
+            }
+            nextNestedChild = nextNestedChild.next;
+        }
+
+        if (this._selectedNode$ && !this._selectedNode$.value.visible) {
+            this.selectedNode$ = null
+        }
     }
 
     [Symbol.iterator](): Iterator<IQueryNode, any, undefined> {

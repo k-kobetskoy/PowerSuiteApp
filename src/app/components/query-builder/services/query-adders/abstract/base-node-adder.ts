@@ -24,10 +24,6 @@ export abstract class BaseNodeAdder implements INodeAdder {
         newNode.level = parentNode.level + 1
         newNode.parent = parentNode
 
-        if (parentNode.level < newNode.level) {
-            parentNode.expandNode()
-        }
-
         return nodeToSelect
     }
 

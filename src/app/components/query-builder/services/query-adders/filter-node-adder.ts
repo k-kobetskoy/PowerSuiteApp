@@ -17,10 +17,6 @@ export class FilterNodeAdder extends BaseNodeAdder {
         newNode.level = parentNode.level + 1
         newNode.parent = parentNode
 
-        if (parentNode.level < newNode.level) {
-            parentNode.expandNode()
-        }
-
         let nodeToSelect = this.add(QueryNodeType.CONDITION, newNode)
 
         return nodeToSelect
