@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { IGetRequestProcessor } from "./i-get-request-processor";
 import { Injectable, OnDestroy, inject } from "@angular/core";
-import { LoadingIndicationService } from "../../loading-indication.service";
+import { LoadingIndicationService } from "../../../components/loading-indicator/services/loading-indication.service";
 
 
 @Injectable({ providedIn: 'root' })

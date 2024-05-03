@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { EnvironmentModel } from 'src/app/models/environment-model';
-import { EventData } from 'src/app/models/event-data';
+import { EventData } from 'src/app/services/event-bus/event-data';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { NavigationService } from 'src/app/services/navigation.service';

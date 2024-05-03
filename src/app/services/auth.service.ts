@@ -3,7 +3,7 @@ import { MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalG
 import { EventMessage, InteractionStatus, PopupRequest, AuthenticationResult, EventType } from '@azure/msal-browser';
 import { Subject, filter, takeUntil } from 'rxjs';
 import { EventBusService } from './event-bus/event-bus.service';
-import { EventData } from '../models/event-data';
+import { EventData } from './event-bus/event-data';
 import { AppEvents } from './event-bus/app-events';
 
 @Injectable({ providedIn: 'root' })

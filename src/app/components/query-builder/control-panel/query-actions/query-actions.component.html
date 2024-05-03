@@ -1,0 +1,7 @@
+<div class="node-editor-container">
+  
+  <div class="quick-actions">
+    <button mat-flat-button *ngFor="let nodeName of selectedNode.actions" (click)="createNewNode(nodeName)">{{nodeName}}</button>
+  </div>
+
+</div>

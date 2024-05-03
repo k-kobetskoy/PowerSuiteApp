@@ -1,0 +1,88 @@
+app-query-builder {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.fetch-parent-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+  background: rgb(255, 255, 255);
+}
+
+app-query-builder .as-split-gutter{
+  background-color: rgb(121, 168, 255);  
+  flex-basis: 2px !important;
+  z-index: 49;
+}
+
+app-query-builder .as-split-gutter-icon {
+  background-image: none !important;
+  background-color: rgb(247, 247, 247);
+  z-index: 50;
+}
+
+app-query-builder .as-split-gutter-icon:hover {
+  background-color: rgb(121, 168, 255);
+  background-image: none;
+  transform: scale(2);
+  z-index: 51;
+}
+
+as-split-area{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+}
+
+
+
+app-query-builder .mat-mdc-tab-header {
+  --mdc-secondary-navigation-tab-container-height: 40px;
+}
+
+app-query-builder .mdc-tab {
+  min-width: 200px;
+}
+
+app-query-builder .mat-mdc-tab-header {
+  --mat-tab-header-label-text-font: "Work Sans", sans-serif;
+  --mat-tab-header-label-text-tracking: 0em;
+}
+
+mat-tab-group {
+  flex: 1 1 auto;
+}
+
+app-query-builder .mat-mdc-tab-body-wrapper {
+  flex: 1 1 auto;
+}
+
+
+app-query-builder .mat-mdc-tab-body-content {
+  display: flex;
+}
+
+.fetch-xml-content {    
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.fetch-result-content {
+  background-color: darkgray;
+  display: flex;
+  flex: 1 1 auto;
+}

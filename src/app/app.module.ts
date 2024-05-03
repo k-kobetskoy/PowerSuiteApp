@@ -7,23 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConnectionsDialogComponent } from './components/toolbar/connections/connections-dialog/connections-dialog.component';
 import { MainToolbarComponent } from './components/toolbar/main-toolbar/main-toolbar.component';
-import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
+import { QueryBuilder } from './components/query-builder/query-builder.component';
 import { ConnectionsComponent } from './components/toolbar/connections/connections.component';
 import { MenuComponent } from './components/toolbar/menu/menu.component';
 import { UserInfoComponent } from './components/toolbar/user-info/user-info.component';
-import { TreePanelComponent } from './components/main-view/fetch-master/left-panel/tree-panel/tree-panel.component';
-import { ControlPanelComponent } from './components/main-view/fetch-master/left-panel/control-panel/control-panel.component';
-import { CodeEditorComponent } from './components/main-view/fetch-master/right-panel/code-editor/code-editor.component';
-import { CodeEditorFooterComponent } from './components/main-view/fetch-master/right-panel/code-editor-footer/code-editor-footer.component';
-import { AttributeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/attribute-editor/attribute-editor.component';
-import { ConditionEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/condition-editor/condition-editor.component';
-import { EntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/entity-editor/entity-editor.component';
-import { FilterEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/filter-editor/filter-editor.component';
-import { LinkedEntityEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/linked-entity-editor/linked-entity-editor.component';
-import { OrderEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/order-editor/order-editor.component';
-import { RootEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/root-editor/root-editor.component';
-import { ValueEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/value-editor/value-editor.component';
-import { DefaultEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/default-editor/default-editor.component';
+import { TreePanelComponent } from './components/query-builder/tree-panel/tree-panel.component';
+import { ControlPanelComponent } from './components/query-builder/control-panel/control-panel.component';
+import { CodeEditorComponent } from './components/query-builder/code-editor/code-editor.component';
+import { CodeEditorFooterComponent } from './components/query-builder/code-editor-footer/code-editor-footer.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -38,7 +29,7 @@ import { TreeModule } from '@ali-hm/angular-tree-component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
 import { NodeStyleDirective } from './directives/node-style.directive';
-import { BaseNodeEditorComponent } from './components/main-view/fetch-master/left-panel/control-panel/base-node-editor/base-node-editor.component';
+import { QueryActionsComponent } from './components/query-builder/control-panel/query-actions/query-actions.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -48,7 +39,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
   declarations: [
     AppComponent,
     MainToolbarComponent,
-    FetchParentComponent,
+    QueryBuilder,
     ConnectionsComponent,
     MenuComponent,
     UserInfoComponent,
@@ -57,17 +48,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     TreePanelComponent,
     CodeEditorComponent,
     CodeEditorFooterComponent,
-    AttributeEditorComponent,
-    ConditionEditorComponent,
-    EntityEditorComponent,
-    FilterEditorComponent,
-    LinkedEntityEditorComponent,
-    OrderEditorComponent,
-    RootEditorComponent,
-    ValueEditorComponent,
-    DefaultEditorComponent,
     NodeStyleDirective,
-    BaseNodeEditorComponent,
+    QueryActionsComponent,
     ConnectionsComponent,
     LoadingIndicatorComponent,
     PageNotFoundComponent,

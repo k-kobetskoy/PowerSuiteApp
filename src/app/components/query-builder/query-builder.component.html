@@ -1,0 +1,51 @@
+<div class="fetch-parent-content">
+  <as-split direction="horizontal" gutterSize="2">
+    <as-split-area [size]="20" order="1" minSize="10">
+      
+
+      <as-split direction="vertical" gutterSize="2">
+        <as-split-area [size]="65" order="3" minSize="30">
+          <app-tree-panel></app-tree-panel>
+        </as-split-area>
+        <as-split-area [size]="35" order="4" minSize="20">
+          <app-control-panel (onNodeCreate)="addTreeNode($event)"></app-control-panel>
+        </as-split-area>
+      </as-split>
+
+
+    </as-split-area>
+    <as-split-area [size]="80" order="2" minSize="30">
+      
+
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="200" stretchTabs="false">
+        <mat-tab>
+          <ng-template  mat-tab-label>
+            <p class="prevent-select">FetchXml</p>
+            
+          </ng-template>
+          
+          <div class="fetch-xml-content">
+            <app-code-editor></app-code-editor>
+            <app-code-editor-footer></app-code-editor-footer>
+          </div>
+         
+        </mat-tab>
+        <mat-tab>
+          <ng-template  mat-tab-label>
+            <p class="prevent-select">Result</p>
+            
+          </ng-template>
+          <div class="fetch-result-content">
+            Content 2
+          </div>
+        </mat-tab>
+      
+        
+      </mat-tab-group>
+      
+
+
+
+    </as-split-area>
+  </as-split>
+</div>

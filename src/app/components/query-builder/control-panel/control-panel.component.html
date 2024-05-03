@@ -1,0 +1,7 @@
+<div *ngIf="selectedNode; else elseBlock">
+    <app-query-actions [selectedNode]="selectedNode" (onNodeCreate)="createNode($event)"></app-query-actions>
+</div>
+
+<ng-template #elseBlock>
+    <div>no data</div>
+</ng-template>
