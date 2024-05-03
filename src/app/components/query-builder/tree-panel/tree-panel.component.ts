@@ -15,8 +15,7 @@ export class TreePanelComponent implements OnInit {
 
   nodeTree: QueryNodeTree = new QueryNodeTree()
   dataSource$: Observable<QueryNodeTree>
-  selectedNode: IQueryNode = this.nodeTree.selectedNode
-
+  
   constructor(
     private eventBus: EventBusService) { }
 
@@ -29,7 +28,7 @@ export class TreePanelComponent implements OnInit {
     this.nodeTree.selectedNode = node
   }
 
-  addBaseNodeToTree(nodeName: string) {
+  addNodeToTree(nodeName: string) {
     this.nodeTree.addNode(nodeName)
   }
 }

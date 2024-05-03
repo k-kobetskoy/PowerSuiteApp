@@ -21,6 +21,6 @@ export class QueryBuilder implements OnInit {
   }
 
   addTreeNode(nodeName: string) {
-    this.treePanel.addBaseNodeToTree(nodeName)
+    this.treePanel.addNodeToTree(nodeName)
   }
 }
