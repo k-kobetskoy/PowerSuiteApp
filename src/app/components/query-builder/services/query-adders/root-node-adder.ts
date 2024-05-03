@@ -5,12 +5,12 @@ import { BaseNodeAdder } from "./abstract/base-node-adder";
 export class RootNodeAdder extends BaseNodeAdder{
     
     
-    override addNode(newNodeType: string, selectedNode: IQueryNode): IQueryNode {
-        let newNode = this.nodeFactory.getNodeWithBaseFields(newNodeType)
+    override addNode(rootNodeType: string, selectedNode: IQueryNode): IQueryNode {
+        let root = this.nodeFactory.getNodeWithBaseFields(rootNodeType);
 
-        let nodeToSelect = this.add(QueryNodeType.ENTITY, newNode)
+        this.add(QueryNodeType.ENTITY, root);
 
-        return nodeToSelect
+        return root;
     }
 
 }

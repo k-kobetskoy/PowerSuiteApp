@@ -13,6 +13,6 @@ export interface IQueryNode {
     parent?: IQueryNode | null;
     visible: boolean;
 
-    expandNode(selectedNode: IQueryNode): void;
-    toggleNode(selectedNode: IQueryNode) : IQueryNode;
+    expandNode(): void;
+    toggleNode() : void;
 }

@@ -36,39 +36,28 @@ export class QueryNode implements IQueryNode {
         this.next = null
     };
 
-    expandNode(selectedNode: IQueryNode) {
+    expandNode() {
         this.expandable = true
         if (!this.isExpanded) {
-            this.toggleNode(selectedNode)
+            this.toggleNode()
         }
     }
 
-    toggleNode(selectedNode: IQueryNode): IQueryNode {
-
-        if (!this.expandable) {
-            return selectedNode;
-        }
+    toggleNode() {
+        if (!this.expandable) { return; }
 
         this.isExpanded = !this.isExpanded;
 
         let parent = this;
         let nextNestedChild = this.next;
-        let checkSelectedNode = parent != selectedNode && parent.level < selectedNode.level;
-        let newSelectedNode = selectedNode;
-
+      
         while (nextNestedChild && nextNestedChild.level > parent.level) {
-            if (!parent.isExpanded) {
-                if (checkSelectedNode) {
-                    if (selectedNode === nextNestedChild) {
-                        newSelectedNode = parent;
-                    }
-                }
+            if (!parent.isExpanded) {             
                 nextNestedChild.visible = false;
             } else {
                 nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible ? true : false;
             }
             nextNestedChild = nextNestedChild.next;
-        }
-        return newSelectedNode;
+        }        
     }
 }

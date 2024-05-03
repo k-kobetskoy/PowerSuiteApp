@@ -6,7 +6,7 @@
 
       <div *ngIf="node&&node.expandable&&node.visible">
         <div appNodeStyle [appPadding]="node.level" class="tree-node parent-node-element">
-          <a (click)="node.toggleNode(this.selectedNode)">
+          <a (click)="node.toggleNode()">
             <mat-icon class="arrow-icon">
               {{node.isExpanded ? 'expand_more' : 'chevron_right'}}
             </mat-icon>

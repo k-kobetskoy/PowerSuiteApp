@@ -13,9 +13,6 @@ import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 })
 export class TreePanelComponent implements OnInit {
 
-  // @ViewChild('tree') tree: CdkTree<ChangeDetectorRef, IterableDiffers>
-  // @ViewChild('treeNodeOutlet') treeNodeOutlet: CdkTreeNodeOutlet
-
   nodeTree: QueryNodeTree = new QueryNodeTree()
   dataSource$: Observable<QueryNodeTree>
   selectedNode: IQueryNode = this.nodeTree.selectedNode
@@ -27,36 +24,6 @@ export class TreePanelComponent implements OnInit {
     this.dataSource$ = of(this.nodeTree)
     this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
   }
-
-  // toggleNode(node: IQueryNode) {
-
-
-
-
-
-    // if (!node.expandable) { return }
-    // node.isExpanded = !node.isExpanded
-
-    // let parent = node
-    // let nextNestedChild = node.next
-    // let checkSelectedNode = parent != this.selectedNode && parent.level < this.selectedNode.level
-
-    // while (nextNestedChild && nextNestedChild.level > parent.level) {
-    //   if (!parent.isExpanded) {
-    //     if (checkSelectedNode) {
-    //       if (this.selectedNode === nextNestedChild) {
-    //         this.selectedNode = parent
-    //         this.onNodeSelect.emit(parent)
-    //       }
-    //     }
-    //     nextNestedChild.visible = false
-    //   } else {
-    //     nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible ? true : false
-    //   }
-
-    //   nextNestedChild = nextNestedChild.next
-    // }
-  // }
 
   selectNode(node: IQueryNode) {
     this.nodeTree.selectedNode = node

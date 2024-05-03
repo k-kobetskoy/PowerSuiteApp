@@ -15,17 +15,12 @@ export class QueryBuilder implements OnInit {
   subs: Subscription[] = []
 
   @ViewChild(TreePanelComponent) treePanel: TreePanelComponent
-  // @ViewChild(ControlPanelComponent) controlPanel: ControlPanelComponent
 
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit('/querybuilder')
   }
-
-  // setSelectedElement(selectedElement: IQueryNode) {
-  //   this.controlPanel.selectedNode = selectedElement
-  // }
 
   addTreeNode(nodeName: string) {
     this.treePanel.addBaseNodeToTree(nodeName)
