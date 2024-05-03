@@ -1,7 +1,7 @@
 import { QueryNodeType } from "src/app/components/query-builder/models/constants/query-node-type";
 import { IQueryNode } from "./abstract/i-query-node";
 import { Inject, inject } from "@angular/core";
-import { NodeAdderFactoryService } from "../services/query-adders/node-adder-factory.service";
+import { NodeAdderFactoryService } from "../services/node-adders/node-adder-factory.service";
 import { BehaviorSubject, Observable } from "rxjs";
 
 Inject({ providedIn: 'root' })

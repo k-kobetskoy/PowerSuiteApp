@@ -33,5 +33,4 @@ export class TreePanelComponent implements OnInit {
   toggleNode(node: IQueryNode) {
     this.tree.toggleNode(node)
   }
-
 }

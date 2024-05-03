@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class QueryActionsComponent implements OnInit {
 
-  @Input() selectedNode$: Observable<IQueryNode>
+  @Input() selectedNode: IQueryNode
   @Output() onNodeCreate = new EventEmitter<string>()
 
   constructor() { }

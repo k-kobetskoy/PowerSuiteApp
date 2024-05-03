@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IQueryNode } from '../models/abstract/i-query-node';
-import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { QueryNodeTree } from '../models/query-node-tree';
 import { Observable } from 'rxjs';
+import { QueryNodeType } from '../models/constants/query-node-type';
 
 @Component({
   selector: 'app-control-panel',
@@ -12,12 +12,13 @@ import { Observable } from 'rxjs';
 export class ControlPanelComponent implements OnInit {
 
   selectedNode$: Observable<IQueryNode>
+  nodeTypes = QueryNodeType
 
   createNode(nodeName: string) {
     this.nodeTree.addNode(nodeName)
   }
 
-  constructor(private eventBus: EventBusService, private nodeTree: QueryNodeTree) { 
+  constructor(private nodeTree: QueryNodeTree) { 
     this.selectedNode$ = this.nodeTree.selectedNode$
   }
 

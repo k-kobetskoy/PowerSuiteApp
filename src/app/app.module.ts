@@ -15,6 +15,13 @@ import { TreePanelComponent } from './components/query-builder/tree-panel/tree-p
 import { ControlPanelComponent } from './components/query-builder/control-panel/control-panel.component';
 import { CodeEditorComponent } from './components/query-builder/code-editor/code-editor.component';
 import { CodeEditorFooterComponent } from './components/query-builder/code-editor-footer/code-editor-footer.component';
+import { NodeStyleDirective } from './directives/node-style.directive';
+import { QueryActionsComponent } from './components/query-builder/control-panel/query-actions/query-actions.component';
+import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
+import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -28,12 +35,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { TreeModule } from '@ali-hm/angular-tree-component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
-import { NodeStyleDirective } from './directives/node-style.directive';
-import { QueryActionsComponent } from './components/query-builder/control-panel/query-actions/query-actions.component';
-import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { QueryNodeTree } from './components/query-builder/models/query-node-tree
     ConnectionsComponent,
     LoadingIndicatorComponent,
     PageNotFoundComponent,
+    EntityFormComponent,
   ],
 
   imports: [

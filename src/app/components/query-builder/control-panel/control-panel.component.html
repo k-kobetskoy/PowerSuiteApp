@@ -1,5 +1,8 @@
-<div *ngIf="selectedNode$|async; else elseBlock">
-    <app-query-actions [selectedNode$]="selectedNode$" (onNodeCreate)="createNode($event)"></app-query-actions>
+<div *ngIf="selectedNode$ | async; else elseBlock">
+    <app-query-actions [selectedNode]="selectedNode$ | async" (onNodeCreate)="createNode($event)"></app-query-actions>
+    <div [ngSwitch]="(selectedNode$|async).type">
+        <app-entity-form *ngSwitchCase='nodeTypes.ENTITY'></app-entity-form>
+    </div>
 </div>
 
 <ng-template #elseBlock>
