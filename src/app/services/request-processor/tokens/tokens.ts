@@ -1,7 +1,7 @@
 import { InjectionToken, inject } from "@angular/core";
 import { LocalStorageService } from "../../data-sorage/local-storage.service";
 import { SessionStorageService } from "../../data-sorage/session-storage.service";
-import { ActiveEnvironmentProcessor } from "../active-environment-processor";
+import { StoreActiveEnvironmentProcessor } from "../store-active-environment-processor";
 import { StoreRequestProcessor } from "../store-request-processor";
 import { GetCachedRequestProcessor } from "../get-cached-request-processor";
 
@@ -18,6 +18,6 @@ export const SESSION_STORAGE_REQUEST_PROCESSOR = new InjectionToken<StoreRequest
     'SESSION_STORAGE_REQUEST_PROCESSOR', { factory: () => new StoreRequestProcessor<any, SessionStorageService>(inject(SessionStorageService)), providedIn: 'root' }
 )
 
-export const ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR = new InjectionToken<ActiveEnvironmentProcessor<any, SessionStorageService>>(
-    'SESSION_STORAGE_REQUEST_PROCESSOR', { factory: () => new ActiveEnvironmentProcessor<any, SessionStorageService>(inject(SessionStorageService)), providedIn: 'root' }
+export const ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR = new InjectionToken<StoreActiveEnvironmentProcessor<any, SessionStorageService>>(
+    'SESSION_STORAGE_REQUEST_PROCESSOR', { factory: () => new StoreActiveEnvironmentProcessor<any, SessionStorageService>(inject(SessionStorageService)), providedIn: 'root' }
 )

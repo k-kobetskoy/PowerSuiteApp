@@ -7,7 +7,7 @@ import { Constants } from "src/app/config/constants";
 import { IDataStorageService } from "../data-sorage/abstract/i-data-storage-service";
 import { StoreRequestProcessor } from "./store-request-processor";
 
-export class ActiveEnvironmentProcessor<T extends EnvironmentModel, D extends IDataStorageService> extends StoreRequestProcessor<T, D> {
+export class StoreActiveEnvironmentProcessor<T extends EnvironmentModel, D extends IDataStorageService> extends StoreRequestProcessor<T, D> {
 
     private _authService = inject(AuthService)
     private _localStorageService = inject(LocalStorageService)

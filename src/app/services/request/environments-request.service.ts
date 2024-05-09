@@ -6,7 +6,7 @@ import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/globa
 import { EnvironmentModel } from 'src/app/models/environment-model';
 import { CacheKeys } from 'src/app/config/cache-keys';
 import { GetCachedRequestProcessor } from '../request-processor/get-cached-request-processor';
-import { ActiveEnvironmentProcessor as ActiveEnvironmentProcessor } from '../request-processor/active-environment-processor';
+import { StoreActiveEnvironmentProcessor as StoreActiveEnvironmentProcessor } from '../request-processor/store-active-environment-processor';
 import { SessionStorageService } from '../data-sorage/session-storage.service';
 import { ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR, GET_CACHED_REQUEST_PROCESSOR } from '../request-processor/tokens/tokens';
 
@@ -16,7 +16,7 @@ export class EnvironmentsRequestService {
   constructor(
     private http: HttpClient,
     @Inject(GET_CACHED_REQUEST_PROCESSOR) private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]>,
-    @Inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR) private activeEnvironmentProcessor: ActiveEnvironmentProcessor<EnvironmentModel, SessionStorageService>) { }
+    @Inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR) private activeEnvironmentProcessor: StoreActiveEnvironmentProcessor<EnvironmentModel, SessionStorageService>) { }
 
   public getAvailableUserEnvironments(): Observable<EnvironmentModel[]> {
     return this.getCachedRequestProcessor.get(this.getAllUserEnvironments)
