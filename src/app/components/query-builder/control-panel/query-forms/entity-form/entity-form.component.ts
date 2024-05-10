@@ -5,7 +5,6 @@ import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import { IQueryNode } from '../../../models/abstract/i-query-node';
 
-
 @Component({
   selector: 'app-entity-form',
   templateUrl: './entity-form.component.html',
@@ -64,7 +63,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   updateEntityName(entityName: string) {
     if (!entityName) {
       this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
-      this.selectedNode.nodeProperty.entityName = '';
+      this.selectedNode.nodeProperty.entityName = null;
     } else {
       this.selectedNode.displayValue = entityName;
       this.selectedNode.nodeProperty.entityName = entityName;
