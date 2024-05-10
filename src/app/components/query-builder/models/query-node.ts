@@ -22,7 +22,6 @@ export class QueryNode implements IQueryNode {
         actions: string[],
         selfClosingTag: boolean = true,
         expandable: boolean = false,
-
     ) {
         this.name = name
         this.order = order

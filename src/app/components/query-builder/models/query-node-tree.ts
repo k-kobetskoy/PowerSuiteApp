@@ -100,8 +100,3 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         }
     }
 }
-
-
-
-
-
