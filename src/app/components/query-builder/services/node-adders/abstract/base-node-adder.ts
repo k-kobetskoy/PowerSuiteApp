@@ -10,7 +10,7 @@ export abstract class BaseNodeAdder implements INodeAdder {
     }
 
     protected add(newNodeType: string, parentNode: IQueryNode): IQueryNode {
-        let newNode = this.nodeFactory.getNodeWithBaseFields(newNodeType)
+        let newNode = this.nodeFactory.getNode(newNodeType)
 
         let nodeAbove = this.getNodeAbove(newNode.order, parentNode)
 

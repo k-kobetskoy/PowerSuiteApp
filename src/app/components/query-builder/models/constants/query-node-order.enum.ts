@@ -1,10 +1,10 @@
 export enum QueryNodeOrder {
-    value= 2,
-    order = 2,
-    attribute = 3,
-    condition = 2,
-    filter = 6,
-    link = 5,
-    entity = 1,
-    root = 0
+    VALUE= 2,
+    ORDER = 2,
+    ATTRIBUTE = 3,
+    CONDITION = 2,
+    FILTER = 6,
+    LINK = 5,
+    ENTITY = 1,
+    ROOT = 0
 }

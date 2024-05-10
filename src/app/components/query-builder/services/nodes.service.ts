@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { QueryNode } from 'src/app/components/query-builder/models/query-node';
+import { QueryNode } from 'src/app/components/query-builder/models/abstract/query-node';
 
 @Injectable({ providedIn: 'root' })
 export class NodesService {
