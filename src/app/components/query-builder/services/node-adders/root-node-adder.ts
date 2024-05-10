@@ -6,11 +6,11 @@ export class RootNodeAdder extends BaseNodeAdder{
     
     
     override addNode(rootNodeType: string, selectedNode: IQueryNode): IQueryNode {
-        let root = this.nodeFactory.getNodeWithBaseFields(rootNodeType);
+        let root = this.nodeFactory.getNode(rootNodeType);
 
-        this.add(QueryNodeType.ENTITY, root);
+        let entityNode = this.add(QueryNodeType.ENTITY, root);
 
-        return root;
+        return entityNode;
     }
 
 }

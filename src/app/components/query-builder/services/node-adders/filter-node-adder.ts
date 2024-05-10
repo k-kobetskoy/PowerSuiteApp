@@ -5,7 +5,7 @@ import { BaseNodeAdder } from "./abstract/base-node-adder";
 export class FilterNodeAdder extends BaseNodeAdder {
 
     override addNode(newNodeType: string, parentNode: IQueryNode): IQueryNode {
-        let newNode = this.nodeFactory.getNodeWithBaseFields(newNodeType)
+        let newNode = this.nodeFactory.getNode(newNodeType)
 
         let nodeAbove = this.getNodeAbove(newNode.order, parentNode)
 
@@ -18,7 +18,9 @@ export class FilterNodeAdder extends BaseNodeAdder {
         newNode.parent = parentNode
 
         let nodeToSelect = this.add(QueryNodeType.CONDITION, newNode)
-
+        
+        newNode.expandable = true;
+        
         return nodeToSelect
     }
 }

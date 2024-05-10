@@ -15,7 +15,7 @@
             [ngClass]="{active: (this.selectedNode$ | async) ===node, inactive: (this.selectedNode$ | async)!==node}">
             <mat-icon class="tree-element-icon">
             </mat-icon>
-            <p class="small prevent-select">{{node.name}}.{{node.level}} o.{{node.order}}</p>
+            <p class="small prevent-select">{{node.displayValue}}</p>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
             [ngClass]="{active: (this.selectedNode$ | async)===node, inactive: (this.selectedNode$ | async)!==node}">
             <mat-icon class="tree-element-icon">
             </mat-icon>
-            <p class="small prevent-select">{{node.name}}.{{node.level}} o.{{node.order}}</p>
+            <p class="small prevent-select">{{node.displayValue}}</p>
           </div>
         </div>
       </div>

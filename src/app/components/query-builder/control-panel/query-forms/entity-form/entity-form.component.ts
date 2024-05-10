@@ -4,19 +4,16 @@ import { EnvironmentRequestService } from 'src/app/services/request/environment-
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import { IQueryNode } from '../../../models/abstract/i-query-node';
-import { IQueryFormComponent } from '../../../models/abstract/i-query-form-component';
-import { QueryFormTypes } from '../../../models/constants/query-form-types.enum';
 
 @Component({
   selector: 'app-entity-form',
   templateUrl: './entity-form.component.html',
   styleUrls: ['./entity-form.component.css']
 })
-export class EntityFormComponent implements OnInit, OnDestroy, IQueryFormComponent {
+export class EntityFormComponent implements OnInit, OnDestroy {
 
 
   constructor(private environmentService: EnvironmentRequestService) { }
-  @Input() type = QueryFormTypes.EntityForm;
   @Input() selectedNode: IQueryNode
   @Output() onInputChange = new EventEmitter<IQueryNode>()
   @Output() onNodeCreate = new EventEmitter<string>()
@@ -37,8 +34,7 @@ export class EntityFormComponent implements OnInit, OnDestroy, IQueryFormCompone
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
       if (this.entitiesFormControl.value === '') {
-        this.selectedNode.name = '(entity)';
-        this.onInputChange.emit(this.selectedNode);
+        this.updateEntityName('');
       }
     }
   }
@@ -57,12 +53,23 @@ export class EntityFormComponent implements OnInit, OnDestroy, IQueryFormCompone
   private _filter(value: string): EntityModel[] {
     const filterValue = value.toLowerCase();
 
-    this.selectedNode.name = value;
-    this.onInputChange.emit(this.selectedNode);
+    this.updateEntityName(value);
 
     return this.entities.filter(entity =>
       entity.logicalName.toLowerCase().includes(filterValue)
     );
+  }
+
+  updateEntityName(entityName: string) {
+    if (!entityName) {
+      this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
+      this.selectedNode.nodeProperty.entityName = null;
+    } else {
+      this.selectedNode.displayValue = entityName;
+      this.selectedNode.nodeProperty.entityName = entityName;
+    }
+
+    this.onInputChange.emit(this.selectedNode);
   }
 
   ngOnDestroy(): void {
