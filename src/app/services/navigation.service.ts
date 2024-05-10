@@ -1,18 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EnvironmentModel } from '../models/environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
 import { EnvironmentsRequestService } from './request/environments-request.service';
 import { AuthService } from './auth.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class NavigationService {
+export class NavigationService implements OnInit, OnDestroy {
+
+  subscription: Subscription
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
     private environmentsService: EnvironmentsRequestService) { }
+
+  ngOnInit(): void {
+    this.addActiveEnvironmentToInterceptorConfig()
+    console.warn('Navigation service initialized')
+    
+  }
 
   navigateToEnv(selectedEnv: EnvironmentModel) {
     this.environmentsService.setActiveEnvironment(selectedEnv)
@@ -29,22 +38,22 @@ export class NavigationService {
 
     const currentEnvironmentUrl = this.getCurrentEnvironmentUrl()
     const userIsLoggedIn = this.authService.userIsLoggedIn
-    let environment: EnvironmentModel
 
-    this.environmentsService.getActiveEnvironment().subscribe(result => {
-      environment = result
+    this.environmentsService.getActiveEnvironment().subscribe(activatedEnvironment => {
+      if (currentEnvironmentUrl) {
+        this.handleExistingRouteParam(currentEnvironmentUrl, userIsLoggedIn, activatedEnvironment)
+      } else {
+        this.handleEmptyRouteParam(componentPath, userIsLoggedIn, activatedEnvironment)
+      }
     })
 
-    const activatedEnvironment: EnvironmentModel = environment ? environment : null
 
-    if (currentEnvironmentUrl) {
-      this.handleExistingRouteParam(currentEnvironmentUrl, userIsLoggedIn, activatedEnvironment)
-    } else {
-      this.handleEmptyRouteParam(componentPath, userIsLoggedIn, activatedEnvironment)
-    }
   }
 
   private handleExistingRouteParam(currentEnvironmentUrl: string, userIsLoggedIn: boolean, activatedEnvironment: EnvironmentModel) {
+
+    console.log('currentEnvironmentUrl', currentEnvironmentUrl, 'activatedEnvironment', activatedEnvironment.url, 'userIsLoggedIn', userIsLoggedIn)
+
     if (userIsLoggedIn) {
       if (currentEnvironmentUrl === activatedEnvironment.url) {
         return
@@ -57,6 +66,9 @@ export class NavigationService {
   }
 
   private handleEmptyRouteParam(componentPath: string, userIsLoggedIn: boolean, activatedEnvironment: EnvironmentModel) {
+
+    console.log('activatedEnvironment', activatedEnvironment, 'userIsLoggedIn', userIsLoggedIn, 'componentPath', componentPath)
+
     if (userIsLoggedIn) {
       if (activatedEnvironment) {
         const queryParams: Params = { [UrlRouteParams.environment]: activatedEnvironment.url.slice(8) }
@@ -89,4 +101,18 @@ export class NavigationService {
 
     return param ? `https://${param}` : null
   }
+
+
+  addActiveEnvironmentToInterceptorConfig() {
+    this.environmentsService.getActiveEnvironment().subscribe(env=>
+      this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
+    )    
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+  }
+
 }
+
+

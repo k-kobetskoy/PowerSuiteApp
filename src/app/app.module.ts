@@ -32,9 +32,12 @@ import { MatRippleModule } from '@angular/material/core';
 import { AngularSplitModule } from 'angular-split';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
-import { TreeModule } from '@ali-hm/angular-tree-component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import{ ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -70,10 +73,13 @@ import { FormsModule } from '@angular/forms';
     AngularSplitModule,
     MatTabsModule,
     MatIconModule,
-    TreeModule,
     FormsModule,
     CdkTreeModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [QueryNodeTree],

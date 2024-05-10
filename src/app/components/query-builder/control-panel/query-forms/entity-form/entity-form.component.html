@@ -1,3 +1,16 @@
-<p>
-  entity-form works!
-</p>
+<form class="example-form">
+  <app-loading-indicator [diameter]="50"></app-loading-indicator>
+  <mat-form-field>
+    <mat-label>Entity</mat-label>
+    <input type="text"
+           matInput           
+           [formControl]="entitiesInput"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredEntities$ | async" [value]="option.logicalName">
+        {{option.displayName + ' ' + option.logicalName}}
+        
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
