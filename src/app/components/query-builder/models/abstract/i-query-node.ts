@@ -1,6 +1,8 @@
 import { INodeProperty } from "./i-node-property";
 
 export interface IQueryNode {
+    defaultDisplayValue: string;
+    displayValue: string;
     order: number;
     selfClosingTag: boolean;
     expandable: boolean;

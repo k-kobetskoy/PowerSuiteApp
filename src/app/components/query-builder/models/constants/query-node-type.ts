@@ -1,11 +1,11 @@
 export const QueryNodeType = {
-    VALUE: 'value',
-    ORDER: 'order',
-    ATTRIBUTE: 'attribute',
-    CONDITION: 'condition',
-    FILTER:  'filter',
-    LINK: 'link',
-    ENTITY: 'entity',
-    ROOT: 'root'
+    VALUE: 'Value',
+    ORDER: 'Order',
+    ATTRIBUTE: 'Attribute',
+    CONDITION: 'Condition',
+    FILTER:  'Filter',
+    LINK: 'Link Entity',
+    ENTITY: 'Entity',
+    ROOT: 'Root'
 } as const;
 export type QueryNodeType = (typeof QueryNodeType)[keyof typeof QueryNodeType];

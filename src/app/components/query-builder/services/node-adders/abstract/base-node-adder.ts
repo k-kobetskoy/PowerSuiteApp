@@ -6,8 +6,7 @@ import { INodeAdder } from "./i-node-adder";
 @Injectable({ providedIn: 'root' })
 export abstract class BaseNodeAdder implements INodeAdder {
 
-    constructor(protected nodeFactory: NodeFactoryService) {
-    }
+    constructor(protected nodeFactory: NodeFactoryService) {}
 
     protected add(newNodeType: string, parentNode: IQueryNode): IQueryNode {
         let newNode = this.nodeFactory.getNode(newNodeType)

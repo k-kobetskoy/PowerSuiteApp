@@ -8,6 +8,8 @@ export class NodeCondition extends QueryNode{
 
     constructor(nodeProperty: INodeProperty) {
         super(nodeProperty);
+        this.defaultDisplayValue = QueryNodeType.CONDITION;
+        this.displayValue = QueryNodeType.CONDITION;
         this.order = QueryNodeOrder.CONDITION;
         this.type = QueryNodeType.CONDITION;
         this.actions = QueryNodeActions.CONDITION;        

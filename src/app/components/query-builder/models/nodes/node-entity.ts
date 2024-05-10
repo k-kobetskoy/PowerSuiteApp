@@ -8,6 +8,8 @@ export class NodeEntity extends QueryNode{
 
     constructor(nodeProperty: INodeProperty) {
         super(nodeProperty);
+        this.defaultDisplayValue = QueryNodeType.ENTITY;
+        this.displayValue = QueryNodeType.ENTITY;
         this.order = QueryNodeOrder.ENTITY;
         this.type = QueryNodeType.ENTITY;
         this.actions = QueryNodeActions.ENTITY;        

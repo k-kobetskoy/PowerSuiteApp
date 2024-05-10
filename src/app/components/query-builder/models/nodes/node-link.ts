@@ -8,6 +8,8 @@ export class NodeLink  extends QueryNode{
 
     constructor(nodeProperty: INodeProperty) {
         super(nodeProperty);
+        this.defaultDisplayValue = QueryNodeType.LINK;
+        this.displayValue = QueryNodeType.LINK;
         this.order = QueryNodeOrder.LINK;
         this.type = QueryNodeType.LINK;
         this.actions = QueryNodeActions.LINK;        

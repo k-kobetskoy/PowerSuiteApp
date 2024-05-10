@@ -8,6 +8,8 @@ export class NodeSort extends QueryNode{
 
     constructor(nodeProperty: INodeProperty) {
         super(nodeProperty);
+        this.defaultDisplayValue = QueryNodeType.ORDER;
+        this.displayValue = QueryNodeType.ORDER;
         this.order = QueryNodeOrder.ORDER;
         this.type = QueryNodeType.ORDER;
         this.actions = QueryNodeActions.ORDER;        

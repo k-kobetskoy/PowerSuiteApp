@@ -6,8 +6,10 @@ import { QueryNode } from "../abstract/query-node";
 
 export class NodeConditionValue  extends QueryNode{
 
-    constructor(nodeProperty: INodeProperty) {
+    constructor(nodeProperty: INodeProperty) {        
         super(nodeProperty);
+        this.defaultDisplayValue = QueryNodeType.VALUE;
+        this.displayValue = QueryNodeType.VALUE;
         this.order = QueryNodeOrder.VALUE;
         this.type = QueryNodeType.VALUE;
         this.actions = QueryNodeActions.VALUE;        

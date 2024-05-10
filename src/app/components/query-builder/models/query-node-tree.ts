@@ -33,7 +33,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
     }
 
     private init() {
-        this._root = this.addNode(QueryNodeType.ROOT)
+        this._root = this.addNode(QueryNodeType.ROOT).parent
     }
 
     addNode(newNodeType: string): IQueryNode {

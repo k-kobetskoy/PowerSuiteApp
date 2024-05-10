@@ -18,7 +18,9 @@ export class FilterNodeAdder extends BaseNodeAdder {
         newNode.parent = parentNode
 
         let nodeToSelect = this.add(QueryNodeType.CONDITION, newNode)
-
+        
+        newNode.expandable = true;
+        
         return nodeToSelect
     }
 }
