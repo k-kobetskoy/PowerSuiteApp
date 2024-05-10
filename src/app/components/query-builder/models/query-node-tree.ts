@@ -78,7 +78,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
             nextNestedChild = nextNestedChild.next;
         }
 
-        if (this._selectedNode$ && !this._selectedNode$.value.visible) {
+        if (this._selectedNode$ && !this._selectedNode$.value?.visible) {
             this.selectedNode$ = null
         }
     }
