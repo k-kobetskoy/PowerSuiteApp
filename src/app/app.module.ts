@@ -16,6 +16,7 @@ import { ControlPanelComponent } from './components/query-builder/control-panel/
 import { CodeEditorComponent } from './components/query-builder/code-editor/code-editor.component';
 import { CodeEditorFooterComponent } from './components/query-builder/code-editor-footer/code-editor-footer.component';
 import { NodeStyleDirective } from './directives/node-style.directive';
+import { QueryFormFactoryDirective } from './directives/query-form-factory.directive';
 import { QueryActionsComponent } from './components/query-builder/control-panel/query-actions/query-actions.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -59,6 +60,7 @@ import{ ReactiveFormsModule} from '@angular/forms';
     LoadingIndicatorComponent,
     PageNotFoundComponent,
     EntityFormComponent,
+    QueryFormFactoryDirective,
   ],
 
   imports: [

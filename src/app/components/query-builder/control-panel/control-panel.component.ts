@@ -14,13 +14,17 @@ export class ControlPanelComponent implements OnInit {
   selectedNode$: Observable<IQueryNode>
   nodeTypes = QueryNodeType
 
+  constructor(private nodeTree: QueryNodeTree) {
+    this.selectedNode$ = this.nodeTree.selectedNode$
+  }
+
+  ngOnInit() { }
+
   createNode(nodeName: string) {
     this.nodeTree.addNode(nodeName)
   }
 
-  constructor(private nodeTree: QueryNodeTree) { 
-    this.selectedNode$ = this.nodeTree.selectedNode$
+  setEntityName($event: IQueryNode) {
+    this.nodeTree.selectedNode$ = $event
   }
-
-  ngOnInit() {  }
 }

@@ -34,5 +34,5 @@ export class QueryNode implements IQueryNode {
         this.visible = true
         this.isExpanded = true
         this.next = null
-    };   
+    };
 }
