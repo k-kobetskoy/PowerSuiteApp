@@ -29,7 +29,15 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activeEnvironment$ = this.environmentsService.getActiveEnvironment()
+    if(this.activeEnvironment$){
+      this.subs.push(this.activeEnvironment$.subscribe(env => {
+        this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
+      }));
+    }
+    
     this.eventBus.onLast(AppEvents.USER_REMOVED, () => this.environmentsService.removeActiveEnvironment())
+
+    this.authService.checkProtectedResource();
   }
 
   openDialog() {

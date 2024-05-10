@@ -1,12 +1,13 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { IDataStorageService } from "../../data-sorage/abstract/i-data-storage-service";
 import { IStoreRequestProcessor } from "./i-store-request-processor";
 import { BehaviorSubject, Observable } from "rxjs";
+import { CacheStorageService } from "../../data-sorage/cache-storage.service";
 
 @Injectable({ providedIn: 'root' })
 export abstract class BaseStoreRequestProcessor<T, D extends IDataStorageService> implements IStoreRequestProcessor<T, D> {
 
-    protected subject$: BehaviorSubject<T> = new BehaviorSubject<T>(null)
+    cacheService = inject(CacheStorageService)
     
     constructor(protected dataStorageService: IDataStorageService) { }
 

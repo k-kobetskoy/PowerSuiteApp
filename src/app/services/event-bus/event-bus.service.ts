@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventData } from '../../models/event-data';
+import { EventData } from './event-data';
 import { ReplaySubject, Subject, Subscription, filter, map } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -10,7 +10,7 @@ export class EventBusService {
   constructor() { }
 
   emit(event: EventData) {
-    this._subject$.next(event)    
+    this._subject$.next(event)
   }
   emitAndSaveLast(event: EventData){
     this._replaySubject$.next(event)

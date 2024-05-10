@@ -1,0 +1,22 @@
+<div class="node-editor-container">
+  
+  <div class="quick-actions">
+    <button mat-flat-button *ngFor="let nodeName of selectedNode.actions" (click)="createNode(nodeName)">{{nodeName}}</button>
+  </div>
+
+</div>
+
+<form class="example-form">
+  <app-loading-indicator [diameter]="50"></app-loading-indicator>
+  <mat-form-field>
+    <mat-label>Entity</mat-label>
+    <input type="text" matInput [formControl]="entitiesFormControl" [matAutocomplete]="auto" (keyup)="onKeyPressed($event)">
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredEntities$ | async" [value]="option.logicalName">
+        {{option.displayName + ' ' + option.logicalName}}
+
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

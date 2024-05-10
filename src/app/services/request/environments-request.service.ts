@@ -6,7 +6,7 @@ import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/globa
 import { EnvironmentModel } from 'src/app/models/environment-model';
 import { CacheKeys } from 'src/app/config/cache-keys';
 import { GetCachedRequestProcessor } from '../request-processor/get-cached-request-processor';
-import { ActiveEnvironmentProcessor as ActiveEnvironmentProcessor } from '../request-processor/active-environment-processor';
+import { ActiveEnvironmentRequestProcessor as ActiveEnvironmentRequestProcessor } from '../request-processor/active-environment-request-processor';
 import { SessionStorageService } from '../data-sorage/session-storage.service';
 import { ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR, GET_CACHED_REQUEST_PROCESSOR } from '../request-processor/tokens/tokens';
 
@@ -16,10 +16,10 @@ export class EnvironmentsRequestService {
   constructor(
     private http: HttpClient,
     @Inject(GET_CACHED_REQUEST_PROCESSOR) private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]>,
-    @Inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR) private activeEnvironmentProcessor: ActiveEnvironmentProcessor<EnvironmentModel, SessionStorageService>) { }
+    @Inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR) private activeEnvironmentProcessor: ActiveEnvironmentRequestProcessor<EnvironmentModel, SessionStorageService>) { }
 
   public getAvailableUserEnvironments(): Observable<EnvironmentModel[]> {
-    return this.getCachedRequestProcessor.get(this.getAllUserEnvironments)
+    return this.getCachedRequestProcessor.get(CacheKeys.AvailableEnvironments, ()=>this.getAllUserEnvironments())
   }
 
   public setActiveEnvironment(environment: EnvironmentModel): void {
@@ -34,10 +34,10 @@ export class EnvironmentsRequestService {
     this.activeEnvironmentProcessor.remove(CacheKeys.ActiveEnvironment)
   }
 
-  getAllUserEnvironments = (): Observable<EnvironmentModel[]> => {
+  private getAllUserEnvironments = (): Observable<EnvironmentModel[]> => {
     return this.http.get<GlobalDiscoInstancesResponseModel>(`${Constants.GlobalDiscoApiEndpoint}/${Constants.GlobalDiscoInstances}`)
       .pipe(
-        map((data) => {
+        map(data => {
           return data.value.map(element => {
             return {
               apiUrl: element.ApiUrl,

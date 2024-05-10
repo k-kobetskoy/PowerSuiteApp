@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserUtils } from '@azure/msal-browser';
-import { FetchParentComponent } from './components/main-view/fetch-master/fetch-parent/fetch-parent.component';
+import { QueryBuilder } from './components/query-builder/query-builder.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'querybuilder', pathMatch: 'full' },
-  { path: 'querybuilder', component: FetchParentComponent },  
+  { path: 'querybuilder', component: QueryBuilder },  
   { path: '**', redirectTo: 'querybuilder', pathMatch: 'full' }
 ];
 @NgModule({
