@@ -1,7 +1,5 @@
 <div *ngIf="selectedNode$ | async as selected; else elseBlock">
     
-    <!-- <ng-template [appQueryFormFactory] [type]="selected.type" [selectedNode]="selected" (onNodeCreate)="createNode($event)"></ng-template> -->
-    
     <div [ngSwitch]="selected.type">
         <app-entity-form [selectedNode]="selected"  *ngSwitchCase='nodeTypes.ENTITY' (onNodeCreate)="createNode($event)"></app-entity-form>
         <app-root-form [selectedNode]="selected"  *ngSwitchCase='nodeTypes.ROOT'  (onNodeCreate)="createNode($event)"></app-root-form>

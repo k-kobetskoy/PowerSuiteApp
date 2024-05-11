@@ -21,7 +21,7 @@ export class NodeEntity extends QueryNode {
     override get displayValue$(): Observable<string> {        
         return this.tagProperties?.entityName.asObservable()
             .pipe(mergeMap(entityName => 
-                iif(() => !entityName || entityName ==='', of(this.defaultDisplayValue), of(entityName))
+                iif(() => !entityName, of(this.defaultDisplayValue), of(entityName))
             ));
     }
 }
