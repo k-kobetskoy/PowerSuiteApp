@@ -36,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import{ ReactiveFormsModule} from '@angular/forms';
 
@@ -85,7 +85,7 @@ import{ ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,    
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [QueryNodeTree],
+  providers: [QueryNodeTree, {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

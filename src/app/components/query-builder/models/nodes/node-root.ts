@@ -6,13 +6,11 @@ import { QueryNode } from "../query-node";
 
 export class NodeRoot extends QueryNode {
 
-    constructor(nodeProperty: ITagProperties) {
-        super(nodeProperty);
+    constructor(tagProperties: ITagProperties) {
+        super(tagProperties);
         this.defaultDisplayValue = QueryNodeType.ROOT;
-        this.displayValue = QueryNodeType.ROOT;
         this.order = QueryNodeOrder.ROOT;
         this.type = QueryNodeType.ROOT;
         this.actions = QueryNodeActions.ROOT;
-        this.expandable = true;
     }
 }

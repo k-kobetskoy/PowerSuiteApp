@@ -1,15 +1,6 @@
 
 <app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="createNode($event)"></app-quick-actions>
 
-<!-- <div class="node-editor-container">
-  
-  <div class="quick-actions">
-    <button mat-flat-button *ngFor="let nodeName of selectedNode.actions" (click)="createNode(nodeName)">{{nodeName}}</button>
-  </div>
-
-</div> -->
-
-<form class="example-form">
   <app-loading-indicator [diameter]="50"></app-loading-indicator>
   <mat-form-field>
     <mat-label>Entity</mat-label>
@@ -22,4 +13,3 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-</form>

@@ -7,6 +7,14 @@ import { QueryNodeOrder } from '../models/constants/query-node-order.enum';
 import { QueryNodeActions } from '../models/constants/query-node-actions';
 import { QueryNodeTags } from '../models/constants/query-node-tags';
 import { TagPropertiesFactoryService } from './tag-properties-factory.service';
+import { NodeCondition } from '../models/nodes/node-condition';
+import { NodeEntityAttribute } from '../models/nodes/node-entity-attribute';
+import { NodeFilter } from '../models/nodes/node-filter';
+import { NodeEntity } from '../models/nodes/node-entity';
+import { NodeLink } from '../models/nodes/node-link';
+import { NodeOrder } from '../models/nodes/node-order';
+import { NodeConditionValue } from '../models/nodes/node-condition-value';
+import { NodeRoot } from '../models/nodes/node-root';
 
 @Injectable({ providedIn: 'root' })
 export class NodeFactoryService {
@@ -16,77 +24,21 @@ export class NodeFactoryService {
   getNode(typeName: string): IQueryNode {
     switch (typeName) {
       case QueryNodeType.CONDITION:
-        return new QueryNode({ 
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.CONDITION),
-          defaultDisplayValue: QueryNodeType.CONDITION,
-          displayValue: QueryNodeType.CONDITION,
-          order: QueryNodeOrder.CONDITION,
-          type: QueryNodeType.CONDITION,
-          actions: QueryNodeActions.CONDITION
-        })
+        return new NodeCondition(this.tagPropertiesFactory.getTagProperties(QueryNodeType.CONDITION))
       case QueryNodeType.ATTRIBUTE:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ATTRIBUTE),
-          defaultDisplayValue: QueryNodeType.ATTRIBUTE,
-          displayValue: QueryNodeType.ATTRIBUTE,
-          order: QueryNodeOrder.ATTRIBUTE,
-          type: QueryNodeType.ATTRIBUTE,
-          actions: QueryNodeActions.ATTRIBUTE
-        })
+        return new NodeEntityAttribute(this.tagPropertiesFactory.getTagProperties(QueryNodeType.ATTRIBUTE))
       case QueryNodeType.FILTER:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.FILTER),
-          defaultDisplayValue: QueryNodeType.FILTER,
-          displayValue: QueryNodeType.FILTER,
-          order: QueryNodeOrder.FILTER,
-          type: QueryNodeType.FILTER,
-          actions: QueryNodeActions.FILTER
-        })
+        return new NodeFilter(this.tagPropertiesFactory.getTagProperties(QueryNodeType.FILTER))
       case QueryNodeType.ENTITY:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ENTITY),
-          defaultDisplayValue: QueryNodeType.ENTITY,
-          displayValue: QueryNodeType.ENTITY,
-          order: QueryNodeOrder.ENTITY,
-          type: QueryNodeType.ENTITY,
-          actions: QueryNodeActions.ENTITY
-        })
+        return new NodeEntity(this.tagPropertiesFactory.getTagProperties(QueryNodeType.ENTITY))
       case QueryNodeType.LINK:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.LINK),
-          defaultDisplayValue: QueryNodeType.LINK,
-          displayValue: QueryNodeType.LINK,
-          order: QueryNodeOrder.LINK,
-          type: QueryNodeType.LINK,
-          actions: QueryNodeActions.LINK
-        })
+        return new NodeLink(this.tagPropertiesFactory.getTagProperties(QueryNodeType.LINK))
       case QueryNodeType.ORDER:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ORDER),
-          defaultDisplayValue: QueryNodeType.ORDER,
-          displayValue: QueryNodeType.ORDER,
-          order: QueryNodeOrder.ORDER,
-          type: QueryNodeType.ORDER,
-          actions: QueryNodeActions.ORDER
-        })
+        return new NodeOrder(this.tagPropertiesFactory.getTagProperties(QueryNodeType.ORDER))
       case QueryNodeType.VALUE:
-        return new QueryNode({
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.VALUE),
-          defaultDisplayValue: QueryNodeType.VALUE,
-          displayValue: QueryNodeType.VALUE,
-          order: QueryNodeOrder.VALUE,
-          type: QueryNodeType.VALUE,
-          actions: QueryNodeActions.VALUE
-        })
+        return new NodeConditionValue(this.tagPropertiesFactory.getTagProperties(QueryNodeType.VALUE))
       case QueryNodeType.ROOT:
-        return new QueryNode({ 
-          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ROOT),
-          defaultDisplayValue: QueryNodeType.ROOT,
-          displayValue: QueryNodeType.ROOT,
-          order: QueryNodeOrder.ROOT,
-          type: QueryNodeType.ROOT,
-          actions: QueryNodeActions.ROOT
-        })
+        return new NodeRoot(this.tagPropertiesFactory.getTagProperties(QueryNodeType.ROOT))
       default:
         throw new NotImplementError(`Couldn't find node type with the name: ${typeName}`)
     }

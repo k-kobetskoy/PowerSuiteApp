@@ -6,10 +6,9 @@ import { QueryNode } from "../query-node";
 
 export class NodeLink  extends QueryNode{
 
-    constructor(nodeProperty: ITagProperties) {
-        super(nodeProperty);
+    constructor(tagProperties: ITagProperties) {
+        super(tagProperties);
         this.defaultDisplayValue = QueryNodeType.LINK;
-        this.displayValue = QueryNodeType.LINK;
         this.order = QueryNodeOrder.LINK;
         this.type = QueryNodeType.LINK;
         this.actions = QueryNodeActions.LINK;        

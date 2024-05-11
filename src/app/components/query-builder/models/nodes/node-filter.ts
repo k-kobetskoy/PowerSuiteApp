@@ -6,10 +6,9 @@ import { QueryNode } from "../query-node";
 
 export class NodeFilter extends QueryNode {
     
-    constructor(nodeProperty: ITagProperties) {
-        super(nodeProperty);
+    constructor(tagProperties: ITagProperties) {
+        super(tagProperties);
         this.defaultDisplayValue = QueryNodeType.FILTER;
-        this.displayValue = QueryNodeType.FILTER;
         this.order = QueryNodeOrder.FILTER;
         this.type = QueryNodeType.FILTER;
         this.actions = QueryNodeActions.FILTER;        

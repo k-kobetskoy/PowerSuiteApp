@@ -1,9 +1,9 @@
 import { ITagProperties } from "./abstract/i-tag-properties";
 import { IQueryNode } from "./abstract/i-query-node";
+import { Observable } from "rxjs";
 
-export class QueryNode implements IQueryNode {
+export abstract class QueryNode implements IQueryNode {
     defaultDisplayValue: string;
-    displayValue: string;
     order: number;
     selfClosingTag: boolean;
     expandable: boolean;
@@ -18,12 +18,18 @@ export class QueryNode implements IQueryNode {
     visible: boolean;
     tagProperties: ITagProperties;
 
-    constructor(init?:Partial<QueryNode>) {
+    constructor(tagProperties: ITagProperties) {
         this.expandable = false;
         this.level = 0;
         this.visible = true;
         this.isExpanded = true;
         this.next = null;
-        Object.assign(this, init);
+        this.tagProperties = tagProperties;
+    }
+
+    get displayValue$(): Observable<string> {
+        return new Observable<string>(observer => {
+            observer.next(this.defaultDisplayValue);
+        });
     }
 }

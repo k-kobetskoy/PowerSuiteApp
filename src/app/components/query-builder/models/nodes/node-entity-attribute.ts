@@ -6,10 +6,9 @@ import { QueryNode } from "../query-node";
 
 export class NodeEntityAttribute extends QueryNode {
 
-    constructor(nodeProperty: ITagProperties) {
-        super(nodeProperty);
+    constructor(tagProperties: ITagProperties) {
+        super(tagProperties);
         this.defaultDisplayValue = QueryNodeType.ATTRIBUTE;
-        this.displayValue = QueryNodeType.ATTRIBUTE;
         this.order = QueryNodeOrder.ATTRIBUTE;
         this.type = QueryNodeType.ATTRIBUTE;
         this.actions = QueryNodeActions.ATTRIBUTE;        

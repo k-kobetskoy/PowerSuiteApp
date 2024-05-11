@@ -1,8 +1,8 @@
+import { Observable } from "rxjs";
 import { ITagProperties } from "./i-tag-properties";
 
 export interface IQueryNode {
     defaultDisplayValue: string;
-    displayValue: string;
     order: number;
     selfClosingTag: boolean;
     expandable: boolean;
@@ -15,5 +15,7 @@ export interface IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    tagProperties: ITagProperties
+    tagProperties: ITagProperties;
+
+    get displayValue$(): Observable<string>;
 }

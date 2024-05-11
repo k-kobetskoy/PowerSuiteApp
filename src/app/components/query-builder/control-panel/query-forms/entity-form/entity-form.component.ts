@@ -35,7 +35,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
       if (this.entitiesFormControl.value === '') {
-        this.updateEntityName('');
+        // this.updateEntityName('');
       }
     }
   }
@@ -54,24 +54,24 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): EntityModel[] {
     const filterValue = value.toLowerCase();
 
-    this.updateEntityName(value);
+    // this.updateEntityName(value);
 
     return this.entities.filter(entity =>
       entity.logicalName.toLowerCase().includes(filterValue)
     );
   }
 
-  updateEntityName(entityName: string) {
-    if (!entityName) {
-      this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
-      this.selectedNode.tagProperties.entityName = null;
-    } else {
-      this.selectedNode.displayValue = entityName;
-      this.selectedNode.tagProperties.entityName = entityName;
-    }
+  // updateEntityName(entityName: string) {
+  //   if (!entityName) {
+  //     this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
+  //     this.selectedNode.tagProperties.entityName = null;
+  //   } else {
+  //     this.selectedNode.displayValue = entityName;
+  //     this.selectedNode.tagProperties.entityName = entityName;
+  //   }
 
-    this.onInputChange.emit(this.selectedNode);
-  }
+  //   this.onInputChange.emit(this.selectedNode);
+  // }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
