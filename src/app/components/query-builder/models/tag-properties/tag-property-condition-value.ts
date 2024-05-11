@@ -6,7 +6,7 @@ export class TagPropertyConditionValue implements ITagProperties{
     
     readonly tagName: string = QueryNodeTags.VALUE;
     
-    conditionNodeValue: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    conditionNodeValue?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

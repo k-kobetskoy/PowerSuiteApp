@@ -6,7 +6,7 @@ export class TagPropertyEntity implements ITagProperties {
 
     readonly tagName: string = QueryNodeTags.ENTITY;
 
-    entityName:  BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    entityName?:  BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

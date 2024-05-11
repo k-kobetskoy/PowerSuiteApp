@@ -6,8 +6,8 @@ export class TagPropertySort implements ITagProperties {
 
     readonly tagName: string = QueryNodeTags.ORDER;
 
-    sortAttribute: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    descending: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+    sortAttribute?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    descending?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

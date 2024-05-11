@@ -6,10 +6,10 @@ export class TagPropertyCondition implements ITagProperties {
 
     readonly tagName: string = QueryNodeTags.CONDITION;
 
-    conditionEntity: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    conditionAttribute: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    conditionOperator: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    conditionValue: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    conditionEntity?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    conditionAttribute?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    conditionOperator?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    conditionValue?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

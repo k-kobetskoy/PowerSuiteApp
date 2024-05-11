@@ -2,9 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subscription, map, startWith } from 'rxjs';
-import { IQueryNode } from '../../../models/abstract/i-query-node';
-import { ITagProperties } from '../../../models/abstract/i-tag-properties';
 import { RequestService } from 'src/app/services/request/request.service';
+import { NodeEntity } from '../../../models/nodes/node-entity';
 
 @Component({
   selector: 'app-entity-form',
@@ -15,8 +14,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
 
   constructor(private requestService: RequestService) { }
-  @Input() selectedNode: IQueryNode
-  @Output() onInputChange = new EventEmitter<IQueryNode>()
+  @Input() selectedNode: NodeEntity;
   @Output() onNodeCreate = new EventEmitter<string>()
 
   entitiesFormControl = new FormControl<string>(null);
@@ -34,8 +32,8 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
-      if (this.entitiesFormControl.value === '') {
-        // this.updateEntityName('');
+      if (this.entitiesFormControl.value === '') {    
+        this.selectedNode.tagProperties.entityName.next(null);        
       }
     }
   }
@@ -54,24 +52,12 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): EntityModel[] {
     const filterValue = value.toLowerCase();
 
-    // this.updateEntityName(value);
+    this.selectedNode.tagProperties.entityName.next(filterValue) 
 
     return this.entities.filter(entity =>
       entity.logicalName.toLowerCase().includes(filterValue)
     );
   }
-
-  // updateEntityName(entityName: string) {
-  //   if (!entityName) {
-  //     this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
-  //     this.selectedNode.tagProperties.entityName = null;
-  //   } else {
-  //     this.selectedNode.displayValue = entityName;
-  //     this.selectedNode.tagProperties.entityName = entityName;
-  //   }
-
-  //   this.onInputChange.emit(this.selectedNode);
-  // }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
