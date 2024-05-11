@@ -2,45 +2,46 @@
 
 <mat-form-field>
     <mat-label>Top</mat-label>
-    <input [ngModel]="selectedNode.tagProperties.top | async" (ngModelChange)="selectedNode.tagProperties.top.next($event)" type="number"
-        matInput  (keyup)="onKeyPressed($event)">
+    <input [ngModel]="selectedNode.tagProperties.top | async"
+        (ngModelChange)="selectedNode.tagProperties.top.next($event)" type="number" matInput>
 </mat-form-field>
 
-<mat-checkbox 
-[ngModel]="selectedNode.tagProperties.distinct | async" (ngModelChange)="selectedNode.tagProperties.distinct.next($event)">Distinct</mat-checkbox>
-<mat-checkbox 
-[ngModel]="selectedNode.tagProperties.noLock | async" (ngModelChange)="selectedNode.tagProperties.noLock.next($event)">No-lock</mat-checkbox>
-<mat-checkbox 
-[ngModel]="selectedNode.tagProperties.aggregate | async" (ngModelChange)="selectedNode.tagProperties.aggregate.next($event)">Aggregate</mat-checkbox>
-<mat-checkbox 
-[ngModel]="selectedNode.tagProperties.totalRecordsCount | async" (ngModelChange)="selectedNode.tagProperties.totalRecordsCount.next($event)">Total record count</mat-checkbox>
-<mat-checkbox 
-[ngModel]="selectedNode.tagProperties.lateMaterialize | async" (ngModelChange)="selectedNode.tagProperties.lateMaterialize.next($event)">Late materialize</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.distinct | async"
+    (ngModelChange)="selectedNode.tagProperties.distinct.next($event)">Distinct</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.noLock | async"
+    (ngModelChange)="selectedNode.tagProperties.noLock.next($event)">No-lock</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.aggregate | async"
+    (ngModelChange)="selectedNode.tagProperties.aggregate.next($event)">Aggregate</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.totalRecordsCount | async"
+    (ngModelChange)="selectedNode.tagProperties.totalRecordsCount.next($event)">Total record count</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.lateMaterialize | async"
+    (ngModelChange)="selectedNode.tagProperties.lateMaterialize.next($event)">Late materialize</mat-checkbox>
 
 <mat-form-field>
     <mat-label>Page size</mat-label>
-    <input type="number" matInput  (keyup)="onKeyPressed($event)"
-    [ngModel]="selectedNode.tagProperties.pageSize | async" (ngModelChange)="selectedNode.tagProperties.pageSize.next($event)">
+    <input type="number" matInput [ngModel]="selectedNode.tagProperties.pageSize | async"
+        (ngModelChange)="selectedNode.tagProperties.pageSize.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Page</mat-label>
-    <input type="number" matInput  (keyup)="onKeyPressed($event)"
-    [ngModel]="selectedNode.tagProperties.page | async" (ngModelChange)="selectedNode.tagProperties.page.next($event)">
+    <input type="number" matInput [ngModel]="selectedNode.tagProperties.page | async"
+        (ngModelChange)="selectedNode.tagProperties.page.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Paging cookie</mat-label>
-    <input type="text" matInput (keyup)="onKeyPressed($event)"
-    [ngModel]="selectedNode.tagProperties.pagingCookie | async" (ngModelChange)="selectedNode.tagProperties.pagingCookie.next($event)">
+    <input type="text" matInput [ngModel]="selectedNode.tagProperties.pagingCookie | async"
+        (ngModelChange)="selectedNode.tagProperties.pagingCookie.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Data source</mat-label>
-    <mat-select [ngModel]="selectedNode.tagProperties.dataSource | async" (ngModelChange)="selectedNode.tagProperties.dataSource.next($event)">
+    <mat-select [ngModel]="selectedNode.tagProperties.dataSource | async"
+        (ngModelChange)="selectedNode.tagProperties.dataSource.next($event)">
         <mat-option></mat-option>
         <mat-option value="archive">Archive</mat-option>
     </mat-select>

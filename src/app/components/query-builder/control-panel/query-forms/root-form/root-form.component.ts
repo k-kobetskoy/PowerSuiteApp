@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IQueryNode } from '../../../models/abstract/i-query-node';
-import { FormControl } from '@angular/forms';
 import { NodeRoot } from '../../../models/nodes/node-root';
 
 @Component({
@@ -20,8 +18,4 @@ export class RootFormComponent implements OnInit {
   createNode(nodeName: string) {
     this.onNodeCreate.emit(nodeName)
   }
-
-  onKeyPressed($event: KeyboardEvent) {
-    
-    }
 }
