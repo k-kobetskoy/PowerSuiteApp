@@ -38,6 +38,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import{ ReactiveFormsModule} from '@angular/forms';
+import { RequestService } from './services/request/request.service';
 
 
 @NgModule({
@@ -79,7 +80,7 @@ import{ ReactiveFormsModule} from '@angular/forms';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,    
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [QueryNodeTree],

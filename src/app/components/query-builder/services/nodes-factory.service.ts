@@ -2,40 +2,81 @@ import { Injectable } from '@angular/core';
 import { QueryNodeType } from 'src/app/components/query-builder/models/constants/query-node-type';
 import { NotImplementError } from 'src/app/models/errors/not-implement-error';
 import { IQueryNode } from 'src/app/components/query-builder/models/abstract/i-query-node';
-import { NodeCondition } from '../models/nodes/node-condition';
-import { NodePropertiesFactoryService } from './node-properties-factory.service';
-import { NodeRoot } from '../models/nodes/node-root';
-import { NodeConditionValue } from '../models/nodes/node-condition-value';
-import { NodeSort } from '../models/nodes/node-sort';
-import { NodeLink } from '../models/nodes/node-link';
-import { NodeEntity } from '../models/nodes/node-entity';
-import { NodeFilter } from '../models/nodes/node-filter';
-import { NodeEntityAttribute } from '../models/nodes/node-entity-attribute';
-
+import { QueryNode } from '../models/query-node';
+import { QueryNodeOrder } from '../models/constants/query-node-order.enum';
+import { QueryNodeActions } from '../models/constants/query-node-actions';
 
 @Injectable({ providedIn: 'root' })
 export class NodeFactoryService {
 
-  constructor(private nodePropertiesFactory: NodePropertiesFactoryService) { }
+  constructor() { }
 
   getNode(typeName: string): IQueryNode {
     switch (typeName) {
       case QueryNodeType.CONDITION:
-        return new NodeCondition(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.CONDITION))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.CONDITION,
+          displayValue: QueryNodeType.CONDITION,
+          order: QueryNodeOrder.CONDITION,
+          type: QueryNodeType.CONDITION,
+          actions: QueryNodeActions.CONDITION
+        })
       case QueryNodeType.ATTRIBUTE:
-        return new NodeEntityAttribute(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.ATTRIBUTE))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.ATTRIBUTE,
+          displayValue: QueryNodeType.ATTRIBUTE,
+          order: QueryNodeOrder.ATTRIBUTE,
+          type: QueryNodeType.ATTRIBUTE,
+          actions: QueryNodeActions.ATTRIBUTE
+        })
       case QueryNodeType.FILTER:
-        return new NodeFilter(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.FILTER))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.FILTER,
+          displayValue: QueryNodeType.FILTER,
+          order: QueryNodeOrder.FILTER,
+          type: QueryNodeType.FILTER,
+          actions: QueryNodeActions.FILTER
+        })
       case QueryNodeType.ENTITY:
-        return new NodeEntity(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.ENTITY))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.ENTITY,
+          displayValue: QueryNodeType.ENTITY,
+          order: QueryNodeOrder.ENTITY,
+          type: QueryNodeType.ENTITY,
+          actions: QueryNodeActions.ENTITY
+        })
       case QueryNodeType.LINK:
-        return new NodeLink(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.LINK))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.LINK,
+          displayValue: QueryNodeType.LINK,
+          order: QueryNodeOrder.LINK,
+          type: QueryNodeType.LINK,
+          actions: QueryNodeActions.LINK
+        })
       case QueryNodeType.ORDER:
-        return new NodeSort(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.ORDER))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.ORDER,
+          displayValue: QueryNodeType.ORDER,
+          order: QueryNodeOrder.ORDER,
+          type: QueryNodeType.ORDER,
+          actions: QueryNodeActions.ORDER
+        })
       case QueryNodeType.VALUE:
-        return new NodeConditionValue(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.VALUE))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.VALUE,
+          displayValue: QueryNodeType.VALUE,
+          order: QueryNodeOrder.VALUE,
+          type: QueryNodeType.VALUE,
+          actions: QueryNodeActions.VALUE
+        })
       case QueryNodeType.ROOT:
-        return new NodeRoot(this.nodePropertiesFactory.getNodeProperty(QueryNodeType.ROOT))
+        return new QueryNode({
+          defaultDisplayValue: QueryNodeType.ROOT,
+          displayValue: QueryNodeType.ROOT,
+          order: QueryNodeOrder.ROOT,
+          type: QueryNodeType.ROOT,
+          actions: QueryNodeActions.ROOT
+        })
       default:
         throw new NotImplementError(`Couldn't find node type with the name: ${typeName}`)
     }

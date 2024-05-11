@@ -4,9 +4,9 @@ import { Observable, Subscription } from 'rxjs';
 import { EnvironmentModel } from 'src/app/models/environment-model';
 import { ConnectionsDialogComponent } from './connections-dialog/connections-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { EnvironmentsRequestService } from 'src/app/services/request/environments-request.service';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
+import { RequestService } from 'src/app/services/request/request.service';
 
 @Component({
   selector: 'app-connections',
@@ -24,18 +24,20 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
 
   constructor(private dialog: MatDialog,
     private authService: AuthService,
-    private environmentsService: EnvironmentsRequestService,
+    private requestService: RequestService,
     private eventBus: EventBusService) { }
 
   ngOnInit() {
-    this.activeEnvironment$ = this.environmentsService.getActiveEnvironment()
+    this.activeEnvironment$ = this.requestService.getActiveEnvironment()
     if(this.activeEnvironment$){
       this.subs.push(this.activeEnvironment$.subscribe(env => {
-        this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
+        if(env){
+          this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
+        }        
       }));
     }
     
-    this.eventBus.onLast(AppEvents.USER_REMOVED, () => this.environmentsService.removeActiveEnvironment())
+    this.eventBus.onLast(AppEvents.USER_REMOVED, () => this.requestService.removeActiveEnvironment())
 
     this.authService.checkProtectedResource();
   }

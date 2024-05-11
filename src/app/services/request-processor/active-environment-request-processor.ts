@@ -44,7 +44,7 @@ export class ActiveEnvironmentRequestProcessor<T extends EnvironmentModel, D ext
         }
 
         if (!activeEnvironment$.value) {
-            let activeEnvironment = this._localStorageService.getItem<T[]>(CacheKeys.RecentActiveEnvironments).length > 0
+            let activeEnvironment = this._localStorageService.getItem<T[]>(CacheKeys.RecentActiveEnvironments)?.length > 0
                 ? <T>this._localStorageService.getItem<T[]>(CacheKeys.RecentActiveEnvironments)[0]
                 : null
 

@@ -15,5 +15,5 @@ export interface IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    nodeProperty: INodeProperty;
+    nodeProperties: INodeProperty[]
 }

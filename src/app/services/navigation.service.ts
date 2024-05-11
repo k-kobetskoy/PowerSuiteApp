@@ -2,9 +2,9 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EnvironmentModel } from '../models/environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
-import { EnvironmentsRequestService } from './request/environments-request.service';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
+import { RequestService } from './request/request.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService implements OnInit, OnDestroy {
@@ -15,7 +15,7 @@ export class NavigationService implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private environmentsService: EnvironmentsRequestService) { }
+    private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.addActiveEnvironmentToInterceptorConfig()
@@ -24,7 +24,7 @@ export class NavigationService implements OnInit, OnDestroy {
   }
 
   navigateToEnv(selectedEnv: EnvironmentModel) {
-    this.environmentsService.setActiveEnvironment(selectedEnv)
+    this.requestService.setActiveEnvironment(selectedEnv)
 
     let envParam = selectedEnv.url.slice(8)
 
@@ -39,7 +39,7 @@ export class NavigationService implements OnInit, OnDestroy {
     const currentEnvironmentUrl = this.getCurrentEnvironmentUrl()
     const userIsLoggedIn = this.authService.userIsLoggedIn
 
-    this.environmentsService.getActiveEnvironment().subscribe(activatedEnvironment => {
+    this.requestService.getActiveEnvironment().subscribe(activatedEnvironment => {
       if (currentEnvironmentUrl) {
         this.handleExistingRouteParam(currentEnvironmentUrl, userIsLoggedIn, activatedEnvironment)
       } else {
@@ -84,11 +84,11 @@ export class NavigationService implements OnInit, OnDestroy {
   }
 
   private findEnvironmentInUsersEnvironmentsAndConnect(urlParam: string) {
-    this.environmentsService.getAvailableUserEnvironments()
+    this.requestService.getEnvironments()
       .subscribe(environments => {
         if (environments) {
           let matchingEnvironment = environments.find(item => item.url === urlParam)
-          this.environmentsService.setActiveEnvironment(matchingEnvironment)
+          this.requestService.setActiveEnvironment(matchingEnvironment)
         } else {
           this.router.navigateByUrl('**')
         }
@@ -104,7 +104,7 @@ export class NavigationService implements OnInit, OnDestroy {
 
 
   addActiveEnvironmentToInterceptorConfig() {
-    this.environmentsService.getActiveEnvironment().subscribe(env=>
+    this.requestService.getActiveEnvironment().subscribe(env=>
       this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
     )    
   }

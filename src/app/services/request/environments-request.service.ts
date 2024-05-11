@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
 import { Observable, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Constants } from 'src/app/config/constants';
@@ -13,13 +13,14 @@ import { ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR, GET_CACHED_REQUEST_PROCESSOR } fr
 @Injectable({ providedIn: 'root' })
 export class EnvironmentsRequestService {
 
-  constructor(
-    private http: HttpClient,
-    @Inject(GET_CACHED_REQUEST_PROCESSOR) private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]>,
-    @Inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR) private activeEnvironmentProcessor: ActiveEnvironmentRequestProcessor<EnvironmentModel, SessionStorageService>) { }
+  private http: HttpClient = inject(HttpClient);
+  private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]> = inject(GET_CACHED_REQUEST_PROCESSOR);
+  private activeEnvironmentProcessor: ActiveEnvironmentRequestProcessor<EnvironmentModel, SessionStorageService> = inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR);
+
+  constructor() {}
 
   public getAvailableUserEnvironments(): Observable<EnvironmentModel[]> {
-    return this.getCachedRequestProcessor.get(CacheKeys.AvailableEnvironments, ()=>this.getAllUserEnvironments())
+    return this.getCachedRequestProcessor.get(CacheKeys.AvailableEnvironments, () => this.getAllUserEnvironments())
   }
 
   public setActiveEnvironment(environment: EnvironmentModel): void {

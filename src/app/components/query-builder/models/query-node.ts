@@ -1,7 +1,7 @@
-import { INodeProperty } from "./i-node-property";
-import { IQueryNode } from "./i-query-node";
+import { INodeProperty } from "./abstract/i-node-property";
+import { IQueryNode } from "./abstract/i-query-node";
 
-export abstract class QueryNode implements IQueryNode {
+export class QueryNode implements IQueryNode {
     defaultDisplayValue: string;
     displayValue: string;
     order: number;
@@ -16,14 +16,14 @@ export abstract class QueryNode implements IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    nodeProperty: INodeProperty;
+    nodeProperties: INodeProperty[];
 
-    constructor(nodeProperty: INodeProperty) {
+    constructor(init?:Partial<QueryNode>) {
         this.expandable = false;
         this.level = 0;
         this.visible = true;
         this.isExpanded = true;
         this.next = null;
-        this.nodeProperty = nodeProperty;
+        Object.assign(this, init);
     }
 }

@@ -2,7 +2,7 @@ import { INodeProperty } from "../abstract/i-node-property";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
-import { QueryNode } from "../abstract/query-node";
+import { QueryNode } from "../query-node";
 
 export class NodeFilter extends QueryNode {
     

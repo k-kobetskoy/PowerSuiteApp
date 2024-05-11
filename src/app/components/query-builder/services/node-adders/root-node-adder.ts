@@ -10,6 +10,7 @@ export class RootNodeAdder extends BaseNodeAdder{
 
         let entityNode = this.add(QueryNodeType.ENTITY, root);
 
+        root.expandable = true;
         return entityNode;
     }
 
