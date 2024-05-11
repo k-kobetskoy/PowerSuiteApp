@@ -37,25 +37,19 @@ export class NodeRoot extends QueryNode {
         return combined$.pipe(mergeMap(properties =>
             iif(() =>
                 !properties[0] &&
-                !properties[1] &&
                 !properties[2] &&
-                !properties[3] &&
-                !properties[4] &&
                 !properties[5] &&
                 !properties[6] &&
-                !properties[7] &&
                 !properties[8] &&
                 !properties[9],
                 of(this.defaultDisplayValue), of(`
                 ${properties[8] ? `Top: ${properties[8]}` : ''} 
                 ${properties[6] ? `PgSz: ${properties[6]}` : ''} 
                 ${properties[5] ? `Pg: ${properties[5]}` : ''} 
-                ${properties[7] ? `PgCk: ${properties[7]}` : ''} 
                 ${properties[2] ? `Dst` : ''}
                 ${properties[0] ? `Agg` : ''}
                 ${properties[9] ? `TRC` : ''}   
                 `))
-
         ));
     }   
 }

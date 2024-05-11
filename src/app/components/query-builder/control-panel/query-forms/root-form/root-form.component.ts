@@ -13,19 +13,6 @@ export class RootFormComponent implements OnInit {
   @Input() selectedNode: NodeRoot
   @Output() onNodeCreate = new EventEmitter<string>()
 
-  topFormControl = new FormControl<number>(null);
-  pageSizeFormControl = new FormControl<number>(null);
-  pageFormControl = new FormControl<number>(null);
-  pagingCookieFormControl = new FormControl<string>(null);
-  dataSourceFormControl = new FormControl<string>(null);
-
-  distinctFormControl = new FormControl<boolean>(false);
-  noLockFormControl = new FormControl<boolean>(false);
-  aggregateFormControl = new FormControl<boolean>(false);
-  totalRecordsCountFormControl = new FormControl<boolean>(false);
-  lateMaterializeFormControl = new FormControl<boolean>(false);
-
-
   constructor() { }
 
   ngOnInit() { }
