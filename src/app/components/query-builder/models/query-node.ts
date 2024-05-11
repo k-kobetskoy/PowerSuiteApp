@@ -1,4 +1,4 @@
-import { INodeProperty } from "./abstract/i-node-property";
+import { ITagProperties } from "./abstract/i-tag-properties";
 import { IQueryNode } from "./abstract/i-query-node";
 
 export class QueryNode implements IQueryNode {
@@ -16,7 +16,7 @@ export class QueryNode implements IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    nodeProperties: INodeProperty[];
+    tagProperties: ITagProperties;
 
     constructor(init?:Partial<QueryNode>) {
         this.expandable = false;

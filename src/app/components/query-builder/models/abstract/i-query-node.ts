@@ -1,4 +1,4 @@
-import { INodeProperty } from "./i-node-property";
+import { ITagProperties } from "./i-tag-properties";
 
 export interface IQueryNode {
     defaultDisplayValue: string;
@@ -15,5 +15,5 @@ export interface IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    nodeProperties: INodeProperty[]
+    tagProperties: ITagProperties
 }

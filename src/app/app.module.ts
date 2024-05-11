@@ -22,6 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
+import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -38,7 +39,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import{ ReactiveFormsModule} from '@angular/forms';
-import { RequestService } from './services/request/request.service';
+
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { RequestService } from './services/request/request.service';
     LoadingIndicatorComponent,
     PageNotFoundComponent,
     EntityFormComponent,
+    RootFormComponent,
   ],
 
   imports: [

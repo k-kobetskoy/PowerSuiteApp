@@ -4,6 +4,7 @@
     
     <div [ngSwitch]="selected.type">
         <app-entity-form [selectedNode]="selected"  *ngSwitchCase='nodeTypes.ENTITY' (onInputChange)="setEntityName($event)" (onNodeCreate)="createNode($event)"></app-entity-form>
+        <app-root-form [selectedNode]="selected"  *ngSwitchCase='nodeTypes.ENTITY' (onInputChange)="setEntityName($event)" (onNodeCreate)="createNode($event)"></app-root-form>
     </div>
 
 </div>

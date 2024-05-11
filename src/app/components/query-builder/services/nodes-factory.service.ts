@@ -5,16 +5,19 @@ import { IQueryNode } from 'src/app/components/query-builder/models/abstract/i-q
 import { QueryNode } from '../models/query-node';
 import { QueryNodeOrder } from '../models/constants/query-node-order.enum';
 import { QueryNodeActions } from '../models/constants/query-node-actions';
+import { QueryNodeTags } from '../models/constants/query-node-tags';
+import { TagPropertiesFactoryService } from './tag-properties-factory.service';
 
 @Injectable({ providedIn: 'root' })
 export class NodeFactoryService {
 
-  constructor() { }
+  constructor(private tagPropertiesFactory :TagPropertiesFactoryService) { }
 
   getNode(typeName: string): IQueryNode {
     switch (typeName) {
       case QueryNodeType.CONDITION:
-        return new QueryNode({
+        return new QueryNode({ 
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.CONDITION),
           defaultDisplayValue: QueryNodeType.CONDITION,
           displayValue: QueryNodeType.CONDITION,
           order: QueryNodeOrder.CONDITION,
@@ -23,6 +26,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.ATTRIBUTE:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ATTRIBUTE),
           defaultDisplayValue: QueryNodeType.ATTRIBUTE,
           displayValue: QueryNodeType.ATTRIBUTE,
           order: QueryNodeOrder.ATTRIBUTE,
@@ -31,6 +35,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.FILTER:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.FILTER),
           defaultDisplayValue: QueryNodeType.FILTER,
           displayValue: QueryNodeType.FILTER,
           order: QueryNodeOrder.FILTER,
@@ -39,6 +44,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.ENTITY:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ENTITY),
           defaultDisplayValue: QueryNodeType.ENTITY,
           displayValue: QueryNodeType.ENTITY,
           order: QueryNodeOrder.ENTITY,
@@ -47,6 +53,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.LINK:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.LINK),
           defaultDisplayValue: QueryNodeType.LINK,
           displayValue: QueryNodeType.LINK,
           order: QueryNodeOrder.LINK,
@@ -55,6 +62,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.ORDER:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ORDER),
           defaultDisplayValue: QueryNodeType.ORDER,
           displayValue: QueryNodeType.ORDER,
           order: QueryNodeOrder.ORDER,
@@ -63,6 +71,7 @@ export class NodeFactoryService {
         })
       case QueryNodeType.VALUE:
         return new QueryNode({
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.VALUE),
           defaultDisplayValue: QueryNodeType.VALUE,
           displayValue: QueryNodeType.VALUE,
           order: QueryNodeOrder.VALUE,
@@ -70,7 +79,8 @@ export class NodeFactoryService {
           actions: QueryNodeActions.VALUE
         })
       case QueryNodeType.ROOT:
-        return new QueryNode({
+        return new QueryNode({ 
+          tagProperties: this.tagPropertiesFactory.getTagProperties(QueryNodeType.ROOT),
           defaultDisplayValue: QueryNodeType.ROOT,
           displayValue: QueryNodeType.ROOT,
           order: QueryNodeOrder.ROOT,

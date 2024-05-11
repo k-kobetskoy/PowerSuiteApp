@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import { IQueryNode } from '../../../models/abstract/i-query-node';
-import { INodeProperty } from '../../../models/abstract/i-node-property';
+import { ITagProperties } from '../../../models/abstract/i-tag-properties';
 import { RequestService } from 'src/app/services/request/request.service';
 
 @Component({
@@ -25,22 +25,12 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
   entities: EntityModel[] = [];
 
-  entityNodeProperty: INodeProperty
-
   ngOnInit() {
-    this.initNodeProperties();
-
     this.subscriptions.push(this.requestService.getEntities().subscribe((data) => {
       this.entities = data;
       this.addFilterToInput();
     }));
   }
-
-  initNodeProperties() {
-    this.entityNodeProperty = { name: 'name' };
-    this.selectedNode.nodeProperties = [this.entityNodeProperty];
-  }
-
 
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
@@ -74,10 +64,10 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   updateEntityName(entityName: string) {
     if (!entityName) {
       this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
-      this.entityNodeProperty.value = null;
+      this.selectedNode.tagProperties.entityName = null;
     } else {
       this.selectedNode.displayValue = entityName;
-      this.entityNodeProperty.value = entityName;
+      this.selectedNode.tagProperties.entityName = entityName;
     }
 
     this.onInputChange.emit(this.selectedNode);
