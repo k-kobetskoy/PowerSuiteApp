@@ -3,12 +3,13 @@ import { QueryNodeTags } from "../constants/query-node-tags";
 import { TagPropertyNames } from "../constants/tag-property-names";
 import { TagProperty } from "../tag-property";
 
-export class TagPropertyEntity implements ITagProperties {
+export class TagPropertyOrder implements ITagProperties {
 
-    readonly tagName: string = QueryNodeTags.ENTITY;
+    readonly tagName: string = QueryNodeTags.ORDER;
 
-    entityName?: TagProperty<string> = new TagProperty<string>( TagPropertyNames.entityName );
-    entityAlias?: TagProperty<string> = new TagProperty<string>( TagPropertyNames.entityAlias );
+    orderAttribute?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.orderAttribute);
+    orderDescending?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.orderDescending);
+    orderAlias?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.orderAlias);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

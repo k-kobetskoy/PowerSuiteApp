@@ -1,48 +1,54 @@
 import { BehaviorSubject } from "rxjs";
+import { ITagProperty } from "./i-tag-property";
 
 export interface ITagProperties {
     
-    tagName: string;
+    tagName: string;    
 
-    conditionNodeValue?: BehaviorSubject<string>;
+    conditionEntity?: ITagProperty<string>;
+    conditionAttribute?: ITagProperty<string>;
+    conditionOperator?: ITagProperty<string>;
+    conditionValue?: ITagProperty<string>;
+    conditionValueOf?: ITagProperty<string>;
 
-    conditionEntity?: BehaviorSubject<string>;
-    conditionAttribute?: BehaviorSubject<string>;
-    conditionOperator?: BehaviorSubject<string>;
-    conditionValue?: BehaviorSubject<string>;
-
-    attributeName?: BehaviorSubject<string>;
-    attributeAlias?: BehaviorSubject<string>;
+    attributeName?: ITagProperty<string>;
+    attributeAlias?: ITagProperty<string>;
+    attributeAggregate?: ITagProperty<string>;
+    attributeGroupBy?: ITagProperty<boolean>;
+    attributeDistinct?: ITagProperty<boolean>;
+    attributeUserTimeZone?: ITagProperty<boolean>;
+    attributeDateGrouping?: ITagProperty<string>;
     
-    entityName?:  BehaviorSubject<string>;
+    entityName?:  ITagProperty<string>;
+    entityAlias?:  ITagProperty<string>;
 
-    filterType?: BehaviorSubject<string>;
-    isQuickFindFilter?: BehaviorSubject<boolean>;
-    overrideRecordLimit?: BehaviorSubject<boolean>;
+    filterType?: ITagProperty<string>;
+    filterIsQuickFind?: ITagProperty<boolean>;
+    filterOverrideRecordLimit?: ITagProperty<boolean>;
+    filterBypassQuickFind?: ITagProperty<boolean>;
 
-    relationship?: BehaviorSubject<string>;
-    linkEntity?: BehaviorSubject<string>;
-    fromAttribute?: BehaviorSubject<string>;
-    toAttribute?: BehaviorSubject<string>;
-    linkType?: BehaviorSubject<string>;
-    linkAlias?: BehaviorSubject<string>;
-    intersect?: BehaviorSubject<boolean>;
-    vilible?: BehaviorSubject<boolean>;
-    showAll?: BehaviorSubject<boolean>;
+    linkEntity?: ITagProperty<string>;
+    linkFromAttribute?: ITagProperty<string>;
+    linkToAttribute?: ITagProperty<string>;
+    linkType?: ITagProperty<string>;
+    linkAlias?: ITagProperty<string>;
+    linkIntersect?: ITagProperty<boolean>;
+    linkVilible?: ITagProperty<boolean>;
 
-    top?: BehaviorSubject<number>;
-    distinct?: BehaviorSubject<boolean>;
-    noLock?: BehaviorSubject<boolean>;
-    aggregate?: BehaviorSubject<boolean>;
-    totalRecordsCount?: BehaviorSubject<boolean>;
-    lateMaterialize?: BehaviorSubject<boolean>;
-    pageSize?: BehaviorSubject<number>;
-    page?: BehaviorSubject<number>;
-    pagingCookie?: BehaviorSubject<string>;
-    dataSource?: BehaviorSubject<string>;
+    rootTop?: ITagProperty<number>;
+    rootDistinct?: ITagProperty<boolean>;
+    rootAggregate?: ITagProperty<boolean>;
+    rootTotalRecordsCount?: ITagProperty<boolean>;
+    rootLateMaterialize?: ITagProperty<boolean>;
+    rootPageSize?: ITagProperty<number>;
+    rootPage?: ITagProperty<number>;
+    rootPagingCookie?: ITagProperty<string>;
+    rootDataSource?: ITagProperty<string>;
+    rootOptions?: ITagProperty<string>;
 
-    sortAttribute?: BehaviorSubject<string>;
-    descending?: BehaviorSubject<boolean>;
+    orderAttribute?: ITagProperty<string>;
+    orderDescending?: ITagProperty<boolean>;
+    orderAlias?: ITagProperty<string>;
 
     getOpeningTag(): string;
     getClosingTag(): string;

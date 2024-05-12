@@ -1,21 +1,24 @@
 import { BehaviorSubject } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
+import { TagPropertyNames } from "../constants/tag-property-names";
+import { TagProperty } from "../tag-property";
 
 export class TagPropertyRoot implements ITagProperties {
 
     readonly tagName: string = QueryNodeTags.ROOT;
 
-    top?: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    distinct?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    noLock?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    aggregate?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    totalRecordsCount?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    lateMaterialize?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    pageSize?: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    page?: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    pagingCookie?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    dataSource?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    rootTop?: TagProperty<number> = new TagProperty<number>(TagPropertyNames.rootTop);
+    rootDistinct?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.rootDistinct, false);
+    rootAggregate?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.rootAggregate, false);
+    rootTotalRecordsCount?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.rootTotalRecordsCount, false);
+    rootLateMaterialize?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.rootLateMaterialize, false);
+    rootPageSize?: TagProperty<number> = new TagProperty<number>(TagPropertyNames.rootPageSize);
+    rootPage?: TagProperty<number> = new TagProperty<number>(TagPropertyNames.rootPage);
+    rootPagingCookie?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.rootPagingCookie);
+    rootDataSource?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.rootDataSource);
+    rootOptions?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.rootOptions);
+
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

@@ -21,35 +21,29 @@ export class NodeRoot extends QueryNode {
     override get displayValue$(): Observable<string> {
 
         let combined$ = combineLatest([
-            this.tagProperties.aggregate,
-            this.tagProperties.dataSource,
-            this.tagProperties.distinct,
-            this.tagProperties.lateMaterialize,
-            this.tagProperties.noLock,
-            this.tagProperties.page,
-            this.tagProperties.pageSize,
-            this.tagProperties.pagingCookie,
-            this.tagProperties.top,
-            this.tagProperties.totalRecordsCount,
+                this.tagProperties.rootAggregate.value$,
+                this.tagProperties.rootDistinct.value$,
+                this.tagProperties.rootPage.value$,
+                this.tagProperties.rootPageSize.value$,
+                this.tagProperties.rootTop.value$,
+                this.tagProperties.rootTotalRecordsCount.value$,
         ]);
-
 
         return combined$.pipe(mergeMap(properties =>
             iif(() =>
                 !properties[0] &&
+                !properties[1] &&
                 !properties[2] &&
-                !properties[5] &&
-                !properties[6] &&
-                !properties[8] &&
-                !properties[9],
+                !properties[3] &&
+                !properties[4] &&
+                !properties[5],
                 of(this.defaultDisplayValue), of(`
-                ${properties[8] ? `Top: ${properties[8]}` : ''} 
-                ${properties[6] ? `PgSz: ${properties[6]}` : ''} 
-                ${properties[5] ? `Pg: ${properties[5]}` : ''} 
-                ${properties[2] ? `Dst` : ''}
+                ${properties[4] ? `Top: ${properties[4]}` : ''} 
+                ${properties[3] ? `PgSz: ${properties[3]}` : ''} 
+                ${properties[2] ? `Pg: ${properties[2]}` : ''} 
+                ${properties[1] ? `Dst` : ''}
                 ${properties[0] ? `Agg` : ''}
-                ${properties[9] ? `TRC` : ''}   
-                `))
+                ${properties[5] ? `TRC` : ''} `))
         ));
     }   
 }

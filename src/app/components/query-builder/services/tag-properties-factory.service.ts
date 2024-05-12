@@ -7,7 +7,7 @@ import { TagPropertyEntityAttribute } from '../models/tag-properties/tag-propert
 import { TagPropertyFilter } from '../models/tag-properties/tag-property-filter';
 import { TagPropertyEntity } from '../models/tag-properties/tag-property-entity';
 import { TagPropertyLink } from '../models/tag-properties/tag-property-link';
-import { TagPropertySort } from '../models/tag-properties/tag-property-sort';
+import { TagPropertyOrder } from '../models/tag-properties/tag-property-order';
 import { TagPropertyConditionValue } from '../models/tag-properties/tag-property-condition-value';
 import { TagPropertyRoot } from '../models/tag-properties/tag-property-root';
 
@@ -29,7 +29,7 @@ export class TagPropertiesFactoryService {
       case QueryNodeType.LINK:
         return new TagPropertyLink()
       case QueryNodeType.ORDER:
-        return new TagPropertySort()
+        return new TagPropertyOrder()
       case QueryNodeType.VALUE:
         return new TagPropertyConditionValue()
       case QueryNodeType.ROOT:

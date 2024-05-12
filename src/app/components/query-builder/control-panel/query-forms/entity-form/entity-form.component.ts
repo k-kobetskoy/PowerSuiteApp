@@ -33,7 +33,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
       if (this.entitiesFormControl.value === '') {    
-        this.selectedNode.tagProperties.entityName.next(null);        
+        this.selectedNode.tagProperties.entityName.value$.next(null);        
       }
     }
   }
@@ -52,7 +52,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): EntityModel[] {
     const filterValue = value.toLowerCase();
 
-    this.selectedNode.tagProperties.entityName.next(filterValue) 
+    this.selectedNode.tagProperties.entityName.value$.next(filterValue) 
 
     return this.entities.filter(entity =>
       entity.logicalName.toLowerCase().includes(filterValue)

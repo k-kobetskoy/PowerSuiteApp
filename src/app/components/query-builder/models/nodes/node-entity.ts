@@ -1,4 +1,4 @@
-import { Observable, iif, mergeMap, of } from "rxjs";
+import { Observable, combineLatest, iif, mergeMap, of } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
@@ -18,10 +18,22 @@ export class NodeEntity extends QueryNode {
         this.actions = QueryNodeActions.ENTITY;
     }
 
-    override get displayValue$(): Observable<string> {        
-        return this.tagProperties?.entityName.asObservable()
-            .pipe(mergeMap(entityName => 
-                iif(() => !entityName, of(this.defaultDisplayValue), of(entityName))
-            ));
+    override get displayValue$(): Observable<string> {
+
+        let combined$ = combineLatest([
+            this.tagProperties.entityName.value$,
+            this.tagProperties.entityAlias.value$,
+        ]);
+
+
+        return combined$?.pipe(mergeMap(properties =>
+            iif(() =>
+                !properties[0] &&
+                !properties[1],
+                of(this.defaultDisplayValue), of(`               
+                ${properties[0] ? properties[0] : ''}
+                ${properties[1] ? `(${properties[1]})` : ''}
+                `))
+        ));
     }
 }
