@@ -12,8 +12,6 @@ import { NodeEntity } from '../../../models/nodes/node-entity';
 })
 export class EntityFormComponent implements OnInit, OnDestroy {
 
-
-  constructor(private requestService: RequestService) { }
   @Input() selectedNode: NodeEntity;
   @Output() onNodeCreate = new EventEmitter<string>()
 
@@ -25,32 +23,49 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
   entities: EntityModel[] = [];
 
+  constructor(private requestService: RequestService) { }
+
   ngOnInit() {
+    this.getInitialEntitiesAndApplyFilter();
+
+    this.bindDataToControls();
+  }
+
+  getInitialEntitiesAndApplyFilter() {
     this.subscriptions.push(this.requestService.getEntities().subscribe((data) => {
       this.entities = data;
       this.addFilterToInput();
-    }));    
+    }));
+  }
 
-    this.selectedNode.tagProperties.entityName.value$.subscribe((value) => {
-      this.aliasFormControl.setValue(value)
-    });
-        
-    this.aliasFormControl.valueChanges.subscribe((value) => {
-      this.selectedNode.tagProperties.entityAlias.value$.next(value);
-    });
+  bindDataToControls() {
+    this.subscriptions.push(this.selectedNode.tagProperties.entityName.value$.subscribe((value) => {
+      if (value !== this.entitiesFormControl.value)
+        this.entitiesFormControl.setValue(value)
+    }));
+
+    this.subscriptions.push(this.selectedNode.tagProperties.entityAlias.value$.subscribe((value) => {
+      if (value !== this.aliasFormControl.value)
+        this.aliasFormControl.setValue(value)
+    }));
+
+    this.subscriptions.push(this.aliasFormControl.valueChanges.subscribe((value) => {
+      if (value !== this.selectedNode.tagProperties.entityAlias.value$.getValue())
+        this.selectedNode.tagProperties.entityAlias.value$.next(value);
+    }));
   }
 
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
-      if (this.entitiesFormControl.value === '') {    
-        this.selectedNode.tagProperties.entityName.value$.next(null);        
+      if (this.entitiesFormControl.value === '') {
+        this.selectedNode.tagProperties.entityName.value$.next(null);
       }
     }
   }
 
   addFilterToInput() {
     this.filteredEntities$ = this.entitiesFormControl.valueChanges.pipe(
-      startWith(''),
+      startWith(this.selectedNode.tagProperties.entityName.value$.value ?? ''),
       map(value => value ? this._filter(value) : this.entities),
     );
   }
@@ -58,10 +73,11 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): EntityModel[] {
     const filterValue = value.toLowerCase();
 
-    this.selectedNode.tagProperties.entityName.value$.next(filterValue) 
+    this.selectedNode.tagProperties.entityName.value$.next(filterValue)
 
     return this.entities.filter(entity =>
-      entity.logicalName.toLowerCase().includes(filterValue)
+      entity.logicalName.toLowerCase().includes(filterValue) ||
+      entity.displayName.toLowerCase().includes(filterValue)
     );
   }
 

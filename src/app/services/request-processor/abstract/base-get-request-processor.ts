@@ -15,8 +15,7 @@ export abstract class BaseGetRequestProcessor<T> implements IGetRequestProcessor
 
     protected httpGet(requestFunction: () => Observable<T>, key: string): void {        
         this.subscription = requestFunction()
-            .subscribe(data => {
-                console.warn('BaseGetRequestProcessor : httpGet')
+            .subscribe(data => {                
                 this.cacheService.setItem<T>(data, key)
             })
 

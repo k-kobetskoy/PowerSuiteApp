@@ -1,5 +1,6 @@
 import { IQueryNode } from "../../models/abstract/i-query-node";
 import { QueryNodeType } from "../../models/constants/query-node-type";
+import { TagPropertyRoot } from "../../models/tag-properties/tag-property-root";
 import { BaseNodeAdder } from "./abstract/base-node-adder";
 
 export class RootNodeAdder extends BaseNodeAdder{

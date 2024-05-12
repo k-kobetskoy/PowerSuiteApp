@@ -1,4 +1,4 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Constants } from 'src/app/config/constants';
@@ -8,13 +8,13 @@ import { CacheKeys } from 'src/app/config/cache-keys';
 import { GetCachedRequestProcessor } from '../request-processor/get-cached-request-processor';
 import { ActiveEnvironmentRequestProcessor as ActiveEnvironmentRequestProcessor } from '../request-processor/active-environment-request-processor';
 import { SessionStorageService } from '../data-sorage/session-storage.service';
-import { ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR, GET_CACHED_REQUEST_PROCESSOR } from '../request-processor/tokens/tokens';
+import { ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR, GET_CACHED_ENTITY_REQUEST_PROCESSOR } from '../request-processor/tokens/tokens';
 
 @Injectable({ providedIn: 'root' })
-export class EnvironmentsRequestService {
+export class GlobalDiscoveryRequestService {
 
   private http: HttpClient = inject(HttpClient);
-  private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]> = inject(GET_CACHED_REQUEST_PROCESSOR);
+  private getCachedRequestProcessor: GetCachedRequestProcessor<EnvironmentModel[]> = inject(GET_CACHED_ENTITY_REQUEST_PROCESSOR);
   private activeEnvironmentProcessor: ActiveEnvironmentRequestProcessor<EnvironmentModel, SessionStorageService> = inject(ACTIVE_ENVIRONMENT_REQUEST_PROCESSOR);
 
   constructor() {}
