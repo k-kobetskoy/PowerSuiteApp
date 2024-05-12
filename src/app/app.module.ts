@@ -22,6 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
 import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
+import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -62,6 +63,7 @@ import{MatSelectModule} from '@angular/material/select';
     LoadingIndicatorComponent,
     EntityFormComponent,
     RootFormComponent,
+    AttributeFormComponent,
   ],
 
   imports: [

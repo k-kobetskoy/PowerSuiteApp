@@ -18,6 +18,8 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   @Output() onNodeCreate = new EventEmitter<string>()
 
   entitiesFormControl = new FormControl<string>(null);
+  aliasFormControl = new FormControl<string>(null);
+
   filteredEntities$: Observable<EntityModel[]> = null;
   subscriptions: Subscription[] = [];
 
@@ -27,7 +29,15 @@ export class EntityFormComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.requestService.getEntities().subscribe((data) => {
       this.entities = data;
       this.addFilterToInput();
-    }));
+    }));    
+
+    this.selectedNode.tagProperties.entityName.value$.subscribe((value) => {
+      this.aliasFormControl.setValue(value)
+    });
+        
+    this.aliasFormControl.valueChanges.subscribe((value) => {
+      this.selectedNode.tagProperties.entityAlias.value$.next(value);
+    });
   }
 
   onKeyPressed($event: KeyboardEvent) {
@@ -36,10 +46,6 @@ export class EntityFormComponent implements OnInit, OnDestroy {
         this.selectedNode.tagProperties.entityName.value$.next(null);        
       }
     }
-  }
-
-  createNode(nodeName: string) {
-    this.onNodeCreate.emit(nodeName)
   }
 
   addFilterToInput() {

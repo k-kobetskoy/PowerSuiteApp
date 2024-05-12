@@ -32,8 +32,7 @@ export class NodeEntity extends QueryNode {
                 !properties[1],
                 of(this.defaultDisplayValue), of(`               
                 ${properties[0] ? properties[0] : ''}
-                ${properties[1] ? `(${properties[1]})` : ''}
-                `))
+                ${properties[1] ? `(${properties[1]})` : ''}`))
         ));
     }
 }

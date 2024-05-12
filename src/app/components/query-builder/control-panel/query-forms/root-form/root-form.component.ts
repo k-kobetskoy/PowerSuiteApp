@@ -14,8 +14,4 @@ export class RootFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { }
-
-  createNode(nodeName: string) {
-    this.onNodeCreate.emit(nodeName)
-  }
 }

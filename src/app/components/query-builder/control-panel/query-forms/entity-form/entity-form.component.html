@@ -1,5 +1,5 @@
 
-<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="createNode($event)"></app-quick-actions>
+<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
 
   <app-loading-indicator [diameter]="50"></app-loading-indicator>
   <mat-form-field>
@@ -12,4 +12,9 @@
 
       </mat-option>
     </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Alias</mat-label>
+    <input type="text" matInput [formControl]="aliasFormControl">
   </mat-form-field>
