@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
-import { Observable, Subscription, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { RequestService } from 'src/app/services/request/request.service';
 import { NodeEntity } from '../../../models/nodes/node-entity';
+
 
 @Component({
   selector: 'app-entity-form',
@@ -15,11 +16,12 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   @Input() selectedNode: NodeEntity;
   @Output() onNodeCreate = new EventEmitter<string>()
 
+  private destroy$ = new Subject<void>();
+
   entitiesFormControl = new FormControl<string>(null);
   aliasFormControl = new FormControl<string>(null);
 
   filteredEntities$: Observable<EntityModel[]> = null;
-  subscriptions: Subscription[] = [];
 
   entities$: Observable<EntityModel[]>;
 
@@ -35,23 +37,19 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   }
 
   bindDataToControls() {
-    this.subscriptions.push(
-      this.selectedNode.tagProperties.entityName.value$
-        .pipe(distinctUntilChanged())
-        .subscribe((value) => { this.entitiesFormControl.setValue(value); })
-    );
+    this.selectedNode.tagProperties.entityName.value$
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((value) => { this.entitiesFormControl.setValue(value); });
 
-    this.subscriptions.push(
+    
       this.selectedNode.tagProperties.entityAlias.value$
-        .pipe(distinctUntilChanged())
-        .subscribe((value) => { this.aliasFormControl.setValue(value); })
-    );
+        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+        .subscribe((value) => { this.aliasFormControl.setValue(value); });
 
-    this.subscriptions.push(
+   
       this.aliasFormControl.valueChanges
-        .pipe(distinctUntilChanged())
-        .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); })
-    );
+        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+        .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); });
   }
 
   onKeyPressed($event: KeyboardEvent) {
@@ -83,6 +81,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

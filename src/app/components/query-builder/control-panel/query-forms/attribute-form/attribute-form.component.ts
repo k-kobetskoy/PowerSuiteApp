@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NodeEntityAttribute } from '../../../models/nodes/node-entity-attribute';
 import { FormControl } from '@angular/forms';
-import { Observable, Subscription, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { RequestService } from 'src/app/services/request/request.service';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 
@@ -10,12 +10,12 @@ import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-mode
   templateUrl: './attribute-form.component.html',
   styleUrls: ['./attribute-form.component.css']
 })
-export class AttributeFormComponent implements OnInit {
+export class AttributeFormComponent implements OnInit, OnDestroy {
 
   @Input() selectedNode: NodeEntityAttribute;
   @Output() onNodeCreate = new EventEmitter<string>();
 
-  subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
 
   attributesFormControl = new FormControl<string>(null);
   aliasFormControl = new FormControl<string>(null);
@@ -27,50 +27,38 @@ export class AttributeFormComponent implements OnInit {
 
   constructor(private requestService: RequestService) { }
 
-  ngOnInit() {    
-
+  ngOnInit() {
     this.getInitialData();
 
     this.addFilterToInput();
 
     this.bindDataToControls();
-   
   }
-  
-  
+
   bindDataToControls() {
-    
-    this.subscriptions.push(
-      this.attributesFormControl.valueChanges
-        .pipe(distinctUntilChanged())
-        .subscribe(value => {
-          this.selectedNode.tagProperties.attributeName.value$.next(value);
-        })
-    );
+    this.attributesFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.selectedNode.tagProperties.attributeName.value$.next(value);
+      });
 
-    this.subscriptions.push(
-      this.aliasFormControl.valueChanges
-        .pipe(distinctUntilChanged())
-        .subscribe(value => {
-          this.selectedNode.tagProperties.attributeAlias.value$.next(value);
-        })
-    );
+    this.aliasFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.selectedNode.tagProperties.attributeAlias.value$.next(value);
+      });
 
-    this.subscriptions.push(
       this.selectedNode.tagProperties.attributeName.value$
-        .pipe(distinctUntilChanged())
+        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe(value => {
           this.attributesFormControl.setValue(value);
-        })
-    );
+        });
 
-    this.subscriptions.push(
       this.selectedNode.tagProperties.attributeAlias.value$
-        .pipe(distinctUntilChanged())
+        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe(value => {
           this.aliasFormControl.setValue(value);
-        })
-    );
+        });
   }
 
   getEntityName() {
@@ -78,7 +66,7 @@ export class AttributeFormComponent implements OnInit {
   }
 
   getInitialData() {
-    
+
     this.entityName$ = this.selectedNode.parent.tagProperties.entityName.value$.asObservable();
 
     this.attributes$ = this.entityName$
@@ -101,9 +89,9 @@ export class AttributeFormComponent implements OnInit {
 
     return this.attributes$.pipe(map(
       attributes => attributes.filter(entity =>
-      entity.logicalName.toLowerCase().includes(filterValue) ||
-      entity.displayName.toLowerCase().includes(filterValue)
-    )));
+        entity.logicalName.toLowerCase().includes(filterValue) ||
+        entity.displayName.toLowerCase().includes(filterValue)
+      )));
   }
 
   onKeyPressed($event: KeyboardEvent) {
@@ -112,5 +100,10 @@ export class AttributeFormComponent implements OnInit {
         this.selectedNode.tagProperties.attributeName.value$.next(null);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
