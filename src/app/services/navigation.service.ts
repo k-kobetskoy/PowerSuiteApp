@@ -20,7 +20,7 @@ export class NavigationService implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.addActiveEnvironmentToInterceptorConfig()
     console.warn('Navigation service initialized')
-    
+
   }
 
   navigateToEnv(selectedEnv: EnvironmentModel) {
@@ -104,9 +104,11 @@ export class NavigationService implements OnInit, OnDestroy {
 
 
   addActiveEnvironmentToInterceptorConfig() {
-    this.requestService.getActiveEnvironment().subscribe(env=>
+    this.requestService.getActiveEnvironment().subscribe(env => {
       this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
-    )    
+      this.authService.checkProtectedResource()
+    }
+    )
   }
 
   ngOnDestroy(): void {

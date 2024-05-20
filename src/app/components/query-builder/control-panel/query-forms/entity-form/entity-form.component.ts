@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
-import { RequestService } from 'src/app/services/request/request.service';
 import { NodeEntity } from '../../../models/nodes/node-entity';
+import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
 
 
 @Component({
@@ -25,11 +25,11 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
   entities$: Observable<EntityModel[]>;
 
-  constructor(private requestService: RequestService) { }
+  constructor(private _entityEntityService: EntityEntityService) { }
 
   ngOnInit() {
 
-    this.entities$ = this.requestService.getEntities();
+    this.entities$ = this._entityEntityService.getEntities();
 
     this.addFilterToInput();
 

@@ -1,25 +1,25 @@
 import { Inject, Injectable } from '@angular/core';
 import { MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalInterceptorConfiguration, MsalService } from '@azure/msal-angular';
 import { EventMessage, InteractionStatus, PopupRequest, AuthenticationResult, EventType } from '@azure/msal-browser';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { EventBusService } from './event-bus/event-bus.service';
 import { EventData } from './event-bus/event-data';
 import { AppEvents } from './event-bus/app-events';
-import { EnvironmentModel } from '../models/environment-model';
+import { USER_IS_LOGGED_IN } from '../models/tokens';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
- 
+
   isIframe = false;
-  private _loginDisplay: boolean = false;
   private _acquireTokenFailure: boolean = false
 
   public get userIsLoggedIn() {
-    return this._loginDisplay;
+    return this._userIsLoggedIn.value;
   }
 
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     @Inject(MSAL_INTERCEPTOR_CONFIG) private msalInterceptorConfig: MsalInterceptorConfiguration,
+    @Inject(USER_IS_LOGGED_IN) private _userIsLoggedIn: BehaviorSubject<boolean>,
     private msalService: MsalService,
     private msalBroadcastService: MsalBroadcastService,
     private eventBus: EventBusService) {
@@ -30,13 +30,11 @@ export class AuthService {
   private readonly _destroying$ = new Subject<void>();
 
 
+  init() {
 
-
-  async init() {
-
-    if(!this.msalService.instance){
-      await this.msalService.instance.initialize();
-    }
+    // if (!this.msalService.instance) {
+    //   await this.msalService.instance.initialize();
+    // }
 
     // Handle the authentication response after a redirect.
     // If a response exists, set the active account.
@@ -74,6 +72,9 @@ export class AuthService {
     //   });
     // }
 
+
+
+
     this.isIframe = window !== window.parent && !window.opener; // Remove this line to use Angular Universal
 
     this.msalService.instance.enableAccountStorageEvents(); // Optional - This will enable ACCOUNT_ADDED and ACCOUNT_REMOVED events emitted when a user logs in or out of another tab or window
@@ -108,19 +109,9 @@ export class AuthService {
   setLoginDisplay() {
     let activeAccount = this.msalService.instance.getActiveAccount()
     //todo: check all accounts and set active if active is absent???
-
-    this.isTokenValid(activeAccount?.idTokenClaims?.exp)
-    this._loginDisplay = !!activeAccount 
-  }
-
-  isTokenValid(expirationDate: number): boolean {
-
-    console.warn(`Token Expiration: ${new Date((expirationDate * 1000))} Token: ${expirationDate}`)
-    if (expirationDate) {
-      return Math.floor(Date.now() / 1000) < expirationDate
-    }
-    return false
-  }
+    
+    this._userIsLoggedIn.next(!!activeAccount)
+  }  
 
   checkAndSetActiveAccount() {
     let activeAccount = this.msalService.instance.getActiveAccount();
@@ -152,16 +143,18 @@ export class AuthService {
   }
 
   addProtectedResourceToInterceptorConfig(url: string) {
-    this.msalInterceptorConfig.protectedResourceMap.set(`${url}/api/data/v9.2/`, [`${url}/user_impersonation`])
+    if (!this.msalInterceptorConfig.protectedResourceMap.has(`${url}/api/data/v9.2/`)) {
+      this.msalInterceptorConfig.protectedResourceMap.set(`${url}/api/data/v9.2/`, [`${url}/user_impersonation`])
+    }
   }
 
-  setProtectedResourceMap() {
-    this.msalInterceptorConfig.protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
-  }
+  // setProtectedResourceMap() {
+  //   this.msalInterceptorConfig.protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
+  // }
 
   checkProtectedResource() {
     console.log('protectedResourceMap', this.msalInterceptorConfig.protectedResourceMap)
-}
+  }
 
   ngOnDestroy(): void {
     this._destroying$.next(undefined);

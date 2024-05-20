@@ -6,7 +6,7 @@ import { ConnectionsDialogComponent } from './connections-dialog/connections-dia
 import { AuthService } from 'src/app/services/auth.service';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
-import { RequestService } from 'src/app/services/request/request.service';
+import { EnvironmentEntityService } from 'src/app/services/entity-service/environment-entity.service';
 
 @Component({
   selector: 'app-connections',
@@ -23,30 +23,18 @@ export class ConnectionsComponent implements OnInit, OnDestroy {
   rippleColor: string = '#4b4b4b';
 
   constructor(private dialog: MatDialog,
-    private authService: AuthService,
-    private requestService: RequestService,
-    private eventBus: EventBusService) { }
+    private _authService: AuthService,
+    private _environmentEntityService: EnvironmentEntityService,
+    private _eventBus: EventBusService) { }
 
   ngOnInit() {
-    this.activeEnvironment$ = this.requestService.getActiveEnvironment()
-    if(this.activeEnvironment$){
-      this.subs.push(this.activeEnvironment$.subscribe(env => {
-        if(env){
-          this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
-        }        
-      }));
-    }
-    
-    this.eventBus.onLast(AppEvents.USER_REMOVED, () => this.requestService.removeActiveEnvironment())
-
-    this.authService.checkProtectedResource();
+    this.activeEnvironment$ = this._environmentEntityService.getActiveEnvironment();
   }
 
   openDialog() {
-    if (!this.authService.userIsLoggedIn) {
-      this.authService.loginPopup()
-      this.eventBus.on(AppEvents.LOGIN_SUCCESS, () => {
-        console.warn('eventBus : on AppEvents.USER_ADDED')
+    if (!this._authService.userIsLoggedIn) {
+      this._authService.loginPopup()
+      this._eventBus.on(AppEvents.LOGIN_SUCCESS, () => {
         this.createDialog()
       })
     } else {

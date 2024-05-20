@@ -5,47 +5,36 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root', })
 export class CacheStorageService implements IDataStorageService {
 
-  private _cache: Map<string, any>
-
-  constructor() {
-    this._cache = new Map()
-  }
+  constructor() { }
 
   getItem<T>(key: string): BehaviorSubject<T> {
-    let item$ = this._cache.get(key);
+    let item$ = this[key];
     if (!item$) {
       item$ = new BehaviorSubject<T>(null);
-      this._cache.set(key, item$);
-
+      this[key] = item$;
     }
     return item$;
   }
+
   setItem<T>(item: T, key: string): void {
 
-    let subject$: BehaviorSubject<T> = this._cache.get(key);
+    let subject$: BehaviorSubject<T> = this[key];
 
-    if(!subject$) {
-      this._cache.set(key, new BehaviorSubject<T>(item));
+    if (!subject$) {
+      this[key] = new BehaviorSubject<T>(item);
       return;
     }
 
     subject$.next(item);
   }
 
-  // getItem<T>(key: string): T {
-  //   let item = this._cache.get(key)
-
-  //   return item ? item : null
-  // }
-  // setItem<T>(item: T, key: string): void {
-  //   this._cache.set(key, item)
-  // }
-
   removeItem(key: string): void {
-    this._cache.delete(key)
+    delete this[key];
   }
 
   clear(): void {
-    this._cache = new Map()
+    for (const key of Object.keys(this)) {
+      delete this[key];
+    }
   }
 }

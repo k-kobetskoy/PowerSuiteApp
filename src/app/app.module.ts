@@ -35,12 +35,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
-import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import{ ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import{MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { BehaviorSubject } from 'rxjs';
+import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
 
 
 
@@ -86,10 +88,13 @@ import{MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [QueryNodeTree, {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}],
+  providers: [QueryNodeTree,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
+    { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) }],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

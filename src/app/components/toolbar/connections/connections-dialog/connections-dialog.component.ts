@@ -6,7 +6,7 @@ import { EventData } from 'src/app/services/event-bus/event-data';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { RequestService } from 'src/app/services/request/request.service';
+import { EnvironmentEntityService } from 'src/app/services/entity-service/environment-entity.service';
 
 @Component({
   selector: 'app-connections-dialog',
@@ -21,11 +21,11 @@ export class ConnectionsDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ConnectionsDialogComponent>,
     private navigationService: NavigationService,
-    private requestService: RequestService,
+    private _environmentEntityService: EnvironmentEntityService,
     private eventBus: EventBusService) { }
 
   ngOnInit() {
-    this.environmentsList$ = this.requestService.getEnvironments()
+    this.environmentsList$ = this._environmentEntityService.getEnvironments()
   }
 
   connectToEnvironment(selectedEnv: EnvironmentModel) {
