@@ -1,4 +1,5 @@
 export interface AttributeModel {
     logicalName: string,
-    displayName: string,    
+    displayName: string,  
+    attributeType: string  
 }

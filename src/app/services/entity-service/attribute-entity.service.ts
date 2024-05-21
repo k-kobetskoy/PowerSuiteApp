@@ -31,10 +31,11 @@ export class AttributeEntityService extends BaseEntityService {
         return this.httpClient.get<AttributeResponseModel>(url)
           .pipe(
             map(({ value }) => value.map((
-              { LogicalName: logicalName, DisplayName: { UserLocalizedLabel } = {} }): AttributeModel =>
+              { LogicalName: logicalName, DisplayName: { UserLocalizedLabel } = {}, AttributeType: attributeType }): AttributeModel =>
             ({
               logicalName,
               displayName: UserLocalizedLabel ? UserLocalizedLabel.Label : '',
+              attributeType
             }))),
             tap(data => this.cacheService.setItem(data, key))
           );

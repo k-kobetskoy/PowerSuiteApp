@@ -23,6 +23,7 @@ import { QueryNodeTree } from './components/query-builder/models/query-node-tree
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
 import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
 import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
+import { FilterFormComponent } from './components/query-builder/control-panel/query-forms/filter-form/filter-form.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -66,6 +67,7 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     EntityFormComponent,
     RootFormComponent,
     AttributeFormComponent,
+    FilterFormComponent,
   ],
 
   imports: [

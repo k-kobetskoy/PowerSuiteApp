@@ -9,7 +9,10 @@ export const API_ENDPOINTS = {
         getResourceUrl(apiUrl: string) { return `${apiUrl}/api/data/v9.2/EntityDefinitions?$select=${this.entityParameters.join(',')}`; }
     },
     attributes: {       
-        attributeParameters : ['LogicalName', 'DisplayName'],
-        getResourceUrl(apiUrl: string, entityLogicalName: string) { return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes?$select=${this.attributeParameters.join(',')}`; }
+        attributeParameters : ['LogicalName', 'DisplayName', 'AttributeType'],
+        getResourceUrl(apiUrl: string, entityLogicalName: string) { return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes?$select=${this.attributeParameters.join(',')}?$filter=AttributeType ne 'Virtual'`; }
     },
 };
+
+
+

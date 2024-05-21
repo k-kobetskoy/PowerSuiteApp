@@ -1,4 +1,3 @@
-import { BehaviorSubject } from "rxjs";
 import { ITagProperty } from "./i-tag-property";
 
 export interface ITagProperties {

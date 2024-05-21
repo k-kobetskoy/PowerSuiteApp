@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { NodeEntityAttribute } from '../../../models/nodes/node-entity-attribute';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
-import { RequestService } from 'src/app/services/request/request.service';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
+import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
 
 @Component({
   selector: 'app-attribute-form',
@@ -25,7 +25,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
 
   entityName$: Observable<string>
 
-  constructor(private requestService: RequestService) { }
+  constructor(private _attributeEntityService: AttributeEntityService) { }
 
   ngOnInit() {
     this.getInitialData();
@@ -72,7 +72,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
     this.attributes$ = this.entityName$
       .pipe(
         distinctUntilChanged(),
-        switchMap(entityName => { return this.requestService.getAttributes(entityName) }))
+        switchMap(entityName => { return this._attributeEntityService.getAttributes(entityName) }))
   }
 
   addFilterToInput() {
