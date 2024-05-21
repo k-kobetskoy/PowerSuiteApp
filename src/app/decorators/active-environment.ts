@@ -14,7 +14,7 @@ export function ActiveEnvironment(target: any, propertyKey: string, descriptor: 
 
         const activeEnvironment: Observable<EnvironmentModel> = this.environmentServcie.getActiveEnvironment();
 
-        this.activeEnvironmentUrl$ = activeEnvironment.pipe(map(env => env.apiUrl));
+        this.activeEnvironmentUrl$ = activeEnvironment.pipe(map(env => env?.apiUrl));
 
         return originalMethod.apply(this, args);
     };

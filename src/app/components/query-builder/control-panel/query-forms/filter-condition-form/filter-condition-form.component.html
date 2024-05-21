@@ -1,0 +1,13 @@
+<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
+
+<mat-form-field>
+    <mat-label>Attrubute</mat-label>
+    <input type="text" matInput [formControl]="attributesFormControl" [matAutocomplete]="auto" (keyup)="onKeyPressed($event)">
+  
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredAttributes$ | async" [value]="option.logicalName">
+        {{option.logicalName + ' ' + option.displayName}}
+  
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
