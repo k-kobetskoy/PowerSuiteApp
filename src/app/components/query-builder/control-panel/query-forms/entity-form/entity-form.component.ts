@@ -34,22 +34,22 @@ export class EntityFormComponent implements OnInit, OnDestroy {
     this.addFilterToInput();
 
     this.bindDataToControls();
+
+    this.setControlsInitialValues();
   }
 
-  bindDataToControls() {
-    this.selectedNode.tagProperties.entityName.value$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((value) => { this.entitiesFormControl.setValue(value); });
-
-    
-      this.selectedNode.tagProperties.entityAlias.value$
-        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-        .subscribe((value) => { this.aliasFormControl.setValue(value); });
-
-   
+  bindDataToControls() {   
       this.aliasFormControl.valueChanges
         .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); });
+  }
+
+  setControlsInitialValues() {
+    const entityInitialValue = this.selectedNode.tagProperties.entityName.value$.getValue();
+    const entityAliasInitialValue = this.selectedNode.tagProperties.entityAlias.value$.getValue();
+    
+    this.entitiesFormControl.setValue(entityInitialValue);
+    this.aliasFormControl.setValue(entityAliasInitialValue);
   }
 
   onKeyPressed($event: KeyboardEvent) {

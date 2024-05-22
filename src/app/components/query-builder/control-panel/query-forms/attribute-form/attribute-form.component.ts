@@ -33,8 +33,10 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
     this.addFilterToInput();
 
     this.bindDataToControls();
-  }
 
+    this.setControlsInitialValues();
+  }
+  
   bindDataToControls() {
     this.attributesFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
@@ -47,36 +49,27 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
       .subscribe(value => {
         this.selectedNode.tagProperties.attributeAlias.value$.next(value);
       });
-
-      this.selectedNode.tagProperties.attributeName.value$
-        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-        .subscribe(value => {
-          this.attributesFormControl.setValue(value);
-        });
-
-      this.selectedNode.tagProperties.attributeAlias.value$
-        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-        .subscribe(value => {
-          this.aliasFormControl.setValue(value);
-        });
   }
 
-  // getEntityName() {
-  //   this.entityName$ = this.selectedNode.parent.tagProperties.entityName.value$.asObservable();
-  // }
+  setControlsInitialValues() {
+    const aliasInitialValue = this.selectedNode.tagProperties.attributeAlias.value$.getValue();
+    const attributeInitialValue = this.selectedNode.tagProperties.attributeName.value$.getValue();
+
+    this.aliasFormControl.setValue(aliasInitialValue);
+    this.attributesFormControl.setValue(attributeInitialValue);
+  }
 
   getInitialData() {
-
     this.entityName$ = this.selectedNode.parent.tagProperties.entityName.value$.asObservable();
 
     this.attributes$ = this.entityName$
       .pipe(
         distinctUntilChanged(),
-        switchMap(entityName => { 
+        switchMap(entityName => {
           if (!entityName) {
             return of([]);
           }
-          return this._attributeEntityService.getAttributes(entityName) 
+          return this._attributeEntityService.getAttributes(entityName);
         }))
   }
 
@@ -89,8 +82,8 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
 
   private _filter(value: string): Observable<AttributeModel[]> {
     const filterValue = value.toLowerCase();
-
-    this.selectedNode.tagProperties.attributeName.value$.next(filterValue)
+    
+    this.selectedNode.tagProperties.attributeName.value$.next(filterValue);
 
     return this.attributes$.pipe(map(
       attributes => attributes.filter(entity =>

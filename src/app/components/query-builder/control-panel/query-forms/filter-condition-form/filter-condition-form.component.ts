@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NodeCondition } from '../../../models/nodes/node-condition';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject, defaultIfEmpty, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
 
@@ -24,7 +24,6 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
 
   entityName$: Observable<string>
 
-
   constructor(private _attributeEntityService: AttributeEntityService) { }
 
   ngOnInit() {
@@ -33,6 +32,8 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
     this.addFilterToInput();
 
     this.bindDataToControls();
+
+    this.setControlsInitialValues();
   }
 
   bindDataToControls() {
@@ -41,14 +42,13 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
       .subscribe(value => {
         this.selectedNode.tagProperties.conditionAttribute.value$.next(value);
       });
-
-    this.selectedNode.tagProperties.conditionAttribute.value$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.attributesFormControl.setValue(value);
-      });
   }
 
+  setControlsInitialValues() {
+    const attributeInitialValue = this.selectedNode.tagProperties.conditionAttribute.value$.getValue();
+    
+    this.attributesFormControl.setValue(attributeInitialValue);
+  }
 
   getInitialData() {
 
@@ -76,7 +76,7 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): Observable<AttributeModel[]> {
     const filterValue = value.toLowerCase();
 
-    this.selectedNode.tagProperties.conditionAttribute.value$.next(filterValue)
+    this.selectedNode.tagProperties.conditionAttribute.value$.next(filterValue);
 
     return this.attributes$.pipe(map(
       attributes => attributes.filter(entity =>
