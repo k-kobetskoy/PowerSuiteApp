@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NodeCondition } from '../../../models/nodes/node-condition';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, find, map, of, share, single, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
+import { FilterOperatorTypes } from '../../../models/constants/ui/option-set-types';
 
 @Component({
   selector: 'app-filter-condition-form',
@@ -23,6 +25,12 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
   filteredAttributes$: Observable<AttributeModel[]> = null;
 
   entityName$: Observable<string>
+
+  selectedAttribute$: Observable<AttributeModel>;
+
+  FilterOperatorTypes = FilterOperatorTypes;
+
+  previousAttribute: AttributeModel;
 
   constructor(private _attributeEntityService: AttributeEntityService) { }
 
@@ -46,7 +54,7 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
 
   setControlsInitialValues() {
     const attributeInitialValue = this.selectedNode.tagProperties.conditionAttribute.value$.getValue();
-    
+
     this.attributesFormControl.setValue(attributeInitialValue);
   }
 
@@ -62,7 +70,7 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
             return of([]);
           }
           return this._attributeEntityService.getAttributes(entityName)
-        }))
+        }));
   }
 
 
@@ -76,13 +84,21 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
   private _filter(value: string): Observable<AttributeModel[]> {
     const filterValue = value.toLowerCase();
 
-    this.selectedNode.tagProperties.conditionAttribute.value$.next(filterValue);
-
-    return this.attributes$.pipe(map(
-      attributes => attributes.filter(entity =>
-        entity.logicalName.toLowerCase().includes(filterValue) ||
-        entity.displayName.toLowerCase().includes(filterValue)
-      )));
+    return this.attributes$.pipe(
+      map(
+        attributes => {
+          const attribute = attributes.find(attr => attr.logicalName.toLowerCase() === filterValue);
+          if (attribute) {            
+            this.handleAttributeChange(attribute);
+            this.selectedAttribute$ = of(attribute);            
+            this.previousAttribute = attribute;
+          };
+          return attributes.filter(entity =>
+            entity.logicalName.toLowerCase().includes(filterValue) ||
+            entity.displayName.toLowerCase().includes(filterValue)
+          )
+        }),
+      tap(_ => this.selectedNode.tagProperties.conditionAttribute.value$.next(filterValue)));
   }
 
   onKeyPressed($event: KeyboardEvent) {
@@ -90,6 +106,39 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
       if (this.attributesFormControl.value === '') {
         this.selectedNode.tagProperties.conditionAttribute.value$.next(null);
       }
+    }
+  }
+
+  handleAttributeChange(attribute: AttributeModel): void {
+    if(!this.previousAttribute || attribute.logicalName === this.previousAttribute?.logicalName) return;
+    console.warn('Attribute changed');
+    this.selectedNode.tagProperties.conditionOperator.value$.next(null);
+    this.selectedNode.tagProperties.conditionValue.value$.next(null);
+  }
+
+  getFilterOperatorType(attribute: AttributeModel) {
+    switch (attribute.attributeType) {
+      case AttributeTypes.INTEGER:
+      case AttributeTypes.DECIMAL:
+      case AttributeTypes.BIG_INT:
+      case AttributeTypes.MONEY:
+      case AttributeTypes.DOUBLE:
+        return FilterOperatorTypes.NUMBER;
+      case AttributeTypes.DATE_TIME:
+        return FilterOperatorTypes.DATE_TIME;
+      case AttributeTypes.BOOLEAN:
+        return FilterOperatorTypes.BOOLEAN;
+      case AttributeTypes.UNIQUE_IDENTIFIER:
+      case AttributeTypes.LOOKUP:
+      case AttributeTypes.OWNER:
+      case AttributeTypes.CUSTOMER:
+        return FilterOperatorTypes.ID;
+      case AttributeTypes.PICKLIST:
+      case AttributeTypes.STATE:
+      case AttributeTypes.STATUS:
+        return FilterOperatorTypes.PICKLIST;
+      default:
+        return FilterOperatorTypes.STRING;
     }
   }
 

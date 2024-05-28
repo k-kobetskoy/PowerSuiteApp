@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, tap, catchError, switchMap } from 'rxjs';
+import { Observable, map, tap, catchError, switchMap, of } from 'rxjs';
 import { EntityDefinitionsResponseModel } from 'src/app/models/incoming/environment/entity-definitions-response-model';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { CacheKeys } from 'src/app/config/cache-keys';
@@ -25,8 +25,9 @@ export class EntityEntityService extends BaseEntityService {
 
     return this.activeEnvironmentUrl$.pipe(
       switchMap(envUrl => {
-        const url = API_ENDPOINTS.entities.getResourceUrl(envUrl);
-
+        if (!envUrl) return of([]);
+        
+        const url = API_ENDPOINTS.entities.getResourceUrl(envUrl);        
         return this.httpClient.get<EntityDefinitionsResponseModel>(url)
           .pipe(
             map(({ value }) => value.map((
@@ -39,6 +40,6 @@ export class EntityEntityService extends BaseEntityService {
             tap(data => this.cacheService.setItem(data, key))
           );
       })
-    )    
+    )
   }
 }

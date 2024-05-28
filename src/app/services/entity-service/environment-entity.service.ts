@@ -30,7 +30,7 @@ export class EnvironmentEntityService {
       return environments$.asObservable();
     }
 
-    const url = API_ENDPOINTS.environments.getResourceUrl();
+    const url = API_ENDPOINTS.environments.getResourceUrl();    
 
     return this._httpClient.get<GlobalDiscoInstancesResponseModel>(url)
       .pipe(

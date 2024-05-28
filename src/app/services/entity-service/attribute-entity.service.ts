@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, switchMap, tap } from 'rxjs';
+import { Observable, map, of, switchMap, tap } from 'rxjs';
 import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { AttributeResponseModel } from 'src/app/models/incoming/attrubute/attribute-response-model';
@@ -25,6 +25,7 @@ export class AttributeEntityService extends BaseEntityService {
 
     return this.activeEnvironmentUrl$.pipe(
       switchMap(envUrl => {
+        if (!envUrl) return of([]);
 
         const url = API_ENDPOINTS.attributes.getResourceUrl(envUrl, entityLogicalName);
 

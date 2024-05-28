@@ -8,12 +8,12 @@ import { ACTIVE_ENVIRONMENT_URL } from 'src/app/models/tokens';
 @Injectable({ providedIn: 'root' })
 export abstract class BaseEntityService {
 
-    protected activeEnvironmentUrl$: Observable<string>
-
-    protected httpClient: HttpClient = inject(HttpClient)
-    protected cacheService: CacheStorageService = inject(CacheStorageService)
-    protected environmentServcie: EnvironmentEntityService = inject(EnvironmentEntityService)
-    protected aciveEnvironmentUrl: BehaviorSubject<string> = inject(ACTIVE_ENVIRONMENT_URL)
+    protected activeEnvironmentUrl$: Observable<string>;
+    
+    protected httpClient: HttpClient = inject(HttpClient);
+    protected cacheService: CacheStorageService = inject(CacheStorageService);
+    protected environmentServcie: EnvironmentEntityService = inject(EnvironmentEntityService);
+    protected activeEnvironmentUrlSubject$: BehaviorSubject<string> = inject(ACTIVE_ENVIRONMENT_URL);
 
     constructor() { }
 }

@@ -20,6 +20,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
   attributesFormControl = new FormControl<string>(null);
   aliasFormControl = new FormControl<string>(null);
 
+  selectedAttribute$: Observable<AttributeModel>;
   attributes$: Observable<AttributeModel[]>;
   filteredAttributes$: Observable<AttributeModel[]> = null;
 
@@ -34,7 +35,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
 
     this.bindDataToControls();
 
-    this.setControlsInitialValues();
+    this.setInputsInitialValues();
   }
   
   bindDataToControls() {
@@ -51,7 +52,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  setControlsInitialValues() {
+  setInputsInitialValues() {
     const aliasInitialValue = this.selectedNode.tagProperties.attributeAlias.value$.getValue();
     const attributeInitialValue = this.selectedNode.tagProperties.attributeName.value$.getValue();
 
@@ -82,14 +83,18 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
 
   private _filter(value: string): Observable<AttributeModel[]> {
     const filterValue = value.toLowerCase();
-    
+
     this.selectedNode.tagProperties.attributeName.value$.next(filterValue);
 
-    return this.attributes$.pipe(map(
-      attributes => attributes.filter(entity =>
-        entity.logicalName.toLowerCase().includes(filterValue) ||
-        entity.displayName.toLowerCase().includes(filterValue)
-      )));
+    return this.attributes$.pipe(
+      map(attributes =>
+        attributes.filter(
+          entity =>
+            entity.logicalName.toLowerCase().includes(filterValue) ||
+            entity.displayName.toLowerCase().includes(filterValue)
+        )
+      )
+    );
   }
 
   onKeyPressed($event: KeyboardEvent) {

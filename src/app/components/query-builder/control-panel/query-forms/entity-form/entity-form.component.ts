@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
-import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, iif, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { NodeEntity } from '../../../models/nodes/node-entity';
 import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
 
@@ -38,16 +38,16 @@ export class EntityFormComponent implements OnInit, OnDestroy {
     this.setControlsInitialValues();
   }
 
-  bindDataToControls() {   
-      this.aliasFormControl.valueChanges
-        .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-        .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); });
+  bindDataToControls() {
+    this.aliasFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); });
   }
 
   setControlsInitialValues() {
     const entityInitialValue = this.selectedNode.tagProperties.entityName.value$.getValue();
     const entityAliasInitialValue = this.selectedNode.tagProperties.entityAlias.value$.getValue();
-    
+
     this.entitiesFormControl.setValue(entityInitialValue);
     this.aliasFormControl.setValue(entityAliasInitialValue);
   }
@@ -73,10 +73,12 @@ export class EntityFormComponent implements OnInit, OnDestroy {
     this.selectedNode.tagProperties.entityName.value$.next(filterValue)
 
     return this.entities$.pipe(
-      map(entities => entities.filter(entity =>
-        entity.logicalName.toLowerCase().includes(filterValue) ||
-        entity.displayName.toLowerCase().includes(filterValue)
-      ))
+      map(entities => {
+        if (!entities) return [];
+        return entities.filter(entity =>
+          entity.logicalName.toLowerCase().includes(filterValue) ||
+          entity.displayName.toLowerCase().includes(filterValue))
+      })
     );
   }
 

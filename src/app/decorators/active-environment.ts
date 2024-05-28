@@ -7,14 +7,14 @@ export function ActiveEnvironment(target: any, propertyKey: string, descriptor: 
 
     descriptor.value = function (...args: any[]) {
 
-        if (this.activeEnvironmentUrl?.value) {
-            this.activeEnvironmentUrl = this.activeEnvironmentUrl.value;
+        if (this.activeEnvironmentUrlSubject$?.value) {
+            this.activeEnvironmentUrl$ = this.activeEnvironmentUrlSubject$.asObservable();
             return originalMethod.apply(this, args);
         }
 
-        const activeEnvironment: Observable<EnvironmentModel> = this.environmentServcie.getActiveEnvironment();
+        const activeEnvironment$: Observable<EnvironmentModel> = this.environmentServcie.getActiveEnvironment();
 
-        this.activeEnvironmentUrl$ = activeEnvironment.pipe(map(env => env?.apiUrl));
+        this.activeEnvironmentUrl$ = activeEnvironment$.pipe(map(env => env?.apiUrl));
 
         return originalMethod.apply(this, args);
     };

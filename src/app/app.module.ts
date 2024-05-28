@@ -25,6 +25,13 @@ import { RootFormComponent } from './components/query-builder/control-panel/quer
 import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
 import { FilterFormComponent } from './components/query-builder/control-panel/query-forms/filter-form/filter-form.component';
 import { FilterConditionFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/filter-condition-form.component';
+import { NumberFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/number-form/number-form.component';
+import { BooleanFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/boolean-form/boolean-form.component';
+import { DateTimeFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/date-time-form/date-time-form.component';
+import { IdFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/id-form/id-form.component';
+import { PicklistFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/picklist-form/picklist-form.component';
+import { StringFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/string-form/string-form.component';
+
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -70,6 +77,12 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     AttributeFormComponent,
     FilterFormComponent,
     FilterConditionFormComponent,
+    NumberFormComponent,
+    BooleanFormComponent,
+    DateTimeFormComponent,
+    IdFormComponent,
+    PicklistFormComponent,
+    StringFormComponent,
   ],
 
   imports: [

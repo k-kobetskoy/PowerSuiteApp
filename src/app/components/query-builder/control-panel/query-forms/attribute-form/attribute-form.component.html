@@ -7,10 +7,10 @@
     (keyup)="onKeyPressed($event)">
 
   <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredAttributes$ | async" [value]="option.logicalName">
-        {{option.logicalName + ' ' + option.displayName}}
+    <mat-option *ngFor="let option of filteredAttributes$ | async" [value]="option.logicalName">
+      {{option.logicalName + ' ' + option.displayName}}
 
-      </mat-option>
+    </mat-option>
 
   </mat-autocomplete>
 </mat-form-field>
