@@ -15,7 +15,7 @@ export class AttributeEntityService extends BaseEntityService {
   @ActiveEnvironment
   getAttributes(entityLogicalName: string): Observable<AttributeModel[]> {
 
-    const key = `${entityLogicalName}${CacheKeys.EntityAttributes}`;
+    const key = `${entityLogicalName}_${CacheKeys.EntityAttributes}`;
 
     const attributes$ = this.cacheService.getItem<AttributeModel[]>(key);
 

@@ -1,10 +1,10 @@
+import { QueryNodeTree } from 'src/app/components/query-builder/models/query-node-tree';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs';
+import { Subject, combineLatest, distinctUntilChanged, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { UiInputProperty } from 'src/app/components/query-builder/models/abstract/ui-input-property';
 import { FilterStaticData } from 'src/app/components/query-builder/models/constants/ui/filter-static-data';
 import { NodeCondition } from 'src/app/components/query-builder/models/nodes/node-condition';
-import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 
 @Component({
   selector: 'app-string-form',
@@ -14,16 +14,16 @@ import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-mode
 export class StringFormComponent implements OnInit, OnDestroy {
 
 
-  private destroy$ = new Subject<void>();
+  private _destroy$ = new Subject<void>();
 
-  @Input() selectedNode: NodeCondition;
+  // @Input() selectedNode: NodeCondition;
 
   filterOperators: UiInputProperty[] = FilterStaticData.FilterStringOperators;
 
   filterOperatorFormControl = new FormControl<string>(null);
   filterValueFormControl = new FormControl<string>(null);
 
-  constructor() { }
+  constructor(private _nodeTree: QueryNodeTree) { }
 
   ngOnInit() {
     this.setControlsInitialValues();
@@ -31,32 +31,71 @@ export class StringFormComponent implements OnInit, OnDestroy {
   }
 
   setControlsInitialValues() {
-    this.selectedNode.tagProperties.conditionOperator.value$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => { this.filterOperatorFormControl.setValue(value) });
 
-    this.selectedNode.tagProperties.conditionValue.value$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => { this.filterValueFormControl.setValue(value) });
 
-    // this.filterOperatorFormControl.setValue(this.selectedNode.tagProperties.conditionOperator.value$.getValue());
+      // this.filterValueFormControl.valueChanges
+      // .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      // .subscribe(value => { this.selectedNode.tagProperties.conditionValue.value$.next(value); });
+      
+    this._nodeTree.selectedNode$.pipe(
+      switchMap(node =>
+        node.tagProperties.conditionOperator.value$.pipe(
+          distinctUntilChanged(),          
+          tap(value => { this.filterOperatorFormControl.setValue(value) }),
+          takeUntil(this._destroy$))
+      )).subscribe();
 
-    // this.filterValueFormControl.setValue(this.selectedNode.tagProperties.conditionValue.value$.getValue());
+      this._nodeTree.selectedNode$.pipe(
+        switchMap(node =>
+          node.tagProperties.conditionValue.value$.pipe(
+            distinctUntilChanged(),            
+            tap(value => { this.filterValueFormControl.setValue(value) }),
+            takeUntil(this._destroy$))
+        )).subscribe();
 
+
+    // this.selectedNode.tagProperties.conditionOperator.value$
+    //   .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+    //   .subscribe(value => { this.filterOperatorFormControl.setValue(value) });  
+
+    // this.selectedNode.tagProperties.conditionValue.value$
+    //   .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+    //   .subscribe(value => { this.filterValueFormControl.setValue(value) });
   }
 
   bindDataToControls() {
-    this.filterOperatorFormControl.valueChanges
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => { this.selectedNode.tagProperties.conditionOperator.value$.next(value); });
 
-    this.filterValueFormControl.valueChanges
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => { this.selectedNode.tagProperties.conditionValue.value$.next(value); });
+    this._nodeTree.selectedNode$.pipe(
+      switchMap(node=>
+        this.filterOperatorFormControl.valueChanges.pipe(
+          distinctUntilChanged(),
+          tap(value => { node.tagProperties.conditionOperator.value$.next(value) }),
+          takeUntil(this._destroy$)
+        )
+      )
+    ).subscribe();
+
+    // this.filterOperatorFormControl.valueChanges
+    //   .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+    //   .subscribe(value => { this.selectedNode.tagProperties.conditionOperator.value$.next(value); });
+
+    this._nodeTree.selectedNode$.pipe(
+      switchMap(node=>
+        this.filterValueFormControl.valueChanges.pipe(
+          distinctUntilChanged(),
+          tap(value => { node.tagProperties.conditionValue.value$.next(value) }),
+          takeUntil(this._destroy$)
+        )
+      )
+    ).subscribe();
+
+    // this.filterValueFormControl.valueChanges
+    //   .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+    //   .subscribe(value => { this.selectedNode.tagProperties.conditionValue.value$.next(value); });
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

@@ -1,23 +1,25 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { NodeCondition } from '../../../models/nodes/node-condition';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject, distinctUntilChanged, find, map, of, share, single, startWith, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
 import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
 import { FilterOperatorTypes } from '../../../models/constants/ui/option-set-types';
+import { QueryNodeTree } from '../../../models/query-node-tree';
+import { NodeCondition } from '../../../models/nodes/node-condition';
+import { FilterStaticData } from '../../../models/constants/ui/filter-static-data';
 
 @Component({
   selector: 'app-filter-condition-form',
   templateUrl: './filter-condition-form.component.html',
   styleUrls: ['./filter-condition-form.component.css']
 })
-export class FilterConditionFormComponent implements OnInit, OnDestroy {
+export class FilterConditionFormComponent implements OnChanges, OnInit, OnDestroy {
 
-  private destroy$ = new Subject<void>();
+  private _destroy$ = new Subject<void>();
 
-  @Input() selectedNode: NodeCondition;
   @Output() onNodeCreate = new EventEmitter<string>();
+  @Input() selectedNode: NodeCondition;
 
   attributesFormControl = new FormControl<string>(null);
 
@@ -32,30 +34,59 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
 
   previousAttribute: AttributeModel;
 
-  constructor(private _attributeEntityService: AttributeEntityService) { }
+
+  filterOperators = FilterStaticData;
+
+  filterOperatorFormControl = new FormControl<string>(null);
+  filterValueFormControl = new FormControl<string>(null);
+
+
+  constructor(private _attributeEntityService: AttributeEntityService, private _nodeTree: QueryNodeTree) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.selectedNode) {
+      this._destroy$.next();
+
+      this.previousAttribute = null;
+      this.getInitialData();
+      this.addFilterToInput();
+      this.setControlsInitialValues();
+    }
+  }
 
   ngOnInit() {
-    this.getInitialData();
-
-    this.addFilterToInput();
-
     this.bindDataToControls();
-
-    this.setControlsInitialValues();
   }
 
   bindDataToControls() {
     this.attributesFormControl.valueChanges
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.selectedNode.tagProperties.conditionAttribute.value$.next(value);
-      });
+      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe(value => this.selectedNode.tagProperties.conditionAttribute.value$.next(value));
+
+    this.filterOperatorFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe(value => this.selectedNode.tagProperties.conditionOperator.value$.next(value));
+
+
+    this.filterValueFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe(value => this.selectedNode.tagProperties.conditionValue.value$.next(value));
   }
 
   setControlsInitialValues() {
     const attributeInitialValue = this.selectedNode.tagProperties.conditionAttribute.value$.getValue();
 
     this.attributesFormControl.setValue(attributeInitialValue);
+
+
+
+    this.selectedNode.tagProperties.conditionOperator.value$
+      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe(value => this.filterOperatorFormControl.setValue(value));
+
+    this.selectedNode.tagProperties.conditionValue.value$
+      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe(value => this.filterValueFormControl.setValue(value));
   }
 
   getInitialData() {
@@ -73,7 +104,6 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
         }));
   }
 
-
   addFilterToInput() {
     this.filteredAttributes$ = this.attributesFormControl.valueChanges.pipe(
       startWith(this.selectedNode.tagProperties.conditionAttribute.value$.getValue() ?? ''),
@@ -88,9 +118,9 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
       map(
         attributes => {
           const attribute = attributes.find(attr => attr.logicalName.toLowerCase() === filterValue);
-          if (attribute) {            
+          if (attribute) {
             this.handleAttributeChange(attribute);
-            this.selectedAttribute$ = of(attribute);            
+            this.selectedAttribute$ = of(attribute);
             this.previousAttribute = attribute;
           };
           return attributes.filter(entity =>
@@ -109,9 +139,8 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleAttributeChange(attribute: AttributeModel): void {
-    if(!this.previousAttribute || attribute.logicalName === this.previousAttribute?.logicalName) return;
-    console.warn('Attribute changed');
+  handleAttributeChange(attribute: AttributeModel): void {  
+    if (!this.previousAttribute || attribute.logicalName === this.previousAttribute?.logicalName) return;    
     this.selectedNode.tagProperties.conditionOperator.value$.next(null);
     this.selectedNode.tagProperties.conditionValue.value$.next(null);
   }
@@ -143,7 +172,7 @@ export class FilterConditionFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

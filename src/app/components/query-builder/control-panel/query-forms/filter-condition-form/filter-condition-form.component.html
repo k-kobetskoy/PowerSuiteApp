@@ -14,14 +14,17 @@
 </mat-form-field>
 
 
-<ng-container *ngIf="selectedAttribute$ | async as attribute; else elseBlock">  
+<ng-container *ngIf="selectedAttribute$ | async as attribute; else elseBlock">
   <ng-container [ngSwitch]="getFilterOperatorType(attribute)">
-    <app-number-form [selectedNode]="selectedNode" [selectedAttribute]="attribute" *ngSwitchCase = 'FilterOperatorTypes.NUMBER'></app-number-form>    
-    <app-boolean-form [selectedNode]="selectedNode" [selectedAttribute]="attribute" *ngSwitchCase = 'FilterOperatorTypes.BOOLEAN'></app-boolean-form>
-    <app-id-form [selectedNode]="selectedNode" [selectedAttribute]="attribute" *ngSwitchCase = 'FilterOperatorTypes.ID'></app-id-form>
-    <app-picklist-form [selectedNode]="selectedNode" [selectedAttribute]="attribute" *ngSwitchCase = 'FilterOperatorTypes.PICKLIST'></app-picklist-form>
-    <app-date-time-form [selectedNode]="selectedNode" [selectedAttribute]="attribute" *ngSwitchCase = 'FilterOperatorTypes.DATE_TIME'></app-date-time-form>    
-    <app-string-form [selectedNode]="selectedNode"  *ngSwitchDefault></app-string-form>
+    <app-number-form [selectedNode]="selectedNode " *ngSwitchCase='FilterOperatorTypes.NUMBER'></app-number-form>
+    <app-boolean-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.BOOLEAN'></app-boolean-form>
+    <app-id-form [selectedNode]="selectedNode " *ngSwitchCase='FilterOperatorTypes.ID'></app-id-form>
+    <app-picklist-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.PICKLIST'></app-picklist-form>
+    <app-date-time-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.DATE_TIME'></app-date-time-form>
+    <ng-container *ngSwitchDefault>
+      <ng-container *ngTemplateOutlet="stringForm"></ng-container>
+    </ng-container>
+    
   </ng-container>
 </ng-container>
 
@@ -29,4 +32,21 @@
 
 <ng-template #elseBlock>
   <div>no data</div>
+</ng-template>
+
+
+<ng-template #stringForm>
+  <mat-form-field>
+    <mat-label>Operator</mat-label>
+    <mat-select [formControl]="filterOperatorFormControl">
+      <mat-option *ngFor="let option of filterOperators.FilterStringOperators" [value]="option.value">
+        {{option.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Value</mat-label>
+    <input type="text" matInput [formControl]="filterValueFormControl">
+  </mat-form-field>
 </ng-template>

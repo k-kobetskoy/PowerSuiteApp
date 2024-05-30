@@ -1,4 +1,3 @@
-import { BehaviorSubject } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
 import { TagPropertyNames } from "../constants/tag-property-names";

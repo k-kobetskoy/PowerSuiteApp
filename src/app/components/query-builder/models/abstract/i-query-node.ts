@@ -16,6 +16,7 @@ export interface IQueryNode {
     parent?: IQueryNode | null;
     visible: boolean;
     tagProperties: ITagProperties;
-
+    
     get displayValue$(): Observable<string>;
+    getParentEntity(node: IQueryNode): IQueryNode | null;
 }
