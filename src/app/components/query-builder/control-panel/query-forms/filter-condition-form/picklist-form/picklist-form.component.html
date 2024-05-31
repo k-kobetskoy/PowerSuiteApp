@@ -1,3 +1,21 @@
-<p>
-  picklist-form works!
-</p>
+<mat-form-field>
+  <mat-label>Operator</mat-label>
+  <mat-select [formControl]="filterOperatorFormControl">
+    <mat-option *ngFor="let option of filterOperators" [value]="option.value">
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<mat-form-field>
+  <mat-label>Value</mat-label>
+  <mat-select [formControl]="filterValueFormControl">  
+    <ng-container *ngFor="let picklistValue of (picklistValues$ | async)">
+
+    <mat-option  [value]="picklistValue.value">
+      {{picklistValue.label + ' (' + picklistValue.value + ')'}}
+    </mat-option>   
+    </ng-container>
+  </mat-select>
+</mat-form-field>

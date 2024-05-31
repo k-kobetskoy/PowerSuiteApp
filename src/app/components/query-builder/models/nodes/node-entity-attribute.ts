@@ -14,7 +14,7 @@ export class NodeEntityAttribute extends QueryNode {
         this.defaultDisplayValue = QueryNodeType.ATTRIBUTE;
         this.order = QueryNodeOrder.ATTRIBUTE;
         this.type = QueryNodeType.ATTRIBUTE;
-        this.actions = QueryNodeActions.ATTRIBUTE;        
+        this.actions = QueryNodeActions.ATTRIBUTE;
     }
 
     override get displayValue$(): Observable<string> {
@@ -24,13 +24,17 @@ export class NodeEntityAttribute extends QueryNode {
             this.tagProperties.attributeAlias.value$,
         ]);
 
-        return combined$?.pipe(mergeMap(properties =>
-            iif(() =>
-                !properties[0] &&
-                !properties[1],
+        return combined$?.pipe(mergeMap(([attributeName, attributeAlias]) => {
+            attributeName = attributeName? attributeName.trim() : '';
+            attributeAlias = attributeAlias? attributeAlias.trim() : '';
+
+            return iif(() =>
+                !attributeName &&
+                !attributeAlias,
                 of(this.defaultDisplayValue), of(`               
-                ${properties[0] ? properties[0] : ''}
-                ${properties[1] ? `(${properties[1]})` : ''}`))
+                ${attributeName ? attributeName : ''}
+                ${attributeAlias ? `(${attributeAlias})` : ''}`))
+        }
         ));
     }
 }

@@ -25,13 +25,14 @@ export class NodeEntity extends QueryNode {
             this.tagProperties.entityAlias.value$,
         ]);
 
-        return combined$?.pipe(mergeMap(properties =>
-            iif(() =>
-                !properties[0] &&
-                !properties[1],
-                of(this.defaultDisplayValue), of(`               
-                ${properties[0] ? properties[0] : ''}
-                ${properties[1] ? `(${properties[1]})` : ''}`))
-        ));
+        return combined$?.pipe(mergeMap(([entityName, entityAlias]) => {
+            entityName = entityName? entityName.trim() : '';
+            entityAlias = entityAlias? entityAlias.trim() : '';
+
+            return iif(() => !entityName && !entityAlias,
+                of(this.defaultDisplayValue),
+                of(`${entityName ? entityName : ''} ${entityAlias ? `(${entityAlias})` : ''}`)
+            );
+        }));
     }
 }

@@ -20,7 +20,6 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
 
     public set selectedNode$(value: IQueryNode) {
         if (value != this._selectedNode$.value) {
-            console.log('selected node changed', value)
             this._selectedNode$.next(value);
         }
     }

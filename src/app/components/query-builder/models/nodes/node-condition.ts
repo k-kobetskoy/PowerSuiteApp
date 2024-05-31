@@ -1,4 +1,4 @@
-import { Observable, combineLatest, mergeMap, iif, of } from "rxjs";
+import { Observable, combineLatest, mergeMap, of } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
@@ -25,17 +25,19 @@ export class NodeCondition extends QueryNode {
             this.tagProperties.conditionValue.value$,
         ]);
 
-        return combined$?.pipe(mergeMap(properties =>
-            iif(() =>
-                !properties[0] &&
-                !properties[1] &&
-                !properties[2],
-                of(this.defaultDisplayValue), of(`
-                ${properties[0] ? properties[0] : ''}
-                ${properties[1] ? `(${properties[1]})` : ''}
-                ${properties[2] ? properties[2] : ''}
-                `))
-        ));
-    }
+        return combined$?.pipe(mergeMap(([conditionAttribute, conditionOperator, conditionValue]) => {
 
+            conditionAttribute = conditionAttribute ? conditionAttribute.trim() : '';
+            conditionOperator = conditionOperator ? conditionOperator.trim() : '';
+            conditionValue = conditionValue === null ? '' : conditionValue.toString().trim();
+
+            const hasNoProperties = !conditionAttribute && !conditionOperator && !conditionValue;
+
+            if (hasNoProperties) return of(this.defaultDisplayValue);
+
+            return of(`${conditionAttribute ? conditionAttribute : ''}
+                ${conditionOperator ? `(${conditionOperator})` : ''}
+                ${conditionValue ? conditionValue : ''}`)
+        }));
+    }
 }

@@ -21,29 +21,30 @@ export class NodeRoot extends QueryNode {
     override get displayValue$(): Observable<string> {
 
         let combined$ = combineLatest([
-                this.tagProperties.rootAggregate.value$,
-                this.tagProperties.rootDistinct.value$,
-                this.tagProperties.rootPage.value$,
-                this.tagProperties.rootPageSize.value$,
-                this.tagProperties.rootTop.value$,
-                this.tagProperties.rootTotalRecordsCount.value$,
+            this.tagProperties.rootAggregate.value$,
+            this.tagProperties.rootDistinct.value$,
+            this.tagProperties.rootPage.value$,
+            this.tagProperties.rootPageSize.value$,
+            this.tagProperties.rootTop.value$,
+            this.tagProperties.rootTotalRecordsCount.value$,
         ]);
 
-        return combined$.pipe(mergeMap(properties =>
-            iif(() =>
-                !properties[0] &&
-                !properties[1] &&
-                !properties[2] &&
-                !properties[3] &&
-                !properties[4] &&
-                !properties[5],
-                of(this.defaultDisplayValue), of(`
-                ${properties[4] ? `Top: ${properties[4]}` : ''} 
-                ${properties[3] ? `PgSz: ${properties[3]}` : ''} 
-                ${properties[2] ? `Pg: ${properties[2]}` : ''} 
-                ${properties[1] ? `Dst` : ''}
-                ${properties[0] ? `Agg` : ''}
-                ${properties[5] ? `TRC` : ''} `))
+        return combined$.pipe(mergeMap(([aggregate, distinct, page, pageSize, top, totalRecordsCount]) => {
+            const pageValue = page ===null ? '' : page.toString().trim();
+            const pageSizeValue = pageSize  ===null? '' : pageSize.toString().trim();
+            const topValue = top === null? '' : top.toString().trim();
+
+            return iif(() =>
+                !aggregate && !distinct && !pageValue && !pageSizeValue && !topValue && !totalRecordsCount,
+                of(this.defaultDisplayValue),
+                of(`
+                ${topValue ? `Top: ${topValue}` : ''} 
+                ${pageSizeValue ? `PgSz: ${pageSizeValue}` : ''} 
+                ${pageValue ? `Pg: ${pageValue}` : ''} 
+                ${distinct ? `Dst` : ''}
+                ${aggregate ? `Agg` : ''}
+                ${totalRecordsCount ? `TRC` : ''} `))
+        }
         ));
-    }   
+    }
 }
