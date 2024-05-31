@@ -28,7 +28,8 @@ export const TagPropertyNames = {
     linkType: 'link-type',
     linkAlias: 'alias',
     linkIntersect: 'intersect',
-    linkVilible: 'visible',
+    linkVisible: 'visible',
+    linkShowOnlyLoolups: 'showonlylookups',
 
     rootTop: 'top',
     rootDistinct: 'distinct',

@@ -32,7 +32,7 @@ export interface ITagProperties {
     linkType?: ITagProperty<string>;
     linkAlias?: ITagProperty<string>;
     linkIntersect?: ITagProperty<boolean>;
-    linkVilible?: ITagProperty<boolean>;
+    linkVisible?: ITagProperty<boolean>;
 
     rootTop?: ITagProperty<number>;
     rootDistinct?: ITagProperty<boolean>;

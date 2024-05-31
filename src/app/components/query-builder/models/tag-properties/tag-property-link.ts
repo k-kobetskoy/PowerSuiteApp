@@ -13,7 +13,7 @@ export class TagPropertyLink implements ITagProperties {
     linkType?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.linkType);
     linkAlias?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.linkAlias);
     linkIntersect?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkIntersect);
-    linkVilible?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkVilible);
+    linkVisible?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkVisible);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

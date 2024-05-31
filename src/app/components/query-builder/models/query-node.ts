@@ -1,6 +1,6 @@
 import { ITagProperties } from "./abstract/i-tag-properties";
 import { IQueryNode } from "./abstract/i-query-node";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { QueryNodeType } from "./constants/query-node-type";
 
 export abstract class QueryNode implements IQueryNode {
@@ -18,6 +18,8 @@ export abstract class QueryNode implements IQueryNode {
     parent?: IQueryNode | null;
     visible: boolean;
     tagProperties: ITagProperties;
+    relationship$?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    showOnlyLookups$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(tagProperties: ITagProperties) {
         this.expandable = false;

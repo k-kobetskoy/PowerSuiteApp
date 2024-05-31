@@ -31,7 +31,8 @@ import { DateTimeFormComponent } from './components/query-builder/control-panel/
 import { IdFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/id-form/id-form.component';
 import { PicklistFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/picklist-form/picklist-form.component';
 import { StringFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/string-form/string-form.component';
-
+import { LinkEntityFormComponent } from './components/query-builder/control-panel/query-forms/link-entity-form/link-entity-form.component';
+import { OrderFormComponent } from './components/query-builder/control-panel/query-forms/order-form/order-form.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -83,6 +84,8 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     IdFormComponent,
     PicklistFormComponent,
     StringFormComponent,
+    LinkEntityFormComponent,
+    OrderFormComponent
   ],
 
   imports: [
