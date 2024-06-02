@@ -1,10 +1,9 @@
 <app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
 
-
 <mat-form-field>
   <mat-label>Entity</mat-label>
   <input type="text" matInput [formControl]="linkEntityForm.formControl" [matAutocomplete]="entityAutoComplete"
-    (keyup)="onKeyPressed($event)">
+    (input)="onInputChanged($event, linkEntityForm)">
 
   <mat-autocomplete #entityAutoComplete="matAutocomplete">
     <mat-option *ngFor="let option of linkEntityForm.filteredValues$ | async" [value]="option.logicalName">
@@ -13,12 +12,11 @@
   </mat-autocomplete>
 </mat-form-field>
 
-
 <ng-container *ngIf="{ linkEntityName: linkEntityForm.storedInputValue$ | async } as data">
   <mat-form-field>
     <mat-label>From{{data.linkEntityName === null ? '' : ' ('+data.linkEntityName+')'}}</mat-label>
     <input type="text" matInput [formControl]="fromAttributeForm.formControl"
-      [matAutocomplete]="fromAttributeAutocomplete" (keyup)="onKeyPressed($event)">
+      [matAutocomplete]="fromAttributeAutocomplete" (input)="onInputChanged($event, fromAttributeForm)">
 
     <mat-autocomplete #fromAttributeAutocomplete="matAutocomplete">
       <mat-option *ngFor="let option of fromAttributeForm.filteredValues$ | async" [value]="option.logicalName">
@@ -31,7 +29,7 @@
   <mat-form-field>
     <mat-label>To{{selectedNode.getParentEntity() === null ? '' : ' ('+(selectedNode.getParentEntity().tagProperties.entityName.value$|async)+')'}}</mat-label>
     <input type="text" matInput [formControl]="toAttributeForm.formControl" [matAutocomplete]="toAttributeAutoComplete"
-      (keyup)="onKeyPressed($event)">
+      (input)="onInputChanged($event, toAttributeForm)">
 
     <mat-autocomplete #toAttributeAutoComplete="matAutocomplete">
       <mat-option *ngFor="let option of toAttributeForm.filteredValues$ | async" [value]="option.logicalName">
@@ -40,13 +38,25 @@
     </mat-autocomplete>
   </mat-form-field>
 
+  <mat-form-field>
+    <mat-label>Link type</mat-label>
+    <mat-select [ngModel]="selectedNode.tagProperties.linkType.value$| async"
+      (ngModelChange)="selectedNode.tagProperties.linkType.value$.next($event)" >
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let type of linkTypes" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+
 <mat-form-field>
   <mat-label>Alias</mat-label>
   <input type="text" matInput [formControl]="aliasForm.formControl">
 </mat-form-field>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.linkIntersect.value$| async"
+<mat-checkbox [ngModel]="selectedNode.tagProperties.linkIntersect.value$ | async"
   (ngModelChange)="selectedNode.tagProperties.linkIntersect.value$.next($event)">Intersect</mat-checkbox>
-<mat-checkbox [ngModel]="selectedNode.tagProperties.linkVisible.value$| async"
+<mat-checkbox [ngModel]="selectedNode.tagProperties.linkVisible.value$ | async"
   (ngModelChange)="selectedNode.tagProperties.linkVisible.value$.next($event)">Visible</mat-checkbox>
 <mat-checkbox matInput [formControl]="showOnlyLookupsForm.formControl">Show Only Lookups/Id Attributes</mat-checkbox>

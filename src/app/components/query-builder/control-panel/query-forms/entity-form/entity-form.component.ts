@@ -5,7 +5,6 @@ import { Observable, Subject, distinctUntilChanged, iif, map, startWith, switchM
 import { NodeEntity } from '../../../models/nodes/node-entity';
 import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
 
-
 @Component({
   selector: 'app-entity-form',
   templateUrl: './entity-form.component.html',
