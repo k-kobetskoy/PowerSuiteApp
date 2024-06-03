@@ -23,7 +23,6 @@ export class TreePanelComponent implements OnInit {
   ngOnInit() {
     this.dataSource$ = of(this.tree)
     this.selectedNode$ = this.tree.selectedNode$
-    console.log(this.selectedNode$)
     this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
   }
 

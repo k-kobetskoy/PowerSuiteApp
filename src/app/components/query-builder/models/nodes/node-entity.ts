@@ -19,7 +19,6 @@ export class NodeEntity extends QueryNode {
     }
 
     override get displayValue$(): Observable<string> {
-
         let combined$ = combineLatest([
             this.tagProperties.entityName.value$,
             this.tagProperties.entityAlias.value$,

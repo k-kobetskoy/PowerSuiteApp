@@ -33,6 +33,7 @@ import { PicklistFormComponent } from './components/query-builder/control-panel/
 import { StringFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/string-form/string-form.component';
 import { LinkEntityFormComponent } from './components/query-builder/control-panel/query-forms/link-entity-form/link-entity-form.component';
 import { OrderFormComponent } from './components/query-builder/control-panel/query-forms/order-form/order-form.component';
+import { QueryNodeTagComponent } from './components/query-builder/code-editor/query-node-tag/query-node-tag.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -85,7 +86,8 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     PicklistFormComponent,
     StringFormComponent,
     LinkEntityFormComponent,
-    OrderFormComponent
+    OrderFormComponent,
+    QueryNodeTagComponent
   ],
 
   imports: [
@@ -111,7 +113,8 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     ReactiveFormsModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [QueryNodeTree,
+  providers: [
+    // QueryNodeTree,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
     { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) }],

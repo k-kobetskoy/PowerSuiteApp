@@ -38,5 +38,4 @@ export class TagPropertiesFactoryService {
         throw new NotImplementError(`Couldn't find node type with the name: ${typeName}`)
     }
   }
-
 }
