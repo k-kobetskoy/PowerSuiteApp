@@ -1,176 +1,101 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { QueryNodeTree } from '../models/query-node-tree';
-import { BehaviorSubject, Observable, combineLatest, concatMap, from, map, merge, of, reduce, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, distinctUntilChanged, map, of, switchMap, takeUntil } from 'rxjs';
 import { IQueryNode } from '../models/abstract/i-query-node';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 
 export class ClosingTagsStack {
-  store: string[] = [];
+  private store: string[] = [];
+
+  count: number = 0;
 
   push(tagName: string): void {
-    this.store.unshift(tagName);
+    this.store = [tagName, ...this.store];
+    this.count++;
   }
+
   pop(): string {
-    return this.store.shift();
+    const poppedValue = this.store.shift();
+    this.count--;
+    return poppedValue;
   }
 }
 
 @Injectable({ providedIn: 'root' })
-export class QueryRenderService {
-
-  private _closingTags: ClosingTagsStack = new ClosingTagsStack();
+export class QueryRenderService implements OnDestroy {
+  private _destroy$ = new Subject<void>();
   private _previousNodeLevel: number = -1;
-  private _restClosingTags$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  xmlRequest$: Observable<string>;
-
-
-  queryTree$ = new BehaviorSubject(this.queryTree);
+  private _closingTagsStack = new ClosingTagsStack();
+  xmlRequestSubject$ = new BehaviorSubject<string>('');
+  node: IQueryNode;
 
   constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) {
 
     this.renderXmlRequest();
-    this.eventBus.on(AppEvents.NODE_ADDED, () => { console.warn('eventBus NODE_ADDED'); this.renderXmlRequest() });
+    this.eventBus.on(AppEvents.NODE_ADDED, () => { this.renderXmlRequest(); console.warn('Node Added') });
   }
-
 
   renderXmlRequest() {
+    this._destroy$.next();
+    this._previousNodeLevel = -1;
+    this.node = this.queryTree.root;
+    console.warn('Rendering XML Request');
 
-    this.queryTree$.next(this.queryTree);
-    //let observables: Observable<string>[] = [];
+    const observables$: Observable<string>[] = [];
+    const dynamicObservables$: BehaviorSubject<Observable<string>[]> = new BehaviorSubject([]);
 
-    // for (let node of this.queryTree) {
-    //   observables.push(node.displayValue$.pipe(map(value => {
-    //     return !node.selfClosingTag ? this.getPairNode(node, value) : this.getSingleNode(node, value)
-    //   })));
-    // }
+    while (this.node != null || this._closingTagsStack.count != 0) {
+      observables$.push(this.processNode(this.node));
+    }
+    this._previousNodeLevel = -1;
 
- 
-      // this.xmlRequest$ = from(this.queryTree).pipe(
-      //     concatMap(node => node.displayValue$.pipe(
-      //         map(displayValue => !node.selfClosingTag ? this.getPairNode(node, displayValue) : this.getSingleNode(node, displayValue))
-      //     )),
-      //     reduce((acc, xmlString) => acc + xmlString, ''),
-      //     tap(xmlString => console.log(xmlString))
-      // );
+    dynamicObservables$.next(observables$);
 
-
-      this.xmlRequest$ = this.queryTree$.pipe(
-        switchMap(queryTree => from(queryTree).pipe(
-            map(node => node.tagProperties.tagName + ' '),
-            reduce((acc, xmlString) => acc + xmlString, '')
-        ))
-    );
-    
-
-    //   this.xmlRequest$ = from(this.queryTree).pipe(
-    //     map(node=> {
-    //       console.log(node.tagProperties.tagName)
-    //      return node.tagProperties.tagName + ' '
-    //     }),
-    //     // concatMap(node => node.displayValue$.pipe(
-    //     //     map(displayValue => !node.selfClosingTag ? this.getPairNode(node, displayValue) : this.getSingleNode(node, displayValue))
-    //     // )),
-    //     reduce((acc, xmlString) =>  acc + xmlString, ''),
-    //     // tap(xmlString => console.log(xmlString))
-    // );
-
-
-//  for (let node of this.queryTree) {
-//       observables.push(node.displayValue$.pipe(map(value => {
-//         return !node.selfClosingTag ? this.getPairNode(node, value) : this.getSingleNode(node, value)
-//       })));
-//     }
-
-  //   for (let node of this.queryTree) {
-  //     observables.push(node.displayValue$.pipe(
-  //         scan((acc, value) => {
-  //             return !node.selfClosingTag ? this.getPairNode(node, value) : this.getSingleNode(node, value);
-  //         }, '')
-  //     ));
-  // }
-
-    // this.updateRestClosingTags();
-
-    // observables.push(this._restClosingTags$.asObservable());
-
-    // // this.xmlRequest$ = merge(...observables),
-    // this.xmlRequest$ = combineLatest(observables).pipe(map(values => values.join('')),
-    //   tap());
+    dynamicObservables$.pipe(
+      switchMap(obsList => combineLatest(obsList)),
+      map(values => values.join('\n')),
+      distinctUntilChanged(),
+      takeUntil(this._destroy$))
+      .subscribe(value => this.xmlRequestSubject$.next(value));
   }
 
-  getPairNode(node: IQueryNode, value: string): string {
-    let closingTag = `</${node.tagProperties.tagName}>`;
-    let previousClosingTag = '';
-    console.log('getting pair node')
+  processNode(node: IQueryNode): Observable<string> {
+    if (this.node === null) {
+      this._previousNodeLevel = 0;
+      return of(this._closingTagsStack.pop());
+    }
 
     if (this._previousNodeLevel >= node.level) {
-      previousClosingTag = this._closingTags.pop();
-      console.log('popped from closing tags in getPairNode() ' + previousClosingTag);
-    } else if (previousClosingTag) {
-      this._closingTags.push(previousClosingTag);
+      this._previousNodeLevel--;
+      return of(this._closingTagsStack.pop());
     }
-    this._closingTags.push(closingTag);
-    //this.updateRestClosingTags();
-    this._previousNodeLevel = node.level;
 
-    return `<${previousClosingTag} ${node.tagProperties.tagName} ${value}>`;
+    if (node.selfClosingTag) {
+      let observable = this.getSingleNodeTag(node);
+      this._previousNodeLevel = node.level;
+      this.node = node.next;
+      return observable;
+    }
+    else {
+      let observable = this.getPairNodeTag(node);
+      this._previousNodeLevel = node.level;
+      this.node = node.next;
+      return observable;
+    }
   }
 
-  // getPairNode(node: IQueryNode, value: Observable<string>): Observable<string> {
-  //   let closingTag = `</${node.tagProperties.tagName}>`;
-  //   let previousClosingTag = '';
-
-  //   return value.pipe(
-  //     map(value => {
-  //       if (this._previousNodeLevel >= node.level) {
-  //         previousClosingTag = this._closingTags.pop();
-  //         console.log('popped from closing tags in getPairNode() ' + previousClosingTag);
-  //       }
-  //       this._closingTags.push(closingTag);
-  //       //this.updateRestClosingTags();
-  //       return `<${previousClosingTag} ${node.tagProperties.tagName} ${value}>`;
-
-  //     }), tap(_ => {
-  //       this._previousNodeLevel = node.level
-  //     }));
-  // }
-
-
-  getSingleNode(node: IQueryNode, value: string): string {
-    let previousClosingTag = '';
-
-    if (this._previousNodeLevel >= node.level) {
-      previousClosingTag = this._closingTags.pop();
-      console.log('popped from closing tags in getSingleNode() ' + previousClosingTag);
-    } else if (previousClosingTag) {
-      this._closingTags.push(previousClosingTag);
-    }
-    this._previousNodeLevel = node.level;
-
-    return `${previousClosingTag} <${node.tagProperties.tagName} ${value}/>`;
+  getPairNodeTag(node: IQueryNode): Observable<string> {
+    this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
+    return node.displayValue$.pipe(map(displayValue => `<${node.tagProperties.tagName} ${displayValue}>`))
   }
-  // getSingleNode(node: IQueryNode, value: Observable<string>): Observable<string> {
-  //   let previousClosingTag = '';
 
-  //   return value.pipe(map(value => {
-  //     if (this._previousNodeLevel >= node.level) {
-  //       previousClosingTag = this._closingTags.pop();
-  //       console.log('popped from closing tags in getSingleNode() ' + previousClosingTag);
-  //     }
-  //     return `${previousClosingTag} <${node.tagProperties.tagName} ${value}/>`;
-  //   }), tap(_ => this._previousNodeLevel = node.level));
-  // }
+  getSingleNodeTag(node: IQueryNode): Observable<string> {
+    return node.displayValue$.pipe(map(displayValue => `<${node.tagProperties.tagName}/>`))
+  }
 
-  updateRestClosingTags(): void {
-    let closingTags = '';
-    let closingTag = this._closingTags.pop();
-
-    while (closingTag) {
-      closingTags = closingTags.concat(closingTag);
-      closingTag = this._closingTags.pop();
-    }
-    this._restClosingTags$.next(closingTags);
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

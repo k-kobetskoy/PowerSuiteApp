@@ -1,4 +1,4 @@
-import { Observable, combineLatest, concatAll, iif, map, mergeMap, of } from "rxjs";
+import { Observable, combineLatest, concatAll, distinctUntilChanged, iif, map, mergeMap, of } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
@@ -32,6 +32,6 @@ export class NodeEntity extends QueryNode {
                 of(this.defaultDisplayValue),
                 of(`${entityName ? entityName : ''} ${entityAlias ? `(${entityAlias})` : ''}`)
             );
-        }));
+        }), distinctUntilChanged());
     }
 }

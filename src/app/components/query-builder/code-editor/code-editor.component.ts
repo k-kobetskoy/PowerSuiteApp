@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QueryRenderService } from '../services/query-render.service';
 
@@ -16,8 +16,12 @@ export class CodeEditorComponent implements OnInit {
 
   constructor(private queryRenerer: QueryRenderService) { }
   
+  
 
   ngOnInit() {
-    this.xmlRequest$ = this.queryRenerer.xmlRequest$;
+     this.xmlRequest$ = this.queryRenerer.xmlRequestSubject$;
+    // this.xmlRequest$ = this.queryRenerer.xmlRequest$;
   }
+
+  
 }

@@ -1,4 +1,4 @@
-import { Observable,  mergeMap, iif, of } from "rxjs";
+import { Observable,  mergeMap, iif, of, distinctUntilChanged } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
@@ -24,6 +24,6 @@ export class NodeFilter extends QueryNode {
             return iif(() => !value,
                 of(this.defaultDisplayValue),
                 of(`${this.defaultDisplayValue} (${FilterStaticData.FilterTypes.find(x => x.value === value)?.name})`))
-        }));
+        }), distinctUntilChanged());
     }
 }

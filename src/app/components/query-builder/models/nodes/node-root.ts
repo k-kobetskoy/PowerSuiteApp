@@ -1,4 +1,4 @@
-import { Observable, mergeMap, iif, of, combineLatest } from "rxjs";
+import { Observable, mergeMap, iif, of, combineLatest, distinctUntilChanged, shareReplay } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
@@ -45,6 +45,6 @@ export class NodeRoot extends QueryNode {
                 ${aggregate ? `Agg` : ''}
                 ${totalRecordsCount ? `TRC` : ''} `))
         }
-        ));
+        ), distinctUntilChanged());
     }
 }

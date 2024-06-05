@@ -1,4 +1,4 @@
-import { Observable, combineLatest, mergeMap, iif, of } from "rxjs";
+import { Observable, combineLatest, mergeMap, iif, of, distinctUntilChanged } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
@@ -35,6 +35,6 @@ export class NodeLink extends QueryNode {
                 of(this.defaultDisplayValue),
                 of(`${entityName ? entityName : ''} ${linkType? linkType: ''} ${intersect? 'M:M':''} ${linkAlias ? `(${linkAlias})` : ''}`)
             );
-        }));
+        }), distinctUntilChanged());
     }
 }

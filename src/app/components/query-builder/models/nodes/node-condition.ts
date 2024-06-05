@@ -1,4 +1,4 @@
-import { Observable, combineLatest, mergeMap, of } from "rxjs";
+import { Observable, combineLatest, distinctUntilChanged, mergeMap, of } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
@@ -38,6 +38,6 @@ export class NodeCondition extends QueryNode {
             return of(`${conditionAttribute ? conditionAttribute : ''}
                 ${conditionOperator ? `(${conditionOperator})` : ''}
                 ${conditionValue ? conditionValue : ''}`)
-        }));
+        }), distinctUntilChanged());
     }
 }
