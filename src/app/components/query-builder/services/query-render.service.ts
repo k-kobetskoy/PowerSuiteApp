@@ -11,8 +11,7 @@ export class ClosingTagsStack {
   count: number = 0;
 
   push(tagName: string): void {
-    this.store = [tagName, ...this.store];
-    this.count++;
+    this.count = this.store.unshift(tagName);
   }
 
   pop(): string {
@@ -27,11 +26,10 @@ export class QueryRenderService implements OnDestroy {
   private _destroy$ = new Subject<void>();
   private _previousNodeLevel: number = -1;
   private _closingTagsStack = new ClosingTagsStack();
+  private _node: IQueryNode;
   xmlRequestSubject$ = new BehaviorSubject<string>('');
-  node: IQueryNode;
 
   constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) {
-
     this.renderXmlRequest();
     this.eventBus.on(AppEvents.NODE_ADDED, () => { this.renderXmlRequest(); console.warn('Node Added') });
   }
@@ -39,14 +37,14 @@ export class QueryRenderService implements OnDestroy {
   renderXmlRequest() {
     this._destroy$.next();
     this._previousNodeLevel = -1;
-    this.node = this.queryTree.root;
+    this._node = this.queryTree.root;
     console.warn('Rendering XML Request');
 
     const observables$: Observable<string>[] = [];
     const dynamicObservables$: BehaviorSubject<Observable<string>[]> = new BehaviorSubject([]);
 
-    while (this.node != null || this._closingTagsStack.count != 0) {
-      observables$.push(this.processNode(this.node));
+    while (this._node != null || this._closingTagsStack.count != 0) {
+      observables$.push(this.processNode(this._node));
     }
     this._previousNodeLevel = -1;
 
@@ -61,7 +59,7 @@ export class QueryRenderService implements OnDestroy {
   }
 
   processNode(node: IQueryNode): Observable<string> {
-    if (this.node === null) {
+    if (this._node === null) {
       this._previousNodeLevel = 0;
       return of(this._closingTagsStack.pop());
     }
@@ -74,13 +72,13 @@ export class QueryRenderService implements OnDestroy {
     if (node.selfClosingTag) {
       let observable = this.getSingleNodeTag(node);
       this._previousNodeLevel = node.level;
-      this.node = node.next;
+      this._node = node.next;
       return observable;
     }
     else {
       let observable = this.getPairNodeTag(node);
       this._previousNodeLevel = node.level;
-      this.node = node.next;
+      this._node = node.next;
       return observable;
     }
   }
