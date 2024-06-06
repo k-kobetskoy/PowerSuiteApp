@@ -12,8 +12,8 @@ export class TagPropertyLink implements ITagProperties {
     linkToAttribute?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.linkToAttribute);
     linkType?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.linkType);
     linkAlias?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.linkAlias);
-    linkIntersect?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkIntersect);
-    linkVisible?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkVisible);
+    linkIntersect?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkIntersect, 'M:M', false);
+    linkVisible?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.linkVisible, '', false);
 
     getOpeningTag(): string {
         throw new Error("Method not implemented.");

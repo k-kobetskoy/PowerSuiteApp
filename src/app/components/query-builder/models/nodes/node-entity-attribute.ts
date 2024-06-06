@@ -1,9 +1,10 @@
-import { Observable, combineLatest, distinct, distinctUntilChanged, iif, mergeMap, of } from "rxjs";
+import { Observable, combineLatest, distinctUntilChanged, mergeMap, of } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyEntityAttribute } from "../tag-properties/tag-property-entity-attribute";
+import { IPropertyDisplay } from "../abstract/i-node-property-display";
 
 export class NodeEntityAttribute extends QueryNode {
 
@@ -11,30 +12,58 @@ export class NodeEntityAttribute extends QueryNode {
 
     constructor(tagProperties: TagPropertyEntityAttribute) {
         super(tagProperties);
-        this.defaultDisplayValue = QueryNodeType.ATTRIBUTE;
+        this.defaultNodeDisplayValue = QueryNodeType.ATTRIBUTE;
         this.order = QueryNodeOrder.ATTRIBUTE;
         this.type = QueryNodeType.ATTRIBUTE;
         this.actions = QueryNodeActions.ATTRIBUTE;
     }
 
-    override get displayValue$(): Observable<string> {
+    override get displayValue$(): Observable<IPropertyDisplay> {
 
-        let combined$ = combineLatest([
+        const combined$ = combineLatest([
             this.tagProperties.attributeName.value$,
             this.tagProperties.attributeAlias.value$,
+            this.tagProperties.attributeAggregate.value$,
+            this.tagProperties.attributeGroupBy.value$,
+            this.tagProperties.attributeDistinct.value$,
+            this.tagProperties.attributeUserTimeZone.value$,
+            this.tagProperties.attributeDateGrouping.value$
         ]);
 
-        return combined$?.pipe(mergeMap(([attributeName, attributeAlias]) => {
-            attributeName = attributeName? attributeName.trim() : '';
-            attributeAlias = attributeAlias? attributeAlias.trim() : '';
+        return combined$.pipe(
+            mergeMap(([attributeName, attributeAlias, attributeAggregate, attributeGroupBy, attributeDistinct, attributeUserTimeZone, attributeDateGrouping]) => {
+                const propertyDisplay: IPropertyDisplay = {
+                    nodePropertyDisplay: this.defaultNodeDisplayValue,
+                    tagPropertyDisplay: this.tagProperties.tagName
+                };
 
-            return iif(() =>
-                !attributeName &&
-                !attributeAlias,
-                of(this.defaultDisplayValue), of(`               
-                ${attributeName ? attributeName : ''}
-                ${attributeAlias ? `(${attributeAlias})` : ''}`))
-        }
-        ), distinctUntilChanged());
+                const tagDisplay = attributeName || attributeAlias || attributeAggregate || attributeGroupBy || attributeDistinct || attributeUserTimeZone || attributeDateGrouping;
+                const nodeDisplay = attributeName || attributeAlias || attributeGroupBy;
+
+                const aggregateString = attributeAggregate ? attributeAggregate : '';
+                const groupByString = attributeGroupBy ? attributeGroupBy.toString() : '';
+                const distinctString = attributeDistinct ? attributeDistinct.toString() : '';
+                const userTimeZoneString = attributeUserTimeZone ? attributeUserTimeZone.toString() : '';
+                const dateGroupingString = attributeDateGrouping ? attributeDateGrouping : '';
+
+                if (tagDisplay) {
+                    if (nodeDisplay) {
+                        propertyDisplay.nodePropertyDisplay = attributeGroupBy
+                            ? `${attributeAlias ? attributeAlias : ''}=count(${attributeName}) ${this.tagProperties.attributeGroupBy.nodePropertyDisplay}`
+                            : `${attributeName ? attributeName : ''} ${attributeAlias ? `(${attributeAlias})` : ''}`.trim();
+                    }
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
+                    ${attributeName? `${this.tagProperties.attributeName.name}="${attributeName}"` : ''} 
+                    ${attributeAlias? `${this.tagProperties.attributeAlias.name}="${attributeAlias}"` : ''} 
+                    ${aggregateString? `${this.tagProperties.attributeAggregate.name}="${aggregateString}"` : ''}
+                    ${groupByString? `${this.tagProperties.attributeGroupBy.name}="${groupByString}"` : ''} 
+                    ${distinctString? `${this.tagProperties.attributeDistinct.name}="${distinctString}"` : ''} 
+                    ${userTimeZoneString? `${this.tagProperties.attributeUserTimeZone.name}="${userTimeZoneString}"` : ''} 
+                    ${dateGroupingString? `${this.tagProperties.attributeDateGrouping.name}="${dateGroupingString}"` : ''}`.trim();
+                }
+
+                return of(propertyDisplay);
+            }),
+            distinctUntilChanged());
     }
 }

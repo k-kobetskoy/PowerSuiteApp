@@ -7,6 +7,7 @@
         <app-filter-form [selectedNode]="selected"  *ngSwitchCase='nodeTypes.FILTER'  (onNodeCreate)="createNode($event)"></app-filter-form>
         <app-filter-condition-form [selectedNode]="selected" *ngSwitchCase='nodeTypes.CONDITION'  (onNodeCreate)="createNode($event)"></app-filter-condition-form>
         <app-link-entity-form [selectedNode]="selected" *ngSwitchCase='nodeTypes.LINK'  (onNodeCreate)="createNode($event)"></app-link-entity-form>        
+        <app-order-form [selectedNode]="selected" *ngSwitchCase='nodeTypes.ORDER'  (onNodeCreate)="createNode($event)"></app-order-form>
     </ng-container>
 
 </ng-container>

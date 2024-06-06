@@ -2,9 +2,10 @@ import { ITagProperties } from "./abstract/i-tag-properties";
 import { IQueryNode } from "./abstract/i-query-node";
 import { BehaviorSubject, Observable } from "rxjs";
 import { QueryNodeType } from "./constants/query-node-type";
+import { IPropertyDisplay } from "./abstract/i-node-property-display";
 
 export abstract class QueryNode implements IQueryNode {
-    defaultDisplayValue: string;
+    defaultNodeDisplayValue: string;
     order: number;
     selfClosingTag: boolean;
     expandable: boolean;
@@ -30,9 +31,9 @@ export abstract class QueryNode implements IQueryNode {
         this.tagProperties = tagProperties;
     }   
 
-    get displayValue$(): Observable<string> {
-        return new Observable<string>(observer => {
-            observer.next(this.defaultDisplayValue);
+    get displayValue$(): Observable<IPropertyDisplay> {
+        return new Observable<IPropertyDisplay>(observer => {
+            observer.next({nodePropertyDisplay : this.defaultNodeDisplayValue, tagPropertyDisplay : this.tagProperties.tagName});
         });
     }
 

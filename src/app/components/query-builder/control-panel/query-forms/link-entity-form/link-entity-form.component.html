@@ -26,8 +26,10 @@
   </mat-form-field>
 </ng-container>
 
+<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.value$|async)} as entity">
   <mat-form-field>
-    <mat-label>To{{selectedNode.getParentEntity() === null ? '' : ' ('+(selectedNode.getParentEntity().tagProperties.entityName.value$|async)+')'}}</mat-label>
+
+    <mat-label>To{{entity.name ? '('+entity.name+')':''}}</mat-label>
     <input type="text" matInput [formControl]="toAttributeForm.formControl" [matAutocomplete]="toAttributeAutoComplete"
       (input)="onInputChanged($event, toAttributeForm)">
 
@@ -37,18 +39,19 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+</ng-container>
 
-  <mat-form-field>
-    <mat-label>Link type</mat-label>
-    <mat-select [ngModel]="selectedNode.tagProperties.linkType.value$| async"
-      (ngModelChange)="selectedNode.tagProperties.linkType.value$.next($event)" >
-      <mat-option>--</mat-option>
-      <mat-option *ngFor="let type of linkTypes" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  
+<mat-form-field>
+  <mat-label>Link type</mat-label>
+  <mat-select [ngModel]="selectedNode.tagProperties.linkType.value$| async"
+    (ngModelChange)="selectedNode.tagProperties.linkType.value$.next($event)">
+    <mat-option>--</mat-option>
+    <mat-option *ngFor="let type of linkTypes" [value]="type">
+      {{type}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
 
 <mat-form-field>
   <mat-label>Alias</mat-label>

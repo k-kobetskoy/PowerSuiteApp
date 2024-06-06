@@ -4,6 +4,7 @@ import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyCondition } from "../tag-properties/tag-property-condition";
+import { IPropertyDisplay } from "../abstract/i-node-property-display";
 
 export class NodeCondition extends QueryNode {
 
@@ -11,33 +12,44 @@ export class NodeCondition extends QueryNode {
 
     constructor(tagProperties: TagPropertyCondition) {
         super(tagProperties);
-        this.defaultDisplayValue = QueryNodeType.CONDITION;
+        this.defaultNodeDisplayValue = QueryNodeType.CONDITION;
         this.order = QueryNodeOrder.CONDITION;
         this.type = QueryNodeType.CONDITION;
         this.actions = QueryNodeActions.CONDITION;
     }
 
-    override get displayValue$(): Observable<string> {
+    override get displayValue$(): Observable<IPropertyDisplay> {
 
-        let combined$ = combineLatest([
+        const combined$ = combineLatest([
             this.tagProperties.conditionAttribute.value$,
             this.tagProperties.conditionOperator.value$,
             this.tagProperties.conditionValue.value$,
         ]);
 
-        return combined$?.pipe(mergeMap(([conditionAttribute, conditionOperator, conditionValue]) => {
+        return combined$.pipe(
+            mergeMap(([conditionAttribute, conditionOperator, conditionValue]) => {
+                const propertyDisplay: IPropertyDisplay = {
+                    nodePropertyDisplay: this.defaultNodeDisplayValue, 
+                    tagPropertyDisplay: this.tagProperties.tagName
+                };
 
-            conditionAttribute = conditionAttribute ? conditionAttribute.trim() : '';
-            conditionOperator = conditionOperator ? conditionOperator.trim() : '';
-            conditionValue = conditionValue === null ? '' : conditionValue.toString().trim();
+                conditionValue = conditionValue === null ? '' : conditionValue.toString();
 
-            const hasNoProperties = !conditionAttribute && !conditionOperator && !conditionValue;
+                const nothingToDisplay = !conditionAttribute && !conditionOperator && !conditionValue;
 
-            if (hasNoProperties) return of(this.defaultDisplayValue);
+                if (!nothingToDisplay) {
+                    propertyDisplay.nodePropertyDisplay = `${conditionAttribute ? conditionAttribute : ''}
+                    ${conditionOperator ? `(${conditionOperator})` : ''}
+                    ${conditionValue ? conditionValue : ''}`.trim();
 
-            return of(`${conditionAttribute ? conditionAttribute : ''}
-                ${conditionOperator ? `(${conditionOperator})` : ''}
-                ${conditionValue ? conditionValue : ''}`)
-        }), distinctUntilChanged());
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
+                    ${conditionAttribute ? `${this.tagProperties.conditionAttribute.name}="${conditionAttribute}"` : ''} 
+                    ${conditionOperator ? `${this.tagProperties.conditionOperator.name}="${conditionOperator}"` : ''} 
+                    ${conditionValue ? `${this.tagProperties.conditionValue.name}="${conditionValue}"` : ''}`.trim();
+                }
+
+                return of(propertyDisplay);
+            }),
+            distinctUntilChanged());
     }
 }

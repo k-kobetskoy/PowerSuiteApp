@@ -8,7 +8,7 @@ export class TagPropertyOrder implements ITagProperties {
     readonly tagName: string = QueryNodeTags.ORDER;
 
     orderAttribute?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.orderAttribute);
-    orderDescending?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.orderDescending);
+    orderDescending?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.orderDescending, 'Desc', false);
     orderAlias?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.orderAlias);
 
     getOpeningTag(): string {

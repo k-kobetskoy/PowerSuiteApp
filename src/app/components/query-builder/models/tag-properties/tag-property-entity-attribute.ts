@@ -10,7 +10,7 @@ export class TagPropertyEntityAttribute implements ITagProperties {
     attributeName?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.attributeName);
     attributeAlias?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.attributeAlias);
     attributeAggregate?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.attributeAggregate);
-    attributeGroupBy?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.attributeGroupBy);
+    attributeGroupBy?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.attributeGroupBy, 'GrpBy');
     attributeDistinct?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.attributeDistinct);
     attributeUserTimeZone?: TagProperty<boolean> = new TagProperty<boolean>(TagPropertyNames.attributeUserTimeZone);
     attributeDateGrouping?: TagProperty<string> = new TagProperty<string>(TagPropertyNames.attributeDateGrouping);

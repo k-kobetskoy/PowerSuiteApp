@@ -10,7 +10,7 @@ export class NodeConditionValue  extends QueryNode{
 
     constructor(tagProperties: TagPropertyConditionValue) {
         super(tagProperties);
-        this.defaultDisplayValue = QueryNodeType.VALUE;
+        this.defaultNodeDisplayValue = QueryNodeType.VALUE;
         this.order = QueryNodeOrder.VALUE;
         this.type = QueryNodeType.VALUE;
         this.actions = QueryNodeActions.VALUE;

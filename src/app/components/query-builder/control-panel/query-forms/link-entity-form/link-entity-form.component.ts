@@ -8,17 +8,7 @@ import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-mode
 import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
 import { LinkTypeOptions } from '../../../models/constants/ui/link-type-options';
 import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
-
-export interface LinkEntityFormProperty<TProperty, TForm> {
-  storedInputValue$: BehaviorSubject<TForm>;
-  formControl: FormControl<TForm>;
-  valuesObservable$?: Observable<TProperty[]>;
-  values?: TProperty[];
-  previousValue$?: BehaviorSubject<string>;
-  filteredValues$?: Observable<TProperty[]>;
-  filterFunc?: (value: TProperty, filterValue: string) => boolean;
-  handlePropertyChangeFunc?: (property: TProperty) => void;
-}
+import { IFormPropertyModel } from '../../../models/abstract/i-form-property-model';
 
 @Component({
   selector: 'app-link-entity-form',
@@ -32,13 +22,13 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
 
   private _destroy$ = new Subject<void>();
 
-  relationShipForm: LinkEntityFormProperty<string, string>;
-  linkEntityForm: LinkEntityFormProperty<EntityModel, string>;
-  fromAttributeForm: LinkEntityFormProperty<AttributeModel, string>;
-  toAttributeForm: LinkEntityFormProperty<AttributeModel, string>;
-  linkTypeForm: LinkEntityFormProperty<string, string>;
-  showOnlyLookupsForm: LinkEntityFormProperty<boolean, boolean>;
-  aliasForm: LinkEntityFormProperty<string, string>;
+  relationShipForm: IFormPropertyModel<string, string>;
+  linkEntityForm: IFormPropertyModel<EntityModel, string>;
+  fromAttributeForm: IFormPropertyModel<AttributeModel, string>;
+  toAttributeForm: IFormPropertyModel<AttributeModel, string>;
+  linkTypeForm: IFormPropertyModel<string, string>;
+  showOnlyLookupsForm: IFormPropertyModel<boolean, boolean>;
+  aliasForm: IFormPropertyModel<string, string>;
 
   linkTypes: string[] = LinkTypeOptions;
 
@@ -59,7 +49,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
   initializeFormControls() {
     this.linkEntityForm = {
       formControl: new FormControl<string>(null),
-      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities=> entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value))),
+      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value))),
       filteredValues$: null,
       storedInputValue$: this.selectedNode.tagProperties.linkEntity.value$,
       previousValue$: this.linkEntityPreviousValue$,
@@ -119,11 +109,18 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
           || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
       }
     };
-    if (!this.selectedNode.getParentEntity()) {
-      this.toAttributeForm.formControl.disable();
-    } else {
-      this.toAttributeForm.formControl.enable();
-    }
+
+    this.selectedNode.getParentEntity().tagProperties.entityName.value$.pipe(
+      distinctUntilChanged(),
+      takeUntil(this._destroy$))
+      .subscribe(entityName => {
+        if (!entityName) {
+          this.toAttributeForm.formControl.disable();
+        } else {
+          this.toAttributeForm.formControl.enable();
+        }
+      });
+
     this.setControlInitialValues(this.toAttributeForm);
     this.addFilterToInput(this.toAttributeForm)
 
@@ -150,26 +147,26 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
     this.subscribeOnInputChanges(this.showOnlyLookupsForm);
   }
 
-  setControlInitialValues<TProperty, TForm>(linkEntityForm: LinkEntityFormProperty<TProperty, TForm>) {
+  setControlInitialValues<TProperty, TForm>(linkEntityForm: IFormPropertyModel<TProperty, TForm>) {
     linkEntityForm.storedInputValue$
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => linkEntityForm.formControl.setValue(value));
   }
 
-  subscribeOnInputChanges<TProperty, TForm>(linkEntityForm: LinkEntityFormProperty<TProperty, TForm>) {
+  subscribeOnInputChanges<TProperty, TForm>(linkEntityForm: IFormPropertyModel<TProperty, TForm>) {
     linkEntityForm.formControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => linkEntityForm.storedInputValue$.next(value));
   }
 
-  addFilterToInput<TProperty extends EntityModel | AttributeModel>(propertyForm: LinkEntityFormProperty<TProperty, string>) {
+  addFilterToInput<TProperty extends EntityModel | AttributeModel>(propertyForm: IFormPropertyModel<TProperty, string>) {
     propertyForm.filteredValues$ = propertyForm.formControl.valueChanges.pipe(
       startWith(propertyForm.storedInputValue$.value ?? ''),
       switchMap(value => value ? this._filter<TProperty>(value, propertyForm) : propertyForm.valuesObservable$)
     );
   }
 
-  private _filter<TProperty extends EntityModel | AttributeModel>(value: string, propertyForm: LinkEntityFormProperty<TProperty, string>): Observable<TProperty[]> {
+  private _filter<TProperty extends EntityModel | AttributeModel>(value: string, propertyForm: IFormPropertyModel<TProperty, string>): Observable<TProperty[]> {
     const filterValue = value.toLowerCase();
 
     return propertyForm.valuesObservable$.pipe(
@@ -187,14 +184,14 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
   }
 
   private _linkEntityChangeLogic(entity: EntityModel): void {
-    if(!entity) {
+    if (!entity) {
       this.selectedNode.tagProperties.linkFromAttribute.value$.next(null); return;
     }
     if (!this.linkEntityForm.previousValue$.value || entity.logicalName === this.linkEntityForm.previousValue$.value) return;
     this.selectedNode.tagProperties.linkFromAttribute.value$.next(null);
   }
 
-  onInputChanged<TProperty, TForm>(event: Event, propertyForm: LinkEntityFormProperty<TProperty, TForm>) {
+  onInputChanged<TProperty, TForm>(event: Event, propertyForm: IFormPropertyModel<TProperty, TForm>) {
     if (event.target['value'].trim() === '') {
       propertyForm.storedInputValue$.next(null);
     }

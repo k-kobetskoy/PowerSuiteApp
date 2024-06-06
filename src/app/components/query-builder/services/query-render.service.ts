@@ -26,7 +26,7 @@ export class QueryRenderService implements OnDestroy {
   private _destroy$ = new Subject<void>();
   private _previousNodeLevel: number = -1;
   private _closingTagsStack = new ClosingTagsStack();
-  private _node: IQueryNode;
+  private _currentNode: IQueryNode;
   xmlRequestSubject$ = new BehaviorSubject<string>('');
 
   constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) {
@@ -37,14 +37,14 @@ export class QueryRenderService implements OnDestroy {
   renderXmlRequest() {
     this._destroy$.next();
     this._previousNodeLevel = -1;
-    this._node = this.queryTree.root;
+    this._currentNode = this.queryTree.root;
     console.warn('Rendering XML Request');
 
     const observables$: Observable<string>[] = [];
     const dynamicObservables$: BehaviorSubject<Observable<string>[]> = new BehaviorSubject([]);
 
-    while (this._node != null || this._closingTagsStack.count != 0) {
-      observables$.push(this.processNode(this._node));
+    while (this._currentNode != null || this._closingTagsStack.count != 0) {
+      observables$.push(this.processNode(this._currentNode));
     }
     this._previousNodeLevel = -1;
 
@@ -59,7 +59,7 @@ export class QueryRenderService implements OnDestroy {
   }
 
   processNode(node: IQueryNode): Observable<string> {
-    if (this._node === null) {
+    if (this._currentNode === null) {
       this._previousNodeLevel = 0;
       return of(this._closingTagsStack.pop());
     }
@@ -69,27 +69,19 @@ export class QueryRenderService implements OnDestroy {
       return of(this._closingTagsStack.pop());
     }
 
-    if (node.selfClosingTag) {
-      let observable = this.getSingleNodeTag(node);
-      this._previousNodeLevel = node.level;
-      this._node = node.next;
-      return observable;
-    }
-    else {
-      let observable = this.getPairNodeTag(node);
-      this._previousNodeLevel = node.level;
-      this._node = node.next;
-      return observable;
-    }
+    const observable = this.getNodeTag(node);
+    this._previousNodeLevel = node.level;
+    this._currentNode = node.next;
+    return observable;
   }
 
-  getPairNodeTag(node: IQueryNode): Observable<string> {
-    this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
-    return node.displayValue$.pipe(map(displayValue => `<${node.tagProperties.tagName} ${displayValue}>`))
-  }
-
-  getSingleNodeTag(node: IQueryNode): Observable<string> {
-    return node.displayValue$.pipe(map(displayValue => `<${node.tagProperties.tagName}/>`))
+  getNodeTag(node: IQueryNode): Observable<string> {
+    if (!node.selfClosingTag) {
+      this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
+    }
+    return node.displayValue$.pipe(map(displayValue => 
+      node.selfClosingTag ? `<${displayValue.tagPropertyDisplay}/>` : `<${displayValue.tagPropertyDisplay}>`
+    ));
   }
 
   ngOnDestroy(): void {
