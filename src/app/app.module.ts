@@ -19,9 +19,21 @@ import { NodeStyleDirective } from './directives/node-style.directive';
 import { QuickActionsComponent } from './components/query-builder/control-panel/query-forms/quick-actions/quick-actions.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
+import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
+import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
+import { FilterFormComponent } from './components/query-builder/control-panel/query-forms/filter-form/filter-form.component';
+import { FilterConditionFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/filter-condition-form.component';
+import { NumberFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/number-form/number-form.component';
+import { BooleanFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/boolean-form/boolean-form.component';
+import { DateTimeFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/date-time-form/date-time-form.component';
+import { IdFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/id-form/id-form.component';
+import { PicklistFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/picklist-form/picklist-form.component';
+import { StringFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/string-form/string-form.component';
+import { LinkEntityFormComponent } from './components/query-builder/control-panel/query-forms/link-entity-form/link-entity-form.component';
+import { OrderFormComponent } from './components/query-builder/control-panel/query-forms/order-form/order-form.component';
+import { QueryNodeTagComponent } from './components/query-builder/code-editor/query-node-tag/query-node-tag.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
@@ -34,10 +46,15 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { FormsModule } from '@angular/forms';
-import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import{ ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { BehaviorSubject } from 'rxjs';
+import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
+
 
 
 @NgModule({
@@ -57,8 +74,20 @@ import{ ReactiveFormsModule} from '@angular/forms';
     QuickActionsComponent,
     ConnectionsComponent,
     LoadingIndicatorComponent,
-    PageNotFoundComponent,
     EntityFormComponent,
+    RootFormComponent,
+    AttributeFormComponent,
+    FilterFormComponent,
+    FilterConditionFormComponent,
+    NumberFormComponent,
+    BooleanFormComponent,
+    DateTimeFormComponent,
+    IdFormComponent,
+    PicklistFormComponent,
+    StringFormComponent,
+    LinkEntityFormComponent,
+    OrderFormComponent,
+    QueryNodeTagComponent
   ],
 
   imports: [
@@ -79,10 +108,16 @@ import{ ReactiveFormsModule} from '@angular/forms';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
+    MatSelectModule,
     ReactiveFormsModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
-  providers: [QueryNodeTree],
+  providers: [
+    // QueryNodeTree,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
+    { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) }],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

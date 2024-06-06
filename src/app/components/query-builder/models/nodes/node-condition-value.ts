@@ -1,17 +1,18 @@
-import { INodeProperty } from "../abstract/i-node-property";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
-import { QueryNode } from "../abstract/query-node";
+import { QueryNode } from "../query-node";
+import { TagPropertyConditionValue } from "../tag-properties/tag-property-condition-value";
 
 export class NodeConditionValue  extends QueryNode{
 
-    constructor(nodeProperty: INodeProperty) {        
-        super(nodeProperty);
-        this.defaultDisplayValue = QueryNodeType.VALUE;
-        this.displayValue = QueryNodeType.VALUE;
+    override tagProperties: TagPropertyConditionValue;
+
+    constructor(tagProperties: TagPropertyConditionValue) {
+        super(tagProperties);
+        this.defaultNodeDisplayValue = QueryNodeType.VALUE;
         this.order = QueryNodeOrder.VALUE;
         this.type = QueryNodeType.VALUE;
-        this.actions = QueryNodeActions.VALUE;        
+        this.actions = QueryNodeActions.VALUE;
     }
 }

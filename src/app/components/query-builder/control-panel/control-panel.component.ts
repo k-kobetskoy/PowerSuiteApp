@@ -23,8 +23,4 @@ export class ControlPanelComponent implements OnInit {
   createNode(nodeName: string) {
     this.nodeTree.addNode(nodeName)
   }
-
-  setEntityName($event: IQueryNode) {
-    this.nodeTree.selectedNode$ = $event
-  }
 }

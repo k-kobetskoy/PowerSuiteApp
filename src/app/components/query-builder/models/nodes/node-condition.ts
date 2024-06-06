@@ -1,17 +1,55 @@
-import { INodeProperty } from "../abstract/i-node-property";
+import { Observable, combineLatest, distinctUntilChanged, mergeMap, of } from "rxjs";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
-import { QueryNode } from "../abstract/query-node";
+import { QueryNode } from "../query-node";
+import { TagPropertyCondition } from "../tag-properties/tag-property-condition";
+import { IPropertyDisplay } from "../abstract/i-node-property-display";
 
-export class NodeCondition extends QueryNode{
+export class NodeCondition extends QueryNode {
 
-    constructor(nodeProperty: INodeProperty) {
-        super(nodeProperty);
-        this.defaultDisplayValue = QueryNodeType.CONDITION;
-        this.displayValue = QueryNodeType.CONDITION;
+    override tagProperties: TagPropertyCondition;
+
+    constructor(tagProperties: TagPropertyCondition) {
+        super(tagProperties);
+        this.defaultNodeDisplayValue = QueryNodeType.CONDITION;
         this.order = QueryNodeOrder.CONDITION;
         this.type = QueryNodeType.CONDITION;
-        this.actions = QueryNodeActions.CONDITION;        
+        this.actions = QueryNodeActions.CONDITION;
+    }
+
+    override get displayValue$(): Observable<IPropertyDisplay> {
+
+        const combined$ = combineLatest([
+            this.tagProperties.conditionAttribute.value$,
+            this.tagProperties.conditionOperator.value$,
+            this.tagProperties.conditionValue.value$,
+        ]);
+
+        return combined$.pipe(
+            mergeMap(([conditionAttribute, conditionOperator, conditionValue]) => {
+                const propertyDisplay: IPropertyDisplay = {
+                    nodePropertyDisplay: this.defaultNodeDisplayValue, 
+                    tagPropertyDisplay: this.tagProperties.tagName
+                };
+
+                conditionValue = conditionValue === null ? '' : conditionValue.toString();
+
+                const nothingToDisplay = !conditionAttribute && !conditionOperator && !conditionValue;
+
+                if (!nothingToDisplay) {
+                    propertyDisplay.nodePropertyDisplay = `${conditionAttribute ? conditionAttribute : ''}
+                    ${conditionOperator ? `(${conditionOperator})` : ''}
+                    ${conditionValue ? conditionValue : ''}`.trim();
+
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
+                    ${conditionAttribute ? `${this.tagProperties.conditionAttribute.name}="${conditionAttribute}"` : ''} 
+                    ${conditionOperator ? `${this.tagProperties.conditionOperator.name}="${conditionOperator}"` : ''} 
+                    ${conditionValue ? `${this.tagProperties.conditionValue.name}="${conditionValue}"` : ''}`.trim();
+                }
+
+                return of(propertyDisplay);
+            }),
+            distinctUntilChanged());
     }
 }

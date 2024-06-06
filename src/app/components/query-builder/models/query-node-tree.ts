@@ -1,10 +1,12 @@
 import { QueryNodeType } from "src/app/components/query-builder/models/constants/query-node-type";
 import { IQueryNode } from "./abstract/i-query-node";
-import { Inject, inject } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { NodeAdderFactoryService } from "../services/node-adders/node-adder-factory.service";
 import { BehaviorSubject, Observable } from "rxjs";
+import { EventBusService } from "src/app/services/event-bus/event-bus.service";
+import { AppEvents } from "src/app/services/event-bus/app-events";
 
-Inject({ providedIn: 'root' })
+@Injectable({ providedIn: 'root' })
 export class QueryNodeTree implements Iterable<IQueryNode> {
 
     private _nodeAdderFactory = inject(NodeAdderFactoryService)
@@ -28,7 +30,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         return this._root;
     }
 
-    constructor() {
+    constructor(private eventBus: EventBusService) {        
         this.init()
     }
 
@@ -43,6 +45,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
             this.expandNode(this._selectedNode$.value)
         }
         this.selectedNode$ = newNodeToSelect
+        this.eventBus.emit({name :AppEvents.NODE_ADDED})
         return newNodeToSelect
     }
 

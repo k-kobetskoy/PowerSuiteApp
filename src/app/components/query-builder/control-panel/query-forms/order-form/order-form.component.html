@@ -1,0 +1,20 @@
+<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
+
+
+<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.value$|async)} as entity">
+  <mat-form-field>
+
+    <mat-label>Attribute name</mat-label>
+    <input type="text" matInput [formControl]="attributeForm.formControl" [matAutocomplete]="attributeAutoComplete"
+      (input)="onInputChanged($event, attributeForm)">
+
+    <mat-autocomplete #attributeAutoComplete="matAutocomplete">
+      <mat-option *ngFor="let option of attributeForm.filteredValues$ | async" [value]="option.logicalName">
+        {{option.logicalName+ ' ' + option.displayName}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-container>
+
+<mat-checkbox [ngModel]="selectedNode.tagProperties.orderDescending.value$| async"
+  (ngModelChange)="selectedNode.tagProperties.orderDescending.value$.next($event)">Descencing</mat-checkbox>

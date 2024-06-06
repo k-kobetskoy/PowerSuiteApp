@@ -1,0 +1,29 @@
+<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
+
+<mat-form-field>
+  <mat-label>Attrubute</mat-label>
+  <input type="text" matInput [formControl]="attributesFormControl" [matAutocomplete]="auto"
+    (keyup)="onKeyPressed($event)">
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredAttributes$ | async" [value]="option.logicalName">
+      {{option.logicalName + ' ' + option.displayName}}
+
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<ng-container *ngIf="selectedAttribute$ | async as attribute; else elseBlock">
+  <ng-container [ngSwitch]="getFilterOperatorType(attribute)">
+    <app-number-form [selectedNode]="selectedNode " *ngSwitchCase='FilterOperatorTypes.NUMBER'></app-number-form>
+    <app-boolean-form [selectedNode]="selectedNode" [attributeValue]="attribute.logicalName" *ngSwitchCase='FilterOperatorTypes.BOOLEAN'></app-boolean-form>
+    <app-id-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.ID'></app-id-form>
+    <app-picklist-form [selectedNode]="selectedNode" [attributeValue]="attribute.logicalName" *ngSwitchCase='FilterOperatorTypes.PICKLIST'></app-picklist-form>
+    <app-date-time-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.DATE_TIME'></app-date-time-form>
+    <app-string-form [selectedNode]="selectedNode" *ngSwitchCase='FilterOperatorTypes.STRING'></app-string-form>
+  </ng-container>
+</ng-container>
+
+<ng-template #elseBlock>
+  <div>no data</div>
+</ng-template>

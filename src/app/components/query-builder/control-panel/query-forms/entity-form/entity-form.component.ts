@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { EnvironmentRequestService } from 'src/app/services/request/environment-request.service';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
-import { Observable, Subscription, map, startWith } from 'rxjs';
-import { IQueryNode } from '../../../models/abstract/i-query-node';
+import { Observable, Subject, distinctUntilChanged, iif, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { NodeEntity } from '../../../models/nodes/node-entity';
+import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
 
 @Component({
   selector: 'app-entity-form',
@@ -12,71 +12,77 @@ import { IQueryNode } from '../../../models/abstract/i-query-node';
 })
 export class EntityFormComponent implements OnInit, OnDestroy {
 
-
-  constructor(private environmentService: EnvironmentRequestService) { }
-  @Input() selectedNode: IQueryNode
-  @Output() onInputChange = new EventEmitter<IQueryNode>()
+  @Input() selectedNode: NodeEntity;
   @Output() onNodeCreate = new EventEmitter<string>()
 
-  entitiesFormControl = new FormControl<string>(null);
-  filteredEntities$: Observable<EntityModel[]> = null;
-  subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
 
-  entities: EntityModel[] = [];
+  entitiesFormControl = new FormControl<string>(null);
+  aliasFormControl = new FormControl<string>(null);
+
+  filteredEntities$: Observable<EntityModel[]> = null;
+
+  entities$: Observable<EntityModel[]>;
+
+  constructor(private _entityEntityService: EntityEntityService) { }
 
   ngOnInit() {
-    this.subscriptions.push(this.environmentService.getEntities().subscribe((data) => {
-      this.entities = data;
-      this.addFilterToInput();
-    }));
+
+    this.entities$ = this._entityEntityService.getEntities();
+
+    this.addFilterToInput();
+
+    this.bindDataToControls();
+
+    this.setControlsInitialValues();
+  }
+
+  bindDataToControls() {
+    this.aliasFormControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((value) => { this.selectedNode.tagProperties.entityAlias.value$.next(value); });
+  }
+
+  setControlsInitialValues() {
+    const entityInitialValue = this.selectedNode.tagProperties.entityName.value$.getValue();
+    const entityAliasInitialValue = this.selectedNode.tagProperties.entityAlias.value$.getValue();
+
+    this.entitiesFormControl.setValue(entityInitialValue);
+    this.aliasFormControl.setValue(entityAliasInitialValue);
   }
 
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
       if (this.entitiesFormControl.value === '') {
-        this.updateEntityName('');
+        this.selectedNode.tagProperties.entityName.value$.next(null);
       }
     }
   }
 
-  createNode(nodeName: string) {
-    this.onNodeCreate.emit(nodeName)
-  }
-
   addFilterToInput() {
     this.filteredEntities$ = this.entitiesFormControl.valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filter(value) : this.entities),
+      startWith(this.selectedNode.tagProperties.entityName.value$.value ?? ''),
+      switchMap(value => value ? this._filter(value) : this.entities$),
     );
   }
 
-  private _filter(value: string): EntityModel[] {
+  private _filter(value: string): Observable<EntityModel[]> {
     const filterValue = value.toLowerCase();
 
-    this.updateEntityName(value);
+    this.selectedNode.tagProperties.entityName.value$.next(filterValue)
 
-    return this.entities.filter(entity =>
-      entity.logicalName.toLowerCase().includes(filterValue)
+    return this.entities$.pipe(
+      map(entities => {
+        if (!entities) return [];
+        return entities.filter(entity =>
+          entity.logicalName.toLowerCase().includes(filterValue) ||
+          entity.displayName.toLowerCase().includes(filterValue))
+      })
     );
-  }
-
-  updateEntityName(entityName: string) {
-    if (!entityName) {
-      this.selectedNode.displayValue = this.selectedNode.defaultDisplayValue;
-      this.selectedNode.nodeProperty.entityName = null;
-    } else {
-      this.selectedNode.displayValue = entityName;
-      this.selectedNode.nodeProperty.entityName = entityName;
-    }
-
-    this.onInputChange.emit(this.selectedNode);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
-
-
-
-

@@ -2,9 +2,9 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EnvironmentModel } from '../models/environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
-import { EnvironmentsRequestService } from './request/environments-request.service';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
+import { EnvironmentEntityService } from './entity-service/environment-entity.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService implements OnInit, OnDestroy {
@@ -12,42 +12,39 @@ export class NavigationService implements OnInit, OnDestroy {
   subscription: Subscription
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private environmentsService: EnvironmentsRequestService) { }
+    private _router: Router,
+    private _route: ActivatedRoute,
+    private _authService: AuthService,
+    private _environmentEntityService: EnvironmentEntityService) { }
 
   ngOnInit(): void {
     this.addActiveEnvironmentToInterceptorConfig()
     console.warn('Navigation service initialized')
-    
   }
 
   navigateToEnv(selectedEnv: EnvironmentModel) {
-    this.environmentsService.setActiveEnvironment(selectedEnv)
+    this._environmentEntityService.setActiveEnvironment(selectedEnv)
 
     let envParam = selectedEnv.url.slice(8)
 
-    let urlTree = this.router.parseUrl(this.router.url);
+    let urlTree = this._router.parseUrl(this._router.url);
     urlTree.queryParams[UrlRouteParams.environment] = envParam;
 
-    this.router.navigateByUrl(urlTree);
+    this._router.navigateByUrl(urlTree);
   }
 
   handleUrlParamOnComponentInit(componentPath: string) {
 
     const currentEnvironmentUrl = this.getCurrentEnvironmentUrl()
-    const userIsLoggedIn = this.authService.userIsLoggedIn
+    const userIsLoggedIn = this._authService.userIsLoggedIn
 
-    this.environmentsService.getActiveEnvironment().subscribe(activatedEnvironment => {
+    this._environmentEntityService.getActiveEnvironment().subscribe(activatedEnvironment => {
       if (currentEnvironmentUrl) {
         this.handleExistingRouteParam(currentEnvironmentUrl, userIsLoggedIn, activatedEnvironment)
       } else {
         this.handleEmptyRouteParam(componentPath, userIsLoggedIn, activatedEnvironment)
       }
     })
-
-
   }
 
   private handleExistingRouteParam(currentEnvironmentUrl: string, userIsLoggedIn: boolean, activatedEnvironment: EnvironmentModel) {
@@ -72,7 +69,7 @@ export class NavigationService implements OnInit, OnDestroy {
     if (userIsLoggedIn) {
       if (activatedEnvironment) {
         const queryParams: Params = { [UrlRouteParams.environment]: activatedEnvironment.url.slice(8) }
-        this.router.navigate(
+        this._router.navigate(
           [componentPath],
           { queryParams }
         )
@@ -84,29 +81,31 @@ export class NavigationService implements OnInit, OnDestroy {
   }
 
   private findEnvironmentInUsersEnvironmentsAndConnect(urlParam: string) {
-    this.environmentsService.getAvailableUserEnvironments()
+    this._environmentEntityService.getEnvironments()
       .subscribe(environments => {
         if (environments) {
           let matchingEnvironment = environments.find(item => item.url === urlParam)
-          this.environmentsService.setActiveEnvironment(matchingEnvironment)
+          this._environmentEntityService.setActiveEnvironment(matchingEnvironment)
         } else {
-          this.router.navigateByUrl('**')
+          this._router.navigateByUrl('**')
         }
       })
   }
 
 
   getCurrentEnvironmentUrl(): string {
-    const param = this.route.snapshot.paramMap.get(UrlRouteParams.environment)
+    const param = this._route.snapshot.paramMap.get(UrlRouteParams.environment)
 
     return param ? `https://${param}` : null
   }
 
 
   addActiveEnvironmentToInterceptorConfig() {
-    this.environmentsService.getActiveEnvironment().subscribe(env=>
-      this.authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
-    )    
+    this._environmentEntityService.getActiveEnvironment().subscribe(env => {
+      this._authService.addProtectedResourceToInterceptorConfig(env.apiUrl)
+      this._authService.checkProtectedResource()
+    }
+    )
   }
 
   ngOnDestroy(): void {

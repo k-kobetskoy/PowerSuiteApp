@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { UserInfoRequestService } from 'src/app/services/request/user-info-request.service';
 
 @Component({
   selector: 'app-user-info',
@@ -12,7 +11,7 @@ export class UserInfoComponent implements OnInit {
   imageToShow: any
   imageLoading: boolean
 
-  constructor(private graphDataService: UserInfoRequestService, private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     //this.getImage()
@@ -30,16 +29,16 @@ export class UserInfoComponent implements OnInit {
 
 
   getImage() {
-    this.imageLoading = true
-    this.graphDataService.getProfileImage().subscribe(data => {
-      this.createImageFromBlob(data)
-      this.imageLoading = false
-    },
-      error => {
-        this.imageLoading = false
-        console.error(error)
-      }
-    )
+    // this.imageLoading = true
+    // this.graphDataService.getProfileImage().subscribe(data => {
+    //   this.createImageFromBlob(data)
+    //   this.imageLoading = false
+    // },
+    //   error => {
+    //     this.imageLoading = false
+    //     console.error(error)
+    //   }
+    // )
   }
 
 

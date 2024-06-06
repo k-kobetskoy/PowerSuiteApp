@@ -1,8 +1,9 @@
-import { INodeProperty } from "./i-node-property";
+import { Observable } from "rxjs";
+import { ITagProperties } from "./i-tag-properties";
+import { IPropertyDisplay } from "./i-node-property-display";
 
 export interface IQueryNode {
-    defaultDisplayValue: string;
-    displayValue: string;
+    defaultNodeDisplayValue: string;
     order: number;
     selfClosingTag: boolean;
     expandable: boolean;
@@ -15,5 +16,8 @@ export interface IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
-    nodeProperty: INodeProperty;
+    tagProperties: ITagProperties;
+    
+    get displayValue$(): Observable<IPropertyDisplay>;
+    getParentEntity(node: IQueryNode): IQueryNode | null;
 }
