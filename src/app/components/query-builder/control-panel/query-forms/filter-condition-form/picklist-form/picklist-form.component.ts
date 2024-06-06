@@ -35,7 +35,6 @@ export class PicklistFormComponent implements OnChanges, OnDestroy {
       this.initializePicklistValues();
       this.setControlsInitialValues();
       this.bindDataToControls();
-
     }
   }
 

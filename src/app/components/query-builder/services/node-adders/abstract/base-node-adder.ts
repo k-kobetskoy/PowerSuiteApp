@@ -9,19 +9,19 @@ export abstract class BaseNodeAdder implements INodeAdder {
     constructor(protected nodeFactory: NodeFactoryService) {}
 
     protected add(newNodeType: string, parentNode: IQueryNode): IQueryNode {
-        let newNode = this.nodeFactory.getNode(newNodeType)
+        let newNode = this.nodeFactory.getNode(newNodeType);
 
-        let nodeAbove = this.getNodeAbove(newNode.order, parentNode)
+        let nodeAbove = this.getNodeAbove(newNode.order, parentNode);
+        let bottomNode = nodeAbove.next;
 
-        let bottomNode = nodeAbove.next
+        let nodeToSelect = newNode;
 
-        let nodeToSelect = newNode
+        nodeAbove.next = newNode;
+        newNode.next = bottomNode;
 
-        nodeAbove.next = newNode
-        newNode.next = bottomNode
-
-        newNode.level = parentNode.level + 1
-        newNode.parent = parentNode
+        newNode.level = parentNode.level + 1;
+        newNode.parent = parentNode;
+        parentNode.expandable = true;
 
         return nodeToSelect
     }
@@ -30,15 +30,15 @@ export abstract class BaseNodeAdder implements INodeAdder {
 
     protected getNodeAbove(newNodeOrder: number, selectedNode: IQueryNode): IQueryNode {
 
-        let current = selectedNode
-        let newNodeLevel = selectedNode.level + 1
+        let current = selectedNode;
+        let newNodeLevel = selectedNode.level + 1;
 
         while (current) {
             if (!current.next) { break }
             if (current.next.order > newNodeOrder && current.next.level === newNodeLevel) { break }
             if (current.next.level <= selectedNode.level) { break }
-            current = current.next
+            current = current.next;
         }
-        return current
+        return current;
     }
 }

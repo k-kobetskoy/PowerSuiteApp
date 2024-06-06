@@ -76,11 +76,11 @@ export class QueryRenderService implements OnDestroy {
   }
 
   getNodeTag(node: IQueryNode): Observable<string> {
-    if (!node.selfClosingTag) {
+    if (node.expandable) {
       this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
     }
     return node.displayValue$.pipe(map(displayValue => 
-      node.selfClosingTag ? `<${displayValue.tagPropertyDisplay}/>` : `<${displayValue.tagPropertyDisplay}>`
+      !node.expandable ? `<${displayValue.tagPropertyDisplay}/>` : `<${displayValue.tagPropertyDisplay}>`
     ));
   }
 
