@@ -5,5 +5,7 @@ export const FilterOperatorTypes = {
     ID: 'Id',
     PICKLIST: 'Picklist',
     STRING: 'String',
+    STATE: 'State',
+    STATUS: 'Status'
 } as const;
 export type FilterOperatorTypes = (typeof FilterOperatorTypes)[keyof typeof FilterOperatorTypes];

@@ -12,8 +12,8 @@ export class PicklistEntityService extends BaseEntityService {
   constructor() { super(); }
   
   @ActiveEnvironment
-  getOptions(entityLogicalName: string, attributeName: string): Observable<PicklistModel[]> {
-
+  getOptions(entityLogicalName: string, attributeName: string, attributeType: string): Observable<PicklistModel[]> {
+    console.log('GET PICKLIST OPTIONS')
     const key = `${entityLogicalName}_${attributeName}`;
 
     const options$ = this.cacheService.getItem<PicklistModel[]>(key);
@@ -26,7 +26,7 @@ export class PicklistEntityService extends BaseEntityService {
       switchMap(envUrl => {
         if (!envUrl) return of([]);
 
-        const url = API_ENDPOINTS.picklist.getResourceUrl(envUrl, entityLogicalName, attributeName);
+        const url = API_ENDPOINTS.picklist.getResourceUrl(envUrl, entityLogicalName, attributeName, attributeType);
 
         return this.httpClient.get<PicklistResponseModel>(url).pipe(
           map(({ Options }) => Options.map(({ Value, Label }): PicklistModel =>

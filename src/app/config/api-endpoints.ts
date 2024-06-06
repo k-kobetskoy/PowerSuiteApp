@@ -1,3 +1,5 @@
+import { AttributeTypes } from "../components/query-builder/models/constants/dataverse/attribute-types";
+
 export const API_ENDPOINTS = {
     environments: {
         base: 'https://globaldisco.crm.dynamics.com/api/discovery/v2.0',
@@ -8,21 +10,39 @@ export const API_ENDPOINTS = {
         entityParameters: ['LogicalName', 'DisplayName', 'EntitySetName'],
         getResourceUrl(apiUrl: string) { return `${apiUrl}/api/data/v9.2/EntityDefinitions?$select=${this.entityParameters.join(',')}`; }
     },
-    attributes: {       
-        attributeParameters : ['LogicalName', 'DisplayName', 'AttributeType'],
+    attributes: {
+        attributeParameters: ['LogicalName', 'DisplayName', 'AttributeType'],
         getResourceUrl(apiUrl: string, entityLogicalName: string) { return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes?$select=${this.attributeParameters.join(',')}&$filter=(AttributeType ne 'Virtual' and AttributeType ne 'EntityName')`; }
     },
     picklist: {
-        getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
-            return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata/OptionSet?$select=Options`;
+        optionSetType: 'PicklistAttributeMetadata',
+        getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string, attributeType: string) {
+            switch (attributeType) {
+                case AttributeTypes.PICKLIST:
+                    break;
+                case AttributeTypes.STATE:
+                    this.optionSetType = 'StateAttributeMetadata';
+                    break;
+                case AttributeTypes.STATUS:
+                    this.optionSetType = 'StatusAttributeMetadata';
+                    break;
+            }
+            return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.${this.optionSetType}/OptionSet?$select=Options`;
         }
     },
     boolean: {
         getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
             return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.BooleanAttributeMetadata/OptionSet`;
         }
-    }
+    },
+    // state: {
+    //     getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
+    //         return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.StateAttributeMetadata/OptionSet?$select=Options`;
+    //     }
+    // },
+    // status: {
+    //     getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
+    //         return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.StatusAttributeMetadata/OptionSet?$select=Options`;
+    //     }
+    // }
 };
-
-
-

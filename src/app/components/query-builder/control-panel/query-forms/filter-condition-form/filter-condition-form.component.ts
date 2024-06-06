@@ -113,7 +113,7 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
     this.selectedNode.tagProperties.conditionValue.value$.next(null);
   }
 
-  getFilterOperatorType(attribute: AttributeModel) {
+  getFilterOperatorType(attribute: AttributeModel) {    
     switch (attribute.attributeType) {
       case AttributeTypes.INTEGER:
       case AttributeTypes.DECIMAL:
