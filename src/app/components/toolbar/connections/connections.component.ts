@@ -6,7 +6,7 @@ import { ConnectionsDialogComponent } from './connections-dialog/connections-dia
 import { AuthService } from 'src/app/services/auth.service';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
-import { EnvironmentEntityService } from 'src/app/services/entity-service/environment-entity.service';
+import { EnvironmentEntityService } from 'src/app/components/query-builder/services/entity-services/environment-entity.service';
 
 @Component({
   selector: 'app-connections',

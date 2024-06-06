@@ -3,7 +3,7 @@ import { NodeEntityAttribute } from '../../../models/nodes/node-entity-attribute
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
-import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeEntityService } from 'src/app/components/query-builder/services/entity-services/attribute-entity.service';
 
 @Component({
   selector: 'app-attribute-form',

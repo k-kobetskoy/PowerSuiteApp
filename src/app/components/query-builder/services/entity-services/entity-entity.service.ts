@@ -4,16 +4,16 @@ import { EntityDefinitionsResponseModel } from 'src/app/models/incoming/environm
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { CacheKeys } from 'src/app/config/cache-keys';
 import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
-import { BaseEntityService } from './abstract/base-entity.service';
-import { ActiveEnvironment } from 'src/app/decorators/active-environment';
+import { BaseRequestService } from 'src/app/components/query-builder/services/entity-services/abstract/base-request.service'
 
 @Injectable({ providedIn: 'root' })
-export class EntityEntityService extends BaseEntityService {
+export class EntityEntityService extends BaseRequestService {
 
   constructor() { super(); }
 
-  @ActiveEnvironment
   getEntities(): Observable<EntityModel[]> {
+
+    this.getActiveEnvironmentUrl();
 
     const key = `${CacheKeys.Entities}`;
 

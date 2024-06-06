@@ -1,13 +1,13 @@
-import { LocalStorageService } from './../data-sorage/local-storage.service';
+import { LocalStorageService } from '../../../../services/data-sorage/local-storage.service';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
 import { GlobalDiscoInstancesResponseModel } from 'src/app/models/incoming/global-disco/global-disco-instances-response-model';
 import { EnvironmentModel } from 'src/app/models/environment-model';
 import { HttpClient } from '@angular/common/http';
-import { CacheStorageService } from '../data-sorage/cache-storage.service';
+import { CacheStorageService } from '../../../../services/data-sorage/cache-storage.service';
 import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
 import { CacheKeys } from 'src/app/config/cache-keys';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { ACTIVE_ENVIRONMENT_URL } from 'src/app/models/tokens';
 import { Constants } from 'src/app/config/constants';
 

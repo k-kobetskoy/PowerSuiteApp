@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { Observable, Subject, distinctUntilChanged, iif, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { NodeEntity } from '../../../models/nodes/node-entity';
-import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
+import { EntityEntityService } from 'src/app/components/query-builder/services/entity-services/entity-entity.service';
 
 @Component({
   selector: 'app-entity-form',

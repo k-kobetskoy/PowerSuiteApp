@@ -5,7 +5,7 @@ import { UiInputProperty } from 'src/app/components/query-builder/models/abstrac
 import { FilterStaticData } from 'src/app/components/query-builder/models/constants/ui/filter-static-data';
 import { NodeCondition } from 'src/app/components/query-builder/models/nodes/node-condition';
 import { BooleanModel } from 'src/app/models/incoming/boolean/boolean-model';
-import { BooleanEntityService } from 'src/app/services/entity-service/boolean-entity.service';
+import { BooleanEntityService } from 'src/app/components/query-builder/services/entity-services/boolean-entity.service';
 
 @Component({
   selector: 'app-boolean-form',

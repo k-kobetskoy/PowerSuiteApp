@@ -4,16 +4,16 @@ import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { AttributeResponseModel } from 'src/app/models/incoming/attrubute/attribute-response-model';
 import { CacheKeys } from 'src/app/config/cache-keys';
-import { BaseEntityService } from './abstract/base-entity.service';
-import { ActiveEnvironment } from 'src/app/decorators/active-environment';
+import { BaseRequestService } from 'src/app/components/query-builder/services/entity-services/abstract/base-request.service';
 
 @Injectable({ providedIn: 'root' })
-export class AttributeEntityService extends BaseEntityService {
+export class AttributeEntityService extends BaseRequestService {
 
   constructor() { super(); }
-
-  @ActiveEnvironment
+  
   getAttributes(entityLogicalName: string): Observable<AttributeModel[]> {
+
+    this.getActiveEnvironmentUrl();
 
     const key = `${entityLogicalName}_${CacheKeys.EntityAttributes}`;
 

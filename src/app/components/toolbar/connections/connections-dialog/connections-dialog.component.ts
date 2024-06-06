@@ -6,7 +6,7 @@ import { EventData } from 'src/app/services/event-bus/event-data';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { EnvironmentEntityService } from 'src/app/services/entity-service/environment-entity.service';
+import { EnvironmentEntityService } from 'src/app/components/query-builder/services/entity-services/environment-entity.service';
 
 @Component({
   selector: 'app-connections-dialog',

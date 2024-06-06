@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { BaseEntityService } from './abstract/base-entity.service';
+import { BaseRequestService } from 'src/app/components/query-builder/services/entity-services/abstract/base-request.service';
 import { switchMap, of, map, tap, Observable } from 'rxjs';
 import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
 import { PicklistResponseModel } from 'src/app/models/incoming/picklist/picklist-response-model';
 import { PicklistModel } from 'src/app/models/incoming/picklist/picklist-model';
-import { ActiveEnvironment } from 'src/app/decorators/active-environment';
 
 @Injectable({ providedIn: 'root' })
-export class PicklistEntityService extends BaseEntityService {
+export class PicklistEntityService extends BaseRequestService {
 
   constructor() { super(); }
   
-  @ActiveEnvironment
   getOptions(entityLogicalName: string, attributeName: string, attributeType: string): Observable<PicklistModel[]> {
-    console.log('GET PICKLIST OPTIONS')
+
+    this.getActiveEnvironmentUrl();
+
     const key = `${entityLogicalName}_${attributeName}`;
 
     const options$ = this.cacheService.getItem<PicklistModel[]>(key);
