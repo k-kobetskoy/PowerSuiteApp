@@ -1,6 +1,5 @@
-import { XmlExecuteResultModel } from './../../../models/incoming/xml-execute-result/xml-execute-result-model';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, Observable, map, of, switchMap, tap } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { QueryNodeTree } from '../models/query-node-tree';
 import { XmlExecutorService } from '../services/xml-executor.service';
 
@@ -14,18 +13,22 @@ export class ResultTableComponent implements OnInit {
   displayedColumns: string[];
   dataSource: Object[];
   constructor(private xmlExecutor: XmlExecutorService, private nodeTree: QueryNodeTree) { }
+  @Output() resultTableGetResult = new EventEmitter<void>();
 
   ngOnInit() {
   }
 
   getResult() {
+    this.resultTableGetResult.emit();
     const entitySetName = this._getEntityNodeSetName().value;
 
     this.nodeTree.xmlRequest$.pipe(
-      switchMap(xml => this.xmlExecutor.executeXmlRequest(xml, entitySetName))
+      switchMap(xml => this.xmlExecutor.executeXmlRequest(xml, entitySetName)),
+      tap(data => console.log(data))
     ).subscribe(data => {
-      this.displayedColumns = Object.keys(data[0]);
-      this.dataSource = data;
+      const dataKeys = Object.keys(data[0]);
+      this.displayedColumns = ['No.', ...dataKeys];
+      this.dataSource = data.map((item, index) => ({ 'No.': index + 1, ...item }));
     });
   }
 

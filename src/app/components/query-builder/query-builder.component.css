@@ -90,4 +90,6 @@ app-query-builder .mat-mdc-tab-body-content {
 .fetch-result-content {
   display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
+  max-height: 85vh;
 }

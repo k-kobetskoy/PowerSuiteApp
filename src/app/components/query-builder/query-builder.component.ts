@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
@@ -11,11 +10,15 @@ export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
   encapsulation: ViewEncapsulation.None
 })
 export class QueryBuilder implements OnInit {
-  xmlRequestResult$: Observable<Object[]>;
+  // xmlRequestResult$: Observable<Object[]>;
+  selectedTabIndex = 0;
 
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit(QUERY_BUILDER_COMPONENT_URL)
+  }
+  toggleTab() {
+    this.selectedTabIndex = 1;
   }
 }

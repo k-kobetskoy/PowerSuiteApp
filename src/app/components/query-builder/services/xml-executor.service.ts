@@ -16,26 +16,30 @@ export class XmlExecutorService extends BaseRequestService {
     return this.activeEnvironmentUrl$.pipe(
       switchMap(envUrl => {
         if (!envUrl) return of(null);
-          
-          const encodedXml = encodeURIComponent(xml);
-          const url = API_ENDPOINTS.execute.getResourceUrl(envUrl, entity, encodedXml);
-          
-          return this.httpClient.get<XmlExecuteResultModel>(url);
+
+        const encodedXml = encodeURIComponent(xml);
+        const url = API_ENDPOINTS.execute.getResourceUrl(envUrl, entity, encodedXml);
+
+        return this.httpClient.get<XmlExecuteResultModel>(url);
       }),
       map(result => this._normalizeData(result.value))
     );
   }
 
-  private _normalizeData(data: Object[]): Object[] {
-    let allKeys = new Set<string>(); 
+  private _normalizeData<T extends { [key: string]: any }>(data: T[]): T[] {
+    let allKeys = new Set<keyof T>();
     data.forEach(item => {
-      Object.keys(item).forEach(key => allKeys.add(key));
+      Object.keys(item).forEach(key => {
+        if (key !== '@odata.etag') {
+          allKeys.add(key as keyof T)
+        }
+      });
     });
-  
+
     return data.map(item => {
-      let normalizedItem: { [key: string]: any } = {};
+      let normalizedItem = {} as T;
       allKeys.forEach(key => {
-        normalizedItem[key] = item[key] || '';
+        normalizedItem[key] = item[key] !== undefined ? item[key] as T[keyof T] : null;
       });
       return normalizedItem;
     });

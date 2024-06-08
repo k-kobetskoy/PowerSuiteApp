@@ -1,0 +1,14 @@
+.mat-mdc-header-row {
+    --mat-table-header-headline-weight: 600 ;
+    
+    --mat-table-header-headline-size: 14px;
+}
+
+.full-size-table {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mat-mdc-table{
+    white-space: nowrap;
+  }
