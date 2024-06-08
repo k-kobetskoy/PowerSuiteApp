@@ -39,7 +39,7 @@ export class PicklistFormComponent implements OnChanges, OnDestroy {
   }
 
   initializePicklistValues() {
-    const entityLogicalName = this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value;
+    const entityLogicalName = this.selectedNode.getParentEntityName().value;
     const conditionAttribute = this.selectedNode.tagProperties.conditionAttribute.value$.value;
     this.picklistValues$ = this._picklistEntityService.getOptions(entityLogicalName, conditionAttribute, this.attribute.attributeType);
   }

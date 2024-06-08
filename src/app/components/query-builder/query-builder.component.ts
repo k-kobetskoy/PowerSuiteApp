@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
@@ -10,6 +11,7 @@ export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
   encapsulation: ViewEncapsulation.None
 })
 export class QueryBuilder implements OnInit {
+  xmlRequestResult$: Observable<Object[]>;
 
   constructor(private navigationService: NavigationService) { }
 

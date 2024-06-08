@@ -37,7 +37,7 @@ export class OrderFormComponent implements OnChanges {
     this.attributeForm = {
       formControl: new FormControl<string>(null),
       valuesObservable$: combineLatest([
-        this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.pipe(
+        this.selectedNode.getParentEntityName().pipe(
           switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))
         ),
         this.selectedNode.showOnlyLookups$
@@ -55,7 +55,7 @@ export class OrderFormComponent implements OnChanges {
       }
     };
 
-    this.selectedNode.getParentEntity().tagProperties.entityName.value$.pipe(
+    this.selectedNode.getParentEntityName().pipe(
       distinctUntilChanged(),
       takeUntil(this._destroy$))
       .subscribe(entityName => {

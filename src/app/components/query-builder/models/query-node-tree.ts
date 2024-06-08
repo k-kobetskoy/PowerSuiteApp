@@ -12,7 +12,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
     private _nodeAdderFactory = inject(NodeAdderFactoryService)
 
     private _id: string
-    private _root: IQueryNode
+    private _root: IQueryNode    
 
     private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
 
@@ -30,11 +30,9 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         return this._root;
     }
 
-    constructor(private eventBus: EventBusService) {        
-        this.init()
-    }
+    xmlRequest$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-    private init() {
+    constructor(private eventBus: EventBusService) {        
         this._root = this.addNode(QueryNodeType.ROOT).parent
     }
 

@@ -58,8 +58,8 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
     this.attributesFormControl.setValue(attributeInitialValue);
   }
 
-  getInitialData() {
-    this.entityName$ = this.selectedNode.parent.parent.tagProperties.entityName.value$.asObservable();
+  getInitialData() {   
+    this.entityName$ = this.selectedNode.getParentEntityName();
 
     this.attributes$ = this.entityName$
       .pipe(

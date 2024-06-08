@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy} from '@angular/core';
 import { QueryNodeTree } from '../models/query-node-tree';
 import { BehaviorSubject, Observable, Subject, combineLatest, distinctUntilChanged, map, of, switchMap, takeUntil } from 'rxjs';
 import { IQueryNode } from '../models/abstract/i-query-node';
@@ -27,18 +27,16 @@ export class QueryRenderService implements OnDestroy {
   private _previousNodeLevel: number = -1;
   private _closingTagsStack = new ClosingTagsStack();
   private _currentNode: IQueryNode;
-  xmlRequestSubject$ = new BehaviorSubject<string>('');
+  private _previousNodeIsExpandable: boolean = false;
 
-  constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) {
-    this.renderXmlRequest();
-    this.eventBus.on(AppEvents.NODE_ADDED, () => { this.renderXmlRequest(); console.warn('Node Added') });
+  constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) { 
+    this.eventBus.on(AppEvents.NODE_ADDED, () => this.renderXmlRequest());
   }
 
   renderXmlRequest() {
     this._destroy$.next();
     this._previousNodeLevel = -1;
     this._currentNode = this.queryTree.root;
-    console.warn('Rendering XML Request');
 
     const observables$: Observable<string>[] = [];
     const dynamicObservables$: BehaviorSubject<Observable<string>[]> = new BehaviorSubject([]);
@@ -46,7 +44,6 @@ export class QueryRenderService implements OnDestroy {
     while (this._currentNode != null || this._closingTagsStack.count != 0) {
       observables$.push(this.processNode(this._currentNode));
     }
-    this._previousNodeLevel = -1;
 
     dynamicObservables$.next(observables$);
 
@@ -55,16 +52,15 @@ export class QueryRenderService implements OnDestroy {
       map(values => values.join('\n')),
       distinctUntilChanged(),
       takeUntil(this._destroy$))
-      .subscribe(value => this.xmlRequestSubject$.next(value));
+      .subscribe(value => this.queryTree.xmlRequest$.next(value));
   }
 
   processNode(node: IQueryNode): Observable<string> {
     if (this._currentNode === null) {
-      this._previousNodeLevel = 0;
       return of(this._closingTagsStack.pop());
     }
 
-    if (this._previousNodeLevel >= node.level) {
+    if (this._previousNodeLevel >= node.level && this._previousNodeIsExpandable) {
       this._previousNodeLevel--;
       return of(this._closingTagsStack.pop());
     }
@@ -72,6 +68,7 @@ export class QueryRenderService implements OnDestroy {
     const observable = this.getNodeTag(node);
     this._previousNodeLevel = node.level;
     this._currentNode = node.next;
+    this._previousNodeIsExpandable = node.expandable;
     return observable;
   }
 
@@ -79,8 +76,9 @@ export class QueryRenderService implements OnDestroy {
     if (node.expandable) {
       this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
     }
-    return node.displayValue$.pipe(map(displayValue => 
-      !node.expandable ? `<${displayValue.tagPropertyDisplay}/>` : `<${displayValue.tagPropertyDisplay}>`
+
+    return node.displayValue$.pipe(map(displayValue =>
+      node.expandable ? `<${displayValue.tagPropertyDisplay}>` : `<${displayValue.tagPropertyDisplay}/>`
     ));
   }
 

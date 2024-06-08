@@ -39,7 +39,7 @@ export class BooleanFormComponent implements OnChanges, OnDestroy {
   }
   
   initializeBooleanValues() {
-    const entityLogicalName = this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value;
+    const entityLogicalName = this.selectedNode.getParentEntityName().value;
     const conditionAttribute = this.selectedNode.tagProperties.conditionAttribute.value$.value;
     this.booleanOptions$ = this._booleanService.getBooleanValues(entityLogicalName, conditionAttribute);
   }

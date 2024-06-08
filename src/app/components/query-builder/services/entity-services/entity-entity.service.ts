@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, tap, catchError, switchMap, of } from 'rxjs';
+import { Observable, map, tap, switchMap, of } from 'rxjs';
 import { EntityDefinitionsResponseModel } from 'src/app/models/incoming/environment/entity-definitions-response-model';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { CacheKeys } from 'src/app/config/cache-keys';

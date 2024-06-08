@@ -36,8 +36,8 @@ export const API_ENDPOINTS = {
         }
     },
     execute: {
-        getResourceUrl(apiUrl: string) {
-            return `${apiUrl}/api/data/v9.2/`
+        getResourceUrl(apiUrl: string, entitySetName: string, xml: string) {
+            return `${apiUrl}/api/data/v9.2/${entitySetName}?fetchXml=${xml}`;
         }
     }
 };

@@ -49,7 +49,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
   initializeFormControls() {
     this.linkEntityForm = {
       formControl: new FormControl<string>(null),
-      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value))),
+      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntityName().value))),
       filteredValues$: null,
       storedInputValue$: this.selectedNode.tagProperties.linkEntity.value$,
       previousValue$: this.linkEntityPreviousValue$,
@@ -92,7 +92,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
     this.toAttributeForm = {
       formControl: new FormControl<string>(null),
       valuesObservable$: combineLatest([
-        this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.pipe(
+        this.selectedNode.getParentEntityName().pipe(
           switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))
         ),
         this.selectedNode.showOnlyLookups$
@@ -110,7 +110,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
       }
     };
 
-    this.selectedNode.getParentEntity().tagProperties.entityName.value$.pipe(
+    this.selectedNode.getParentEntityName().pipe(
       distinctUntilChanged(),
       takeUntil(this._destroy$))
       .subscribe(entityName => {
