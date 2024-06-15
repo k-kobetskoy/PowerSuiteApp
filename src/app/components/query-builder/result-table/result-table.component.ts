@@ -9,6 +9,9 @@ import { XmlExecutorService } from '../services/xml-executor.service';
   styleUrls: ['./result-table.component.css']
 })
 export class ResultTableComponent implements OnInit {
+  
+  selectedRow: any;
+  selectedOverflowCell: any;
 
   displayedColumns: string[];
   dataSource: Object[];
@@ -35,4 +38,22 @@ export class ResultTableComponent implements OnInit {
   private _getEntityNodeSetName(): BehaviorSubject<string> {
     return this.nodeTree.root.next.entitySetName$;
   }
+
+  selectRow(row: any) {
+    this.selectedRow = row;
+    }
+
+    selectCell(element: Object, cell: HTMLElement) {
+      if (this.isTextHidden(cell)) {
+        this.selectedOverflowCell = element;
+      }else if(this.selectedOverflowCell != element){
+        this.selectedOverflowCell = null;
+      }
+    }
+
+
+    isTextHidden(cell: HTMLElement): boolean {
+      return cell.scrollWidth > cell.clientWidth;
+    }
+      
 }

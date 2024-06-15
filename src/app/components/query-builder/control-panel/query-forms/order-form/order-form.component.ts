@@ -18,7 +18,6 @@ export class OrderFormComponent implements OnChanges {
   private _destroy$ = new Subject<void>();
 
   @Input() selectedNode: NodeOrder;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   attributeForm: IFormPropertyModel<AttributeModel, string>;
 

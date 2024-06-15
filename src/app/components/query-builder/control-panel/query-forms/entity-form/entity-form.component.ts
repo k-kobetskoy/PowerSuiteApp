@@ -14,7 +14,6 @@ import { IFormPropertyModel } from '../../../models/abstract/i-form-property-mod
 export class EntityFormComponent implements OnInit, OnDestroy {
 
   @Input() selectedNode: NodeEntity;
-  @Output() onNodeCreate = new EventEmitter<string>()
 
   private _destroy$ = new Subject<void>();
 

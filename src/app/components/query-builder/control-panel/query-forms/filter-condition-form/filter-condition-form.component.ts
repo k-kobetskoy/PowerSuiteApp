@@ -16,7 +16,6 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
 
   private _destroy$ = new Subject<void>();
 
-  @Output() onNodeCreate = new EventEmitter<string>();
   @Input() selectedNode: NodeCondition;
 
   attributesFormControl = new FormControl<string>(null);

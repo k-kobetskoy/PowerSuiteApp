@@ -31,6 +31,7 @@ export class QueryRenderService implements OnDestroy {
 
   constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) { 
     this.eventBus.on(AppEvents.NODE_ADDED, () => this.renderXmlRequest());
+    this.eventBus.on(AppEvents.NODE_REMOVED, () => this.renderXmlRequest());
   }
 
   renderXmlRequest() {

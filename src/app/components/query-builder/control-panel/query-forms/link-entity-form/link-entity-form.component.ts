@@ -18,7 +18,6 @@ import { IFormPropertyModel } from '../../../models/abstract/i-form-property-mod
 export class LinkEntityFormComponent implements OnChanges, OnDestroy {
 
   @Input() selectedNode: NodeLink;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   private _destroy$ = new Subject<void>();
 

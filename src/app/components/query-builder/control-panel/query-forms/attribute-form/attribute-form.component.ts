@@ -13,7 +13,6 @@ import { AttributeEntityService } from 'src/app/components/query-builder/service
 export class AttributeFormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() selectedNode: NodeEntityAttribute;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   private destroy$ = new Subject<void>();
 

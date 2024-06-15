@@ -9,7 +9,6 @@ import { NodeRoot } from '../../../models/nodes/node-root';
 export class RootFormComponent implements OnInit {
 
   @Input() selectedNode: NodeRoot
-  @Output() onNodeCreate = new EventEmitter<string>()
 
   constructor() { }
 

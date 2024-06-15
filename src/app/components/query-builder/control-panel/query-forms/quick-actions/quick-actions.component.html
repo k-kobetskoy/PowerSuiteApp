@@ -1,7 +1,12 @@
 <div class="node-editor-container">
-  
-  <div class="quick-actions">
-    <button mat-flat-button *ngFor="let nodeName of selectedNode.actions" (click)="createNode(nodeName)">{{nodeName}}</button>
+  <div class="tree-actions">
+    <button mat-flat-button color="primary" (click)="deleteNode()">Delete</button>
+    <button mat-flat-button color="primary" (click)="duplicateNode()" disabled="true">Duplicate</button>
+    <button mat-flat-button color="primary" (click)="resetTree()" disabled="true">Reset</button>
   </div>
+  <div class="quick-actions">
+    <button mat-flat-button *ngFor="let nodeName of selectedNode.actions" (click)="addNode(nodeName)">{{nodeName}}</button>
+  </div>
+
 
 </div>

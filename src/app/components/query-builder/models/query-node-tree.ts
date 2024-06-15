@@ -12,7 +12,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
     private _nodeAdderFactory = inject(NodeAdderFactoryService)
 
     private _id: string
-    private _root: IQueryNode    
+    private _root: IQueryNode
 
     private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
 
@@ -32,7 +32,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
 
     xmlRequest$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-    constructor(private eventBus: EventBusService) {        
+    constructor(private eventBus: EventBusService) {
         this._root = this.addNode(QueryNodeType.ROOT).parent
     }
 
@@ -43,7 +43,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
             this.expandNode(this._selectedNode$.value)
         }
         this.selectedNode$ = newNodeToSelect
-        this.eventBus.emit({name :AppEvents.NODE_ADDED})
+        this.eventBus.emit({ name: AppEvents.NODE_ADDED })
         return newNodeToSelect
     }
 
@@ -51,9 +51,25 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         if (!node.parent) {
             throw new Error('Node has no parent.');
         }
-        node.parent.next = node.next
-        node.parent.expandable = node.parent.level !== node.next.level
-    }
+
+        const previousNode = this.getPreviousNode(node);
+        const nextNode = this.getNextNodeWithTheSameLevel(node);
+
+        if (!previousNode) {
+            throw new Error('Previous node not found.');
+        }
+
+        previousNode.next = nextNode;
+
+        if (nextNode) {
+            previousNode.expandable = previousNode.level < previousNode.next.level;
+        } else {
+            previousNode.expandable = false;
+        }
+
+        this._selectedNode$.next(previousNode);
+        this.eventBus.emit({ name: AppEvents.NODE_REMOVED })
+    }    
 
     expandNode(node: IQueryNode) {
         node.expandable = true
@@ -82,6 +98,28 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         if (this._selectedNode$ && !this._selectedNode$.value?.visible) {
             this.selectedNode$ = null
         }
+    }
+
+    private getNextNodeWithTheSameLevel(node: IQueryNode): IQueryNode {
+        let nextNode = node.next;
+
+        while (nextNode && nextNode.level > node.level) {
+            nextNode = nextNode.next;
+        }
+
+        return nextNode;
+    }
+
+    private getPreviousNode(node: IQueryNode): IQueryNode {
+        const parent = node.parent;
+
+        let previousNode = parent;
+
+        while (previousNode.next !== node) {
+            previousNode = previousNode.next;
+        }
+
+        return previousNode;
     }
 
     [Symbol.iterator](): Iterator<IQueryNode, any, undefined> {

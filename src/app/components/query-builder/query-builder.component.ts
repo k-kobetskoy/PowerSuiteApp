@@ -10,7 +10,7 @@ export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
   encapsulation: ViewEncapsulation.None
 })
 export class QueryBuilder implements OnInit {
-  // xmlRequestResult$: Observable<Object[]>;
+  
   selectedTabIndex = 0;
 
   constructor(private navigationService: NavigationService) { }
