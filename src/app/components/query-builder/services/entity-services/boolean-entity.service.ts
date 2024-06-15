@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { BaseEntityService } from './abstract/base-entity.service';
+import { BaseRequestService } from 'src/app/components/query-builder/services/entity-services/abstract/base-request.service';
 import { Observable, switchMap, of, map, tap } from 'rxjs';
 import { API_ENDPOINTS } from 'src/app/config/api-endpoints';
-import { ActiveEnvironment } from 'src/app/decorators/active-environment';
 import { BooleanModel } from 'src/app/models/incoming/boolean/boolean-model';
 import { BooleanResponseModel } from 'src/app/models/incoming/boolean/boolean-response-model';
 
 @Injectable({ providedIn: 'root' })
-export class BooleanEntityService extends BaseEntityService {
+export class BooleanEntityService extends BaseRequestService {
 
   constructor() { super(); }
 
-  @ActiveEnvironment
   getBooleanValues(entityLogicalName: string, attributeName: string): Observable<BooleanModel> {
+
+    this.getActiveEnvironmentUrl();
 
     const key = `${entityLogicalName}_${attributeName}`;
 

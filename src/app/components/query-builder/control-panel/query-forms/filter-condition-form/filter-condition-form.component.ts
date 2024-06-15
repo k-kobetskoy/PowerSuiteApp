@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleCha
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
-import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeEntityService } from 'src/app/components/query-builder/services/entity-services/attribute-entity.service';
 import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
 import { FilterOperatorTypes } from '../../../models/constants/ui/option-set-types';
 import { NodeCondition } from '../../../models/nodes/node-condition';
@@ -16,7 +16,6 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
 
   private _destroy$ = new Subject<void>();
 
-  @Output() onNodeCreate = new EventEmitter<string>();
   @Input() selectedNode: NodeCondition;
 
   attributesFormControl = new FormControl<string>(null);
@@ -58,8 +57,8 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
     this.attributesFormControl.setValue(attributeInitialValue);
   }
 
-  getInitialData() {
-    this.entityName$ = this.selectedNode.parent.parent.tagProperties.entityName.value$.asObservable();
+  getInitialData() {   
+    this.entityName$ = this.selectedNode.getParentEntityName();
 
     this.attributes$ = this.entityName$
       .pipe(

@@ -10,10 +10,15 @@ export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
   encapsulation: ViewEncapsulation.None
 })
 export class QueryBuilder implements OnInit {
+  
+  selectedTabIndex = 0;
 
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit(QUERY_BUILDER_COMPONENT_URL)
+  }
+  toggleTab() {
+    this.selectedTabIndex = 1;
   }
 }

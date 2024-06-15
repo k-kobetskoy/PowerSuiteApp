@@ -4,7 +4,7 @@ import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-mode
 import { IFormPropertyModel } from '../../../models/abstract/i-form-property-model';
 import { BehaviorSubject, Observable, Subject, combineLatest, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
 import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
-import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeEntityService } from 'src/app/components/query-builder/services/entity-services/attribute-entity.service';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
 import { NodeOrder } from '../../../models/nodes/node-order';
 
@@ -18,7 +18,6 @@ export class OrderFormComponent implements OnChanges {
   private _destroy$ = new Subject<void>();
 
   @Input() selectedNode: NodeOrder;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   attributeForm: IFormPropertyModel<AttributeModel, string>;
 
@@ -37,7 +36,7 @@ export class OrderFormComponent implements OnChanges {
     this.attributeForm = {
       formControl: new FormControl<string>(null),
       valuesObservable$: combineLatest([
-        this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.pipe(
+        this.selectedNode.getParentEntityName().pipe(
           switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))
         ),
         this.selectedNode.showOnlyLookups$
@@ -55,7 +54,7 @@ export class OrderFormComponent implements OnChanges {
       }
     };
 
-    this.selectedNode.getParentEntity().tagProperties.entityName.value$.pipe(
+    this.selectedNode.getParentEntityName().pipe(
       distinctUntilChanged(),
       takeUntil(this._destroy$))
       .subscribe(entityName => {

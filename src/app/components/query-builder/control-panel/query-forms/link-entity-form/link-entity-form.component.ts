@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleCha
 import { FormControl } from '@angular/forms';
 import { Subject, Observable, distinctUntilChanged, takeUntil, startWith, switchMap, map, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
-import { EntityEntityService } from 'src/app/services/entity-service/entity-entity.service';
+import { EntityEntityService } from 'src/app/components/query-builder/services/entity-services/entity-entity.service';
 import { NodeLink } from '../../../models/nodes/node-link';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
-import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeEntityService } from 'src/app/components/query-builder/services/entity-services/attribute-entity.service';
 import { LinkTypeOptions } from '../../../models/constants/ui/link-type-options';
 import { AttributeTypes } from '../../../models/constants/dataverse/attribute-types';
 import { IFormPropertyModel } from '../../../models/abstract/i-form-property-model';
@@ -18,7 +18,6 @@ import { IFormPropertyModel } from '../../../models/abstract/i-form-property-mod
 export class LinkEntityFormComponent implements OnChanges, OnDestroy {
 
   @Input() selectedNode: NodeLink;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   private _destroy$ = new Subject<void>();
 
@@ -49,7 +48,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
   initializeFormControls() {
     this.linkEntityForm = {
       formControl: new FormControl<string>(null),
-      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value))),
+      valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntityName().value))),
       filteredValues$: null,
       storedInputValue$: this.selectedNode.tagProperties.linkEntity.value$,
       previousValue$: this.linkEntityPreviousValue$,
@@ -92,7 +91,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
     this.toAttributeForm = {
       formControl: new FormControl<string>(null),
       valuesObservable$: combineLatest([
-        this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.pipe(
+        this.selectedNode.getParentEntityName().pipe(
           switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))
         ),
         this.selectedNode.showOnlyLookups$
@@ -110,7 +109,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
       }
     };
 
-    this.selectedNode.getParentEntity().tagProperties.entityName.value$.pipe(
+    this.selectedNode.getParentEntityName().pipe(
       distinctUntilChanged(),
       takeUntil(this._destroy$))
       .subscribe(entityName => {

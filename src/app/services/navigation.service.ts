@@ -4,7 +4,7 @@ import { EnvironmentModel } from '../models/environment-model';
 import { UrlRouteParams } from '../config/url-route-params';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
-import { EnvironmentEntityService } from './entity-service/environment-entity.service';
+import { EnvironmentEntityService } from '../components/query-builder/services/entity-services/environment-entity.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService implements OnInit, OnDestroy {

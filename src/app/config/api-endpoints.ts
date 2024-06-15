@@ -35,14 +35,9 @@ export const API_ENDPOINTS = {
             return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.BooleanAttributeMetadata/OptionSet`;
         }
     },
-    // state: {
-    //     getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
-    //         return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.StateAttributeMetadata/OptionSet?$select=Options`;
-    //     }
-    // },
-    // status: {
-    //     getResourceUrl(apiUrl: string, entityLogicalName: string, attributeName: string) {
-    //         return `${apiUrl}/api/data/v9.2/EntityDefinitions(LogicalName='${entityLogicalName}')/Attributes(LogicalName='${attributeName}')/Microsoft.Dynamics.CRM.StatusAttributeMetadata/OptionSet?$select=Options`;
-    //     }
-    // }
+    execute: {
+        getResourceUrl(apiUrl: string, entitySetName: string, xml: string) {
+            return `${apiUrl}/api/data/v9.2/${entitySetName}?fetchXml=${xml}`;
+        }
+    }
 };

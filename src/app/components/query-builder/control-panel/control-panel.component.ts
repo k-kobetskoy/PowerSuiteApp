@@ -19,8 +19,4 @@ export class ControlPanelComponent implements OnInit {
   }
 
   ngOnInit() { }
-
-  createNode(nodeName: string) {
-    this.nodeTree.addNode(nodeName)
-  }
 }

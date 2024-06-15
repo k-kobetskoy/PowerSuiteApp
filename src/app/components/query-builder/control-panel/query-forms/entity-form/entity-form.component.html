@@ -1,13 +1,13 @@
-<app-quick-actions [selectedNode]="selectedNode" (onNodeCreate)="this.onNodeCreate.emit($event)"></app-quick-actions>
+<app-quick-actions [selectedNode]="selectedNode"></app-quick-actions>
 
 <app-loading-indicator [diameter]="50"></app-loading-indicator>
 <mat-form-field>
   <mat-label>Entity</mat-label>
-  <input type="text" matInput [formControl]="entitiesFormControl" [matAutocomplete]="auto"
-    (keyup)="onKeyPressed($event)">
+  <input type="text" matInput [formControl]="entityFormModel.formControl" [matAutocomplete]="auto"
+  (input)="onInputChanged($event, entityFormModel)">
 
   <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredEntities$ | async" [value]="option.logicalName">
+    <mat-option *ngFor="let option of entityFormModel.filteredValues$| async" [value]="option.logicalName">
       {{option.logicalName+ ' ' + option.displayName}}
 
     </mat-option>
@@ -16,5 +16,5 @@
 
 <mat-form-field>
   <mat-label>Alias</mat-label>
-  <input type="text" matInput [formControl]="aliasFormControl">
+  <input type="text" matInput [formControl]="aliasFormModel.formControl">
 </mat-form-field>

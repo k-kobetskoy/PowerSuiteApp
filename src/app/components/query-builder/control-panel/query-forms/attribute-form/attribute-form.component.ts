@@ -1,19 +1,18 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NodeEntityAttribute } from '../../../models/nodes/node-entity-attribute';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, distinctUntilChanged, map, of, startWith, switchMap, takeUntil } from 'rxjs';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
-import { AttributeEntityService } from 'src/app/services/entity-service/attribute-entity.service';
+import { AttributeEntityService } from 'src/app/components/query-builder/services/entity-services/attribute-entity.service';
 
 @Component({
   selector: 'app-attribute-form',
   templateUrl: './attribute-form.component.html',
   styleUrls: ['./attribute-form.component.css']
 })
-export class AttributeFormComponent implements OnInit, OnDestroy {
+export class AttributeFormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() selectedNode: NodeEntityAttribute;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   private destroy$ = new Subject<void>();
 
@@ -27,6 +26,13 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
   entityName$: Observable<string>
 
   constructor(private _attributeEntityService: AttributeEntityService) { }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.selectedNode) {      
+      this.addFilterToInput();
+      this.setInputsInitialValues();
+    }
+  }
 
   ngOnInit() {
     this.getInitialData();
@@ -61,7 +67,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy {
   }
 
   getInitialData() {
-    this.entityName$ = this.selectedNode.parent.tagProperties.entityName.value$.asObservable();
+    this.entityName$ = this.selectedNode.getParentEntityName();
 
     this.attributes$ = this.entityName$
       .pipe(

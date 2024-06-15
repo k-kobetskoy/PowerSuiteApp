@@ -6,7 +6,7 @@ import { FilterStaticData } from 'src/app/components/query-builder/models/consta
 import { NodeCondition } from 'src/app/components/query-builder/models/nodes/node-condition';
 import { AttributeModel } from 'src/app/models/incoming/attrubute/attribute-model';
 import { PicklistModel } from 'src/app/models/incoming/picklist/picklist-model';
-import { PicklistEntityService } from 'src/app/services/entity-service/picklist-entity.service';
+import { PicklistEntityService } from 'src/app/components/query-builder/services/entity-services/picklist-entity.service';
 
 @Component({
   selector: 'app-picklist-form',
@@ -35,12 +35,11 @@ export class PicklistFormComponent implements OnChanges, OnDestroy {
       this.initializePicklistValues();
       this.setControlsInitialValues();
       this.bindDataToControls();
-
     }
   }
 
   initializePicklistValues() {
-    const entityLogicalName = this.selectedNode.getParentEntity()?.tagProperties.entityName.value$.value;
+    const entityLogicalName = this.selectedNode.getParentEntityName().value;
     const conditionAttribute = this.selectedNode.tagProperties.conditionAttribute.value$.value;
     this.picklistValues$ = this._picklistEntityService.getOptions(entityLogicalName, conditionAttribute, this.attribute.attributeType);
   }

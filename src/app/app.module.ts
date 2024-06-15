@@ -33,13 +33,14 @@ import { PicklistFormComponent } from './components/query-builder/control-panel/
 import { StringFormComponent } from './components/query-builder/control-panel/query-forms/filter-condition-form/string-form/string-form.component';
 import { LinkEntityFormComponent } from './components/query-builder/control-panel/query-forms/link-entity-form/link-entity-form.component';
 import { OrderFormComponent } from './components/query-builder/control-panel/query-forms/order-form/order-form.component';
-import { QueryNodeTagComponent } from './components/query-builder/code-editor/query-node-tag/query-node-tag.component';
+import { QueryTreeButtonBlockComponent } from './components/query-builder/query-tree-button-block/query-tree-button-block.component';
 
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 import { MatRippleModule } from '@angular/material/core';
 import { AngularSplitModule } from 'angular-split';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -54,6 +55,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
+import { ResultTableComponent } from './components/query-builder/result-table/result-table.component';
 
 
 
@@ -87,7 +89,8 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     StringFormComponent,
     LinkEntityFormComponent,
     OrderFormComponent,
-    QueryNodeTagComponent
+    QueryTreeButtonBlockComponent,
+    ResultTableComponent
   ],
 
   imports: [
@@ -111,6 +114,7 @@ import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
     MatCheckboxModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatTableModule,
     MsalConfigDynamicModule.forRoot('assets/configuration.json')
   ],
   providers: [

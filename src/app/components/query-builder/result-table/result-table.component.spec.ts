@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { QueryNodeTagComponent } from './query-node-tag.component';
+import { ResultTableComponent } from './result-table.component';
 
-describe('QueryNodeTagComponent', () => {
-  let component: QueryNodeTagComponent;
-  let fixture: ComponentFixture<QueryNodeTagComponent>;
+describe('ResultTableComponent', () => {
+  let component: ResultTableComponent;
+  let fixture: ComponentFixture<ResultTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QueryNodeTagComponent ]
+      declarations: [ ResultTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QueryNodeTagComponent);
+    fixture = TestBed.createComponent(ResultTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

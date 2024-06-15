@@ -10,7 +10,6 @@ import { FilterStaticData } from '../../../models/constants/ui/filter-static-dat
 export class FilterFormComponent implements OnInit {
 
   @Input() selectedNode: NodeFilter;
-  @Output() onNodeCreate = new EventEmitter<string>();
 
   filterTypeOptions = FilterStaticData.FilterTypes;
 

@@ -63,5 +63,4 @@ export class NumberFormComponent implements OnChanges, OnDestroy{
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }

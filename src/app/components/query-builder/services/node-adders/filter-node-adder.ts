@@ -1,7 +1,5 @@
 import { IQueryNode } from "../../models/abstract/i-query-node";
 import { QueryNodeType } from "../../models/constants/query-node-type";
-import { TagPropertyCondition } from "../../models/tag-properties/tag-property-condition";
-import { TagPropertyFilter } from "../../models/tag-properties/tag-property-filter";
 import { BaseNodeAdder } from "./abstract/base-node-adder";
 
 export class FilterNodeAdder extends BaseNodeAdder {
@@ -20,8 +18,6 @@ export class FilterNodeAdder extends BaseNodeAdder {
         newNode.parent = parentNode
 
         let nodeToSelect = this.add(QueryNodeType.CONDITION, newNode)
-        
-        newNode.expandable = true;
         
         return nodeToSelect
     }
