@@ -15,6 +15,7 @@ export interface IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
+    validationPassed: boolean;
     tagProperties: ITagProperties;
     entitySetName$: BehaviorSubject<string>;
     

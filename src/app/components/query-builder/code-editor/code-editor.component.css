@@ -1,9 +1,16 @@
 app-code-editor {
     display: flex;
-    flex:1;
+    flex: 1;
 }
 
-app-code-editor .code-editor-content{
+app-code-editor .monaco-editor-contatiner {
     display: flex;
     flex: 1;
+}
+
+.monaco-editor {
+    display: flex !important;
+    flex: 1;
+    height: 100% !important;
+    width: 100%;
 }

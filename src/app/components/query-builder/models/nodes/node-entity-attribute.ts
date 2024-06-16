@@ -49,17 +49,19 @@ export class NodeEntityAttribute extends QueryNode {
                 if (tagDisplay) {
                     if (nodeDisplay) {
                         propertyDisplay.nodePropertyDisplay = attributeGroupBy
-                            ? `${attributeAlias ? attributeAlias : ''}=count(${attributeName}) ${this.tagProperties.attributeGroupBy.nodePropertyDisplay}`
-                            : `${attributeName ? attributeName : ''} ${attributeAlias ? `(${attributeAlias})` : ''}`.trim();
+                            ? `${attributeAlias ? `${attributeAlias}` : ''}=count(${attributeName})${this.tagProperties.attributeGroupBy.nodePropertyDisplay}`
+                            : `${attributeName ? attributeName : ''}${attributeAlias ? ` (${attributeAlias})` : ''}`;
                     }
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
-                    ${attributeName? `${this.tagProperties.attributeName.name}="${attributeName}"` : ''} 
-                    ${attributeAlias? `${this.tagProperties.attributeAlias.name}="${attributeAlias}"` : ''} 
-                    ${aggregateString? `${this.tagProperties.attributeAggregate.name}="${aggregateString}"` : ''}
-                    ${groupByString? `${this.tagProperties.attributeGroupBy.name}="${groupByString}"` : ''} 
-                    ${distinctString? `${this.tagProperties.attributeDistinct.name}="${distinctString}"` : ''} 
-                    ${userTimeZoneString? `${this.tagProperties.attributeUserTimeZone.name}="${userTimeZoneString}"` : ''} 
-                    ${dateGroupingString? `${this.tagProperties.attributeDateGrouping.name}="${dateGroupingString}"` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${[
+                            attributeName ? ` ${this.tagProperties.attributeName.name}="${attributeName}"` : '',
+                            attributeAlias ? ` ${this.tagProperties.attributeAlias.name}="${attributeAlias}"` : '',
+                            aggregateString ? ` ${this.tagProperties.attributeAggregate.name}="${aggregateString}"` : '',
+                            groupByString ? ` ${this.tagProperties.attributeGroupBy.name}="${groupByString}"` : '',
+                            distinctString ? ` ${this.tagProperties.attributeDistinct.name}="${distinctString}"` : '',
+                            userTimeZoneString ? ` ${this.tagProperties.attributeUserTimeZone.name}="${userTimeZoneString}"` : '',
+                            dateGroupingString ? ` ${this.tagProperties.attributeDateGrouping.name}="${dateGroupingString}"` : ''
+                        ].filter(part => part).join('')
+                        }`
                 }
 
                 return of(propertyDisplay);

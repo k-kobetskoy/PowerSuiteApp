@@ -1,4 +1,3 @@
-<p>{{xmlRequest$|async}}</p>
-
-
-
+<div class="monaco-editor-contatiner">
+    <ngx-monaco-editor [options]="editorOptions" [ngModel]="xmlRequest$|async"class="monaco-editor" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
+</div>

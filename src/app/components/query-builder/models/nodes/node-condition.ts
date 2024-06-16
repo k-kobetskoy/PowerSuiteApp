@@ -38,14 +38,14 @@ export class NodeCondition extends QueryNode {
                 const nothingToDisplay = !conditionAttribute && !conditionOperator && !conditionValue;
 
                 if (!nothingToDisplay) {
-                    propertyDisplay.nodePropertyDisplay = `${conditionAttribute ? conditionAttribute : ''}
-                    ${conditionOperator ? `(${conditionOperator})` : ''}
-                    ${conditionValue ? conditionValue : ''}`.trim();
+                    propertyDisplay.nodePropertyDisplay = `${conditionAttribute ? conditionAttribute : ''}${conditionOperator ? ` (${conditionOperator})` : ''}${conditionValue ? ` ${conditionValue}` : ''}`;
 
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
-                    ${conditionAttribute ? `${this.tagProperties.conditionAttribute.name}="${conditionAttribute}"` : ''} 
-                    ${conditionOperator ? `${this.tagProperties.conditionOperator.name}="${conditionOperator}"` : ''} 
-                    ${conditionValue ? `${this.tagProperties.conditionValue.name}="${conditionValue}"` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = [
+                        this.tagProperties.tagName,
+                        conditionAttribute ? ` ${this.tagProperties.conditionAttribute.name}="${conditionAttribute}"` : '',
+                        conditionOperator ? ` ${this.tagProperties.conditionOperator.name}="${conditionOperator}"` : '',
+                        conditionValue ? ` ${this.tagProperties.conditionValue.name}="${conditionValue}"` : ''
+                      ].filter(part => part).join('');
                 }
 
                 return of(propertyDisplay);

@@ -47,33 +47,38 @@ export class NodeRoot extends QueryNode {
                 const pageString = page === null ? '' : page.toString();
                 const pageSizeString = pageSize === null ? '' : pageSize.toString();
                 const topString = top === null ? '' : top.toString();
-                const distinctString = distinct === null || distinct===false? '' : distinct.toString();
-                const aggregateString = aggregate === null || aggregate === false? '' : aggregate.toString();
+                const distinctString = distinct === null || distinct === false ? '' : distinct.toString();
+                const aggregateString = aggregate === null || aggregate === false ? '' : aggregate.toString();
                 const totalRecordsCountString = totalRecordsCount === null || totalRecordsCount === false ? '' : totalRecordsCount.toString();
-                const lateMaterializeString = lateMaterialize === null || lateMaterialize===false ? '' : lateMaterialize.toString();
+                const lateMaterializeString = lateMaterialize === null || lateMaterialize === false ? '' : lateMaterialize.toString();
 
-                if(tagDisplay){
-                    if(nodeDisplay){
-                        propertyDisplay.nodePropertyDisplay = 
-                        `${this.defaultNodeDisplayValue} ${topString ? `${this.tagProperties.rootTop.nodePropertyDisplay}: ${topString}` : ''} 
-                        ${pageSizeString ? `${this.tagProperties.rootPageSize.nodePropertyDisplay}: ${pageSizeString}` : ''} 
-                        ${pageString ? `${this.tagProperties.rootPage.nodePropertyDisplay}: ${pageString}` : ''} 
-                        ${distinctString ? `${this.tagProperties.rootDistinct.nodePropertyDisplay}` : ''} 
-                        ${aggregateString ? `${this.tagProperties.rootAggregate.nodePropertyDisplay}` : ''} 
-                        ${totalRecordsCountString ? `${this.tagProperties.rootTotalRecordsCount.nodePropertyDisplay}` : ''}`.trim();
+                if (tagDisplay) {
+                    if (nodeDisplay) {
+                        propertyDisplay.nodePropertyDisplay =
+                            [
+                                this.defaultNodeDisplayValue,
+                                topString ? ` ${this.tagProperties.rootTop.nodePropertyDisplay}: ${topString}` : '',
+                                pageSizeString ? ` ${this.tagProperties.rootPageSize.nodePropertyDisplay}: ${pageSizeString}` : '',
+                                pageString ? ` ${this.tagProperties.rootPage.nodePropertyDisplay}: ${pageString}` : '',
+                                distinctString ? ` ${this.tagProperties.rootDistinct.nodePropertyDisplay}` : '',
+                                aggregateString ? ` ${this.tagProperties.rootAggregate.nodePropertyDisplay}` : '',
+                                totalRecordsCountString ? ` ${this.tagProperties.rootTotalRecordsCount.nodePropertyDisplay}` : ''
+                            ].filter(part => part).join('');
                     }
-                    propertyDisplay.tagPropertyDisplay = 
-                    `${this.tagProperties.tagName} 
-                    ${topString ? `${this.tagProperties.rootTop.name}="${topString}"` : ''} 
-                    ${distinctString ? `${this.tagProperties.rootDistinct.name}="${distinctString}"` : ''}
-                    ${aggregateString ? `${this.tagProperties.rootAggregate.name}="${aggregateString}"` : ''}
-                    ${totalRecordsCountString ? `${this.tagProperties.rootTotalRecordsCount.name}="${totalRecordsCountString}"` : ''}
-                    ${pageSizeString ? `${this.tagProperties.rootPageSize.name}="${pageSizeString}"` : ''} 
-                    ${pageString ? `${this.tagProperties.rootPage.name}="${pageString}"` : ''} 
-                    ${pagingCookie ? `${this.tagProperties.rootPagingCookie.name}="${pagingCookie}"` : ''}
-                    ${lateMaterialize ? `${this.tagProperties.rootLateMaterialize.name}="${lateMaterialize}"` : ''}
-                    ${options ? `${this.tagProperties.rootOptions.name}="${options}"` : ''}
-                    ${dataSource ? `${this.tagProperties.rootDataSource.name}="${dataSource}"` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay =
+                        [
+                            this.tagProperties.tagName,
+                            topString ? ` ${this.tagProperties.rootTop.name}="${topString}"` : '',
+                            distinctString ? ` ${this.tagProperties.rootDistinct.name}="${distinctString}"` : '',
+                            aggregateString ? ` ${this.tagProperties.rootAggregate.name}="${aggregateString}"` : '',
+                            totalRecordsCountString ? ` ${this.tagProperties.rootTotalRecordsCount.name}="${totalRecordsCountString}"` : '',
+                            pageSizeString ? ` ${this.tagProperties.rootPageSize.name}="${pageSizeString}"` : '',
+                            pageString ? ` ${this.tagProperties.rootPage.name}="${pageString}"` : '',
+                            pagingCookie ? ` ${this.tagProperties.rootPagingCookie.name}="${pagingCookie}"` : '',
+                            lateMaterialize ? ` ${this.tagProperties.rootLateMaterialize.name}="${lateMaterialize}"` : '',
+                            options ? ` ${this.tagProperties.rootOptions.name}="${options}"` : '',
+                            dataSource ? ` ${this.tagProperties.rootDataSource.name}="${dataSource}"` : ''
+                        ].filter(part => part).join('');
                 }
                 return of(propertyDisplay);
             }

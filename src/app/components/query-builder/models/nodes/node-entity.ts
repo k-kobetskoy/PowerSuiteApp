@@ -35,8 +35,8 @@ export class NodeEntity extends QueryNode {
                 const display = entityName || entityAlias;
 
                 if(display) {
-                    propertyDisplay.nodePropertyDisplay = `${entityName ? entityName :''} ${entityAlias ? `(${entityAlias})`:''}`.trim();
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} ${entityName?`${this.tagProperties.entityName.name}="${entityName}"`:''} ${entityAlias?`${this.tagProperties.entityAlias.name}="${entityAlias}"`:''}`.trim();
+                    propertyDisplay.nodePropertyDisplay = `${entityName ? entityName :''}${entityAlias ? ` (${entityAlias})`:''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${entityName?` ${this.tagProperties.entityName.name}="${entityName}"`:''}${entityAlias?` ${this.tagProperties.entityAlias.name}="${entityAlias}"`:''}`.trim();
                 }
 
                 return of(propertyDisplay);

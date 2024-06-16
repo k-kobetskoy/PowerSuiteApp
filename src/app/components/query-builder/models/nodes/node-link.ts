@@ -45,19 +45,21 @@ export class NodeLink extends QueryNode {
 
                 if (tagDisplay) {
                     if (nodeDisplay) {
-                        propertyDisplay.nodePropertyDisplay = `${entityName ? entityName : ''} ${linkType ? linkType : ''} ${intersect ? this.tagProperties.linkIntersect.nodePropertyDisplay : ''} ${linkAlias ? `(${linkAlias})` : ''}`.trim();
+                        propertyDisplay.nodePropertyDisplay = `${entityName ? `${entityName}` : ''}${linkType ? ` ${linkType}` : ''}${intersect ? ` ${this.tagProperties.linkIntersect.nodePropertyDisplay}` : ''}${linkAlias ? ` (${linkAlias})` : ''}`;
                     }
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} 
-                    ${entityName ? `${this.tagProperties.linkEntity.name}="${entityName}"` : ''} 
-                    ${linkType ? `${this.tagProperties.linkType.name}="${linkType}"` : ''} 
-                    ${linkAlias ? `${this.tagProperties.linkAlias.name}="${linkAlias}"` : ''} 
-                    ${intersectString ? `${this.tagProperties.linkIntersect.name}="${intersectString}"` : ''} 
-                    ${fromAttribute ? `${this.tagProperties.linkFromAttribute.name}="${fromAttribute}"` : ''} 
-                    ${toAttribute ? `${this.tagProperties.linkToAttribute.name}="${toAttribute}"` : ''} 
-                    ${visibleString ? `${this.tagProperties.linkVisible.name}="${visibleString}"` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = [
+                        this.tagProperties.tagName,
+                        entityName ? ` ${this.tagProperties.linkEntity.name}="${entityName}"` : '',
+                        linkType ? ` ${this.tagProperties.linkType.name}="${linkType}"` : '',
+                        linkAlias ? ` ${this.tagProperties.linkAlias.name}="${linkAlias}"` : '',
+                        intersectString ? ` ${this.tagProperties.linkIntersect.name}="${intersectString}"` : '',
+                        fromAttribute ? ` ${this.tagProperties.linkFromAttribute.name}="${fromAttribute}"` : '',
+                        toAttribute ? ` ${this.tagProperties.linkToAttribute.name}="${toAttribute}"` : '',
+                        visibleString ? ` ${this.tagProperties.linkVisible.name}="${visibleString}"` : ''
+                    ].filter(part => part).join('');
                 }
 
-               return of(propertyDisplay);
+                return of(propertyDisplay);
             }),
             distinctUntilChanged());
     }

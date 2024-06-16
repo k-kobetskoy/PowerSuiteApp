@@ -50,7 +50,7 @@ export class QueryRenderService implements OnDestroy {
 
     dynamicObservables$.pipe(
       switchMap(obsList => combineLatest(obsList)),
-      map(values => values.join('\n')),
+      map(values => values.join('\n')),      
       distinctUntilChanged(),
       takeUntil(this._destroy$))
       .subscribe(value => this.queryTree.xmlRequest$.next(value));
@@ -61,7 +61,7 @@ export class QueryRenderService implements OnDestroy {
       return of(this._closingTagsStack.pop());
     }
 
-    if (this._previousNodeLevel >= node.level && this._previousNodeIsExpandable) {
+    if (this._previousNodeLevel > node.level) {
       this._previousNodeLevel--;
       return of(this._closingTagsStack.pop());
     }
@@ -75,12 +75,15 @@ export class QueryRenderService implements OnDestroy {
 
   getNodeTag(node: IQueryNode): Observable<string> {
     if (node.expandable) {
-      this._closingTagsStack.push(`</${node.tagProperties.tagName}>`);
+      this._closingTagsStack.push(`${this.getIndent(node.level)}</${node.tagProperties.tagName}>`);
     }
 
     return node.displayValue$.pipe(map(displayValue =>
-      node.expandable ? `<${displayValue.tagPropertyDisplay}>` : `<${displayValue.tagPropertyDisplay}/>`
+      node.expandable ? `${this.getIndent(node.level)}<${displayValue.tagPropertyDisplay}>` : `${this.getIndent(node.level)}<${displayValue.tagPropertyDisplay} />`
     ));
+  }
+  private getIndent(level: number): string {
+    return ' '.repeat(level * 4);
   }
 
   ngOnDestroy(): void {

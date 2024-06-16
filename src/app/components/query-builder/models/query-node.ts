@@ -16,6 +16,7 @@ export abstract class QueryNode implements IQueryNode {
     next?: IQueryNode | null;
     parent?: IQueryNode | null;
     visible: boolean;
+    validationPassed: boolean;
     tagProperties: ITagProperties;
     entitySetName$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     relationship$?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -27,6 +28,7 @@ export abstract class QueryNode implements IQueryNode {
         this.visible = true;
         this.isExpanded = true;
         this.next = null;
+        this.validationPassed = true;
         this.tagProperties = tagProperties;
     }
 

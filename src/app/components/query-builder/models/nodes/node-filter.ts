@@ -25,8 +25,8 @@ export class NodeFilter extends QueryNode {
             this.tagProperties.filterType.value$,
             this.tagProperties.filterBypassQuickFind.value$,
             this.tagProperties.filterIsQuickFind.value$,
-            this.tagProperties.filterOverrideRecordLimit.value$,            
-        ]);      
+            this.tagProperties.filterOverrideRecordLimit.value$,
+        ]);
 
         return combined$.pipe(
             mergeMap(([filterType, filterBypassQuickFind, filterIsQuickFind, filterOverrideRecordLimit]) => {
@@ -42,20 +42,21 @@ export class NodeFilter extends QueryNode {
                 const quickFindString = filterIsQuickFind ? filterIsQuickFind.toString() : '';
                 const overrideRecordLimitString = filterOverrideRecordLimit ? filterOverrideRecordLimit.toString() : '';
 
-                if(tagDisplay) {
-                    if(nodeDisplay){
+                if (tagDisplay) {
+                    if (nodeDisplay) {
                         propertyDisplay.nodePropertyDisplay = `${this.defaultNodeDisplayValue} (${FilterStaticData.FilterTypes.find(x => x.value === filterType)?.name})`.trim();
                     }
-                    propertyDisplay.tagPropertyDisplay = 
-                    `${this.tagProperties.tagName} 
-                    ${filterType? `${this.tagProperties.filterType.name}="${filterType}"` : ''} 
-                    ${bypassString? `${this.tagProperties.filterBypassQuickFind.name}="${bypassString}"` : ''} 
-                    ${quickFindString? `${this.tagProperties.filterIsQuickFind.name}="${quickFindString}"` : ''} 
-                    ${overrideRecordLimitString? `${this.tagProperties.filterOverrideRecordLimit.name}="${overrideRecordLimitString}"` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = [
+                        this.tagProperties.tagName,
+                        filterType ? ` ${this.tagProperties.filterType.name}="${filterType}"` : '',
+                        bypassString ? ` ${this.tagProperties.filterBypassQuickFind.name}="${bypassString}"` : '',
+                        quickFindString ? ` ${this.tagProperties.filterIsQuickFind.name}="${quickFindString}"` : '',
+                        overrideRecordLimitString ? ` ${this.tagProperties.filterOverrideRecordLimit.name}="${overrideRecordLimitString}"` : ''
+                    ].filter(part => part).join('')
                 }
 
                 return of(propertyDisplay);
             }),
-            distinctUntilChanged());       
+            distinctUntilChanged());
     }
 }

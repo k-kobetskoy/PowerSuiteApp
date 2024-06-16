@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-code-editor-footer',
@@ -8,9 +8,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class CodeEditorFooterComponent implements OnInit {
 
+  @Output() onParse: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onValidate: EventEmitter<void> = new EventEmitter<void>();
   constructor() { }
 
   ngOnInit() {
   }
-
 }

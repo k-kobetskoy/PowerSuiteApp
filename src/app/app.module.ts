@@ -19,7 +19,6 @@ import { NodeStyleDirective } from './directives/node-style.directive';
 import { QuickActionsComponent } from './components/query-builder/control-panel/query-forms/quick-actions/quick-actions.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
 import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
 import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
@@ -56,8 +55,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
 import { ResultTableComponent } from './components/query-builder/result-table/result-table.component';
-
-
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @NgModule({
   declarations: [
@@ -115,7 +113,8 @@ import { ResultTableComponent } from './components/query-builder/result-table/re
     MatSelectModule,
     ReactiveFormsModule,
     MatTableModule,
-    MsalConfigDynamicModule.forRoot('assets/configuration.json')
+    MsalConfigDynamicModule.forRoot('assets/configuration.json'),
+    MonacoEditorModule.forRoot()
   ],
   providers: [
     // QueryNodeTree,

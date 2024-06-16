@@ -30,11 +30,17 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
         return this._root;
     }
 
+    public set root(value: IQueryNode) {
+        if (value) {
+            this._root = value;
+        }
+    }
+
     xmlRequest$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     constructor(private eventBus: EventBusService) {
-        this._root = this.addNode(QueryNodeType.ROOT).parent
-    }
+        this._root = this.addNode(QueryNodeType.ROOT).parent;
+    }    
 
     addNode(newNodeType: string): IQueryNode {
         let nodeAdder = this._nodeAdderFactory.getAdder(newNodeType)
