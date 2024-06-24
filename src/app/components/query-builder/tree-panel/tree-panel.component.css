@@ -44,6 +44,15 @@ app-tree-panel .inactive {
   background-color: rgb(255, 255, 255);
 }
 
+app-tree-panel .validationError {
+  color: red;
+  display: flex;
+  flex:1;
+  justify-content: end;
+  padding-right: 10px;
+  font-weight: bold;
+}
+
 app-tree-panel p {
   display: flex;
   flex: 1;

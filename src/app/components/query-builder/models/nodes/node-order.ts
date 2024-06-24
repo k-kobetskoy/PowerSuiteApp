@@ -5,17 +5,24 @@ import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyOrder } from "../tag-properties/tag-property-order";
+import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeOrder extends QueryNode {
 
     override tagProperties: TagPropertyOrder;
 
-    constructor(tagProperties: TagPropertyOrder) {
-        super(tagProperties);
+    constructor(tagProperties: TagPropertyOrder, entityServiceFactory: EntityServiceFactoryService) {
+        super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ORDER;
         this.order = QueryNodeOrder.ORDER;
         this.type = QueryNodeType.ORDER;
         this.actions = QueryNodeActions.ORDER;
+    }
+
+    override validateNode(): Observable<boolean> {
+        return new Observable<boolean>(observer => {
+            observer.next(true);
+        });
     }
 
     override get displayValue$(): Observable<IPropertyDisplay> {

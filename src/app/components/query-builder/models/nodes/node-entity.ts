@@ -1,4 +1,4 @@
-import { Observable, combineLatest, distinctUntilChanged, mergeMap, of } from "rxjs";
+import { Observable, combineLatest, debounceTime, distinctUntilChanged, map, mergeMap, of, switchMap } from "rxjs";
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeActions } from "../constants/query-node-actions";
 import { QueryNodeOrder } from "../constants/query-node-order.enum";
@@ -6,17 +6,42 @@ import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyEntity } from "../tag-properties/tag-property-entity";
 import { IPropertyDisplay } from "../abstract/i-node-property-display";
+import { EntityEntityService } from "../../services/entity-services/entity-entity.service";
+import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeEntity extends QueryNode {
 
     override tagProperties: TagPropertyEntity;
 
-    constructor(tagProperties: ITagProperties) {
-        super(tagProperties);
+    constructor(tagProperties: ITagProperties, entityServiceFactory: EntityServiceFactoryService) {
+        super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ENTITY;
         this.order = QueryNodeOrder.ENTITY;
         this.type = QueryNodeType.ENTITY;
         this.actions = QueryNodeActions.ENTITY;
+        this.validationPassed$ = this.validateNode();
+    }
+
+    override validateNode(): Observable<boolean> {
+        const entityService = this.entityServiceFactory.getEntityService("Entity") as EntityEntityService;
+
+        return entityService.getEntities().pipe(     
+            distinctUntilChanged(),            
+            switchMap(entities => {
+                return this.tagProperties.entityName.value$.pipe(
+                    distinctUntilChanged(),
+                    debounceTime(500),
+                    map(entityName => {
+                        if (!entityName) {
+                            return true;
+                        } else {
+                            const entity = entities.find(e => e.logicalName === entityName);
+                            return !!entity;
+                        }
+                    })
+                );
+            })               
+        )
     }
 
     override get displayValue$(): Observable<IPropertyDisplay> {
@@ -34,9 +59,9 @@ export class NodeEntity extends QueryNode {
 
                 const display = entityName || entityAlias;
 
-                if(display) {
-                    propertyDisplay.nodePropertyDisplay = `${entityName ? entityName :''}${entityAlias ? ` (${entityAlias})`:''}`.trim();
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${entityName?` ${this.tagProperties.entityName.name}="${entityName}"`:''}${entityAlias?` ${this.tagProperties.entityAlias.name}="${entityAlias}"`:''}`.trim();
+                if (display) {
+                    propertyDisplay.nodePropertyDisplay = `${entityName ? entityName : ''}${entityAlias ? ` (${entityAlias})` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${entityName ? ` ${this.tagProperties.entityName.name}="${entityName}"` : ''}${entityAlias ? ` ${this.tagProperties.entityAlias.name}="${entityAlias}"` : ''}`.trim();
                 }
 
                 return of(propertyDisplay);

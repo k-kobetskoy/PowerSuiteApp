@@ -22,8 +22,11 @@
     "@angular/router": "^18.0.3",
     "@azure/msal-angular": "^3.0.13",
     "@azure/msal-browser": "^3.10.0",
+    "@codemirror/lang-xml": "^6.1.0",
+    "@codemirror/lint": "github:codemirror/lint",
+    "@codemirror/theme-one-dark": "^6.1.2",
     "angular-split": "^17.2.0",
-    "monaco-editor": "^0.38.0",
+    "codemirror": "^6.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.7"
@@ -33,14 +36,12 @@
     "@angular/cli": "^18.0.4",
     "@angular/compiler-cli": "^18.0.3",
     "@types/jasmine": "~4.3.0",
-    "css-loader": "^7.1.2",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "style-loader": "^4.0.0",
     "typescript": "~5.4.5"
   }
 }

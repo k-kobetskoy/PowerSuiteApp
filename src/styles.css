@@ -5,6 +5,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+:root {
+  --min-width: 960px;
+  --width: calc(100vw - calc(100vw - 100%));
+
+  --min-height: 740px;
+  --height: calc(100vh - calc(100vh - 100%));
+
+  --header-height: 60px;
+  --code-footer-height: 60px;
+  --tab-bar-height: 40px;
+}
 
 
 html,

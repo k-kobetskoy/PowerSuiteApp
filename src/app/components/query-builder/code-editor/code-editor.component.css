@@ -3,14 +3,26 @@ app-code-editor {
     flex: 1;
 }
 
-app-code-editor .monaco-editor-contatiner {
+app-code-editor .my-code-editor-contatiner {
+    display: flex;
+    flex: 1;
+    height: 100%;
+}
+
+.my-code-editor {
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+    max-height: calc(100vh - var(--header-height) - var(--tab-bar-height) - var(--code-footer-height));
+}
+
+.cm-editor {
+    height: 100%;
     display: flex;
     flex: 1;
 }
-
-.monaco-editor {
-    display: flex !important;
-    flex: 1;
-    height: 100% !important;
-    width: 100%;
+.ͼ1 .cm-scroller{
+    font-family: Hack, monospace;
+    font-size: small;
 }

@@ -55,7 +55,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
 import { ResultTableComponent } from './components/query-builder/result-table/result-table.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -108,10 +107,9 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
         MatCheckboxModule,
         MatSelectModule,
         ReactiveFormsModule,
-        MatTableModule,
-        MsalConfigDynamicModule.forRoot('assets/configuration.json'),
-        MonacoEditorModule.forRoot()], providers: [
-        // QueryNodeTree,
+        MatTableModule,        
+        MsalConfigDynamicModule.forRoot('assets/configuration.json')
+        ], providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
         { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
         { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) },

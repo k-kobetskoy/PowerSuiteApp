@@ -5,17 +5,24 @@ import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyLink } from "../tag-properties/tag-property-link";
 import { IPropertyDisplay } from "../abstract/i-node-property-display";
+import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeLink extends QueryNode {
 
     override tagProperties: TagPropertyLink;
 
-    constructor(tagProperties: TagPropertyLink) {
-        super(tagProperties);
+    constructor(tagProperties: TagPropertyLink, entityServiceFactory: EntityServiceFactoryService) {
+        super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.LINK;
         this.order = QueryNodeOrder.LINK;
         this.type = QueryNodeType.LINK;
         this.actions = QueryNodeActions.LINK;
+    }
+
+    override validateNode(): Observable<boolean> {
+        return new Observable<boolean>(observer => {
+            observer.next(true);
+        });
     }
 
     override get displayValue$(): Observable<IPropertyDisplay> {

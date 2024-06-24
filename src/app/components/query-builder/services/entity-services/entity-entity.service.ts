@@ -17,29 +17,28 @@ export class EntityEntityService extends BaseRequestService {
 
     const key = `${CacheKeys.Entities}`;
 
-    const entities$ = this.cacheService.getItem<EntityModel[]>(key);
-
-    if (entities$.value) {
-      return entities$.asObservable();
-    }
-
-    return this.activeEnvironmentUrl$.pipe(
-      switchMap(envUrl => {
-        if (!envUrl) return of([]);
-        
-        const url = API_ENDPOINTS.entities.getResourceUrl(envUrl);        
-        return this.httpClient.get<EntityDefinitionsResponseModel>(url)
-          .pipe(
-            map(({ value }) => value.map((
-              { LogicalName: logicalName, DisplayName: { UserLocalizedLabel } = {}, EntitySetName: entitySetName }) =>
-            ({
-              logicalName,
-              displayName: UserLocalizedLabel ? UserLocalizedLabel.Label : '',
-              entitySetName
-            }))),
-            tap(data => this.cacheService.setItem(data, key))
+    return this.cacheService.getItem<EntityModel[]>(key).pipe(
+      switchMap(cachedEntities => {
+        if (cachedEntities) {
+          return of(cachedEntities);
+        } else {
+          return this.activeEnvironmentUrl$.pipe(
+            switchMap(envUrl => {
+              if (!envUrl) return of([]);
+              
+              const url = API_ENDPOINTS.entities.getResourceUrl(envUrl);
+              return this.httpClient.get<EntityDefinitionsResponseModel>(url).pipe(
+                map(({ value }) => value.map(({ LogicalName: logicalName, DisplayName: { UserLocalizedLabel } = {}, EntitySetName: entitySetName }) => ({
+                  logicalName,
+                  displayName: UserLocalizedLabel ? UserLocalizedLabel.Label : '',
+                  entitySetName
+                }))),
+                tap(data => this.cacheService.setItem(data, key))
+              );
+            })
           );
+        }
       })
-    )
+    );
   }
 }

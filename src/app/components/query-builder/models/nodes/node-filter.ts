@@ -6,17 +6,24 @@ import { QueryNode } from "../query-node";
 import { TagPropertyFilter } from "../tag-properties/tag-property-filter";
 import { FilterStaticData } from "../constants/ui/filter-static-data";
 import { IPropertyDisplay } from "../abstract/i-node-property-display";
+import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeFilter extends QueryNode {
 
     override tagProperties: TagPropertyFilter;
 
-    constructor(tagProperties: TagPropertyFilter) {
-        super(tagProperties);
+    constructor(tagProperties: TagPropertyFilter, entityServiceFactory: EntityServiceFactoryService) {
+        super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.FILTER;
         this.order = QueryNodeOrder.FILTER;
         this.type = QueryNodeType.FILTER;
         this.actions = QueryNodeActions.FILTER;
+    }
+
+    override validateNode(): Observable<boolean> {
+        return new Observable<boolean>(observer => {
+            observer.next(true);
+        });
     }
 
     override get displayValue$(): Observable<IPropertyDisplay> {
