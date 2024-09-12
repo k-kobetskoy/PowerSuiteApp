@@ -73,7 +73,7 @@ export abstract class QueryNode implements IQueryNode {
     getParentEntityName(node: IQueryNode = this): BehaviorSubject<string> {
         const parent = this.getParentEntity(node);
 
-        if (!parent) return  new BehaviorSubject<string>('');       
+        if (!parent) return  new BehaviorSubject<string>('');
   
         return parent.tagProperties.entityName?.value$ ?? parent.tagProperties.linkEntity.value$;
     }
