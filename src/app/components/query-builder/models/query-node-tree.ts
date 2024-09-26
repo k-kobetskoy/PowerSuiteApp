@@ -75,7 +75,7 @@ export class QueryNodeTree implements Iterable<IQueryNode> {
 
         this._selectedNode$.next(previousNode);
         this.eventBus.emit({ name: AppEvents.NODE_REMOVED })
-    }    
+    }
 
     expandNode(node: IQueryNode) {
         node.expandable = true

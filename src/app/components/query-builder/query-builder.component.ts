@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { XmlParseService } from './services/xml-parse.service';
 
 export const QUERY_BUILDER_COMPONENT_URL: string = '/querybuilder';
 
@@ -14,7 +13,7 @@ export class QueryBuilder implements OnInit {
   
   selectedTabIndex = 0;
 
-  constructor(private navigationService: NavigationService, private xmlParseService: XmlParseService) { }
+  constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit(QUERY_BUILDER_COMPONENT_URL)
@@ -25,7 +24,7 @@ export class QueryBuilder implements OnInit {
   }
 
   parseXml(xml: string) {
-    this.xmlParseService.parse(xml);    
+    // this.xmlParseService.parse(xml);    
   }
 
   validateXml(xml: string) {
