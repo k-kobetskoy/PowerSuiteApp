@@ -36,17 +36,6 @@ export abstract class QueryNode implements IQueryNode {
         this.entityServiceFactory = entityServiceFactory;
     }
 
-
-// child node constructor:
-// constructor(tagProperties: ITagProperties, entityServiceFactory: EntityServiceFactoryService) {
-//     super(tagProperties, entityServiceFactory);
-//     this.defaultNodeDisplayValue = QueryNodeType.ENTITY;
-//     this.order = QueryNodeOrder.ENTITY;
-//     this.type = QueryNodeType.ENTITY;
-//     this.actions = QueryNodeActions.ENTITY;
-//     this.validationPassed$ = this.validateNode();
-// }
-
     get displayValue$(): Observable<IPropertyDisplay> {
         return new Observable<IPropertyDisplay>(observer => {
             observer.next({ nodePropertyDisplay: this.defaultNodeDisplayValue, tagPropertyDisplay: this.tagProperties.tagName });

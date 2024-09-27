@@ -13,11 +13,7 @@ import { linter, Diagnostic, lintGutter } from "@codemirror/lint"
 import { TagsValidationService } from './tags-validation.service';
 
 
-
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 
 export class LinterProviderService {
 

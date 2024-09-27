@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IQueryNode } from '../../../models/abstract/i-query-node';
-import { QueryNodeTree } from '../../../models/query-node-tree';
+import { NodeTreeProcessorService } from '../../../services/node-tree-processor.service';
 
 @Component({
   selector: 'app-quick-actions',
@@ -11,12 +11,12 @@ export class QuickActionsComponent implements OnInit {
 
   @Input() selectedNode: IQueryNode
 
-  constructor(private nodeTree: QueryNodeTree) { }
+  constructor(private nodeTreeProcessor: NodeTreeProcessorService) { }
 
   ngOnInit() { }
 
   addNode(nodeName: string) {
-    this.nodeTree.addNode(nodeName);
+    this.nodeTreeProcessor.addNode(nodeName);
   }
   
   resetTree() {
@@ -26,6 +26,6 @@ export class QuickActionsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   deleteNode() {
-    this.nodeTree.removeNode(this.selectedNode);
+    this.nodeTreeProcessor.removeNode(this.selectedNode);
   }
 }

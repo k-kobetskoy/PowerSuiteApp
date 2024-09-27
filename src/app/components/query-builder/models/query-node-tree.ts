@@ -1,136 +1,131 @@
 import { QueryNodeType } from "src/app/components/query-builder/models/constants/query-node-type";
 import { IQueryNode } from "./abstract/i-query-node";
-import { Injectable, inject } from "@angular/core";
+import { inject } from "@angular/core";
 import { NodeAdderFactoryService } from "../services/node-adders/node-adder-factory.service";
 import { BehaviorSubject, Observable } from "rxjs";
 import { EventBusService } from "src/app/services/event-bus/event-bus.service";
 import { AppEvents } from "src/app/services/event-bus/app-events";
 
-@Injectable({ providedIn: 'root' })
 export class QueryNodeTree implements Iterable<IQueryNode> {
+    root: IQueryNode
 
-    private _nodeAdderFactory = inject(NodeAdderFactoryService)
+    // private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
 
-    private _id: string
-    private _root: IQueryNode
+    // public get selectedNode$(): Observable<IQueryNode> {
+    //     return this._selectedNode$.asObservable();
+    // }
 
-    private _selectedNode$: BehaviorSubject<IQueryNode> = new BehaviorSubject<IQueryNode>(null);
+    // public set selectedNode$(value: IQueryNode) {
+    //     if (value != this._selectedNode$.value) {
+    //         this._selectedNode$.next(value);
+    //     }
+    // }
 
-    public get selectedNode$(): Observable<IQueryNode> {
-        return this._selectedNode$.asObservable();
-    }
+    // public get root(): IQueryNode {
+    //     return this._root;
+    // }
 
-    public set selectedNode$(value: IQueryNode) {
-        if (value != this._selectedNode$.value) {
-            this._selectedNode$.next(value);
-        }
-    }
+    // public set root(value: IQueryNode) {
+    //     if (value) {
+    //         this._root = value;
+    //     }
+    // }
 
-    public get root(): IQueryNode {
-        return this._root;
-    }
+    // xmlRequest$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-    public set root(value: IQueryNode) {
-        if (value) {
-            this._root = value;
-        }
-    }
+    // constructor() {
+    //     // this._root = this.addNode(QueryNodeType.ROOT).parent;
+    // }    
 
-    xmlRequest$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    // addNode(newNodeType: string): IQueryNode {
+    //     let nodeAdder = this._nodeAdderFactory.getAdder(newNodeType)
+    //     let newNodeToSelect = nodeAdder.addNode(newNodeType, this._selectedNode$.value)
+    //     if (this._selectedNode$.value) {
+    //         this.expandNode(this._selectedNode$.value)
+    //     }
+    //     this.selectedNode$ = newNodeToSelect
+    //     this.eventBus.emit({ name: AppEvents.NODE_ADDED })
+    //     return newNodeToSelect
+    // }
 
-    constructor(private eventBus: EventBusService) {
-        this._root = this.addNode(QueryNodeType.ROOT).parent;
-    }    
+    // removeNode(node: IQueryNode) {
+    //     if (!node.parent) {
+    //         throw new Error('Node has no parent.');
+    //     }
 
-    addNode(newNodeType: string): IQueryNode {
-        let nodeAdder = this._nodeAdderFactory.getAdder(newNodeType)
-        let newNodeToSelect = nodeAdder.addNode(newNodeType, this._selectedNode$.value)
-        if (this._selectedNode$.value) {
-            this.expandNode(this._selectedNode$.value)
-        }
-        this.selectedNode$ = newNodeToSelect
-        this.eventBus.emit({ name: AppEvents.NODE_ADDED })
-        return newNodeToSelect
-    }
+    //     const previousNode = this.getPreviousNode(node);
+    //     const nextNode = this.getNextNodeWithTheSameLevel(node);
 
-    removeNode(node: IQueryNode) {
-        if (!node.parent) {
-            throw new Error('Node has no parent.');
-        }
+    //     if (!previousNode) {
+    //         throw new Error('Previous node not found.');
+    //     }
 
-        const previousNode = this.getPreviousNode(node);
-        const nextNode = this.getNextNodeWithTheSameLevel(node);
+    //     previousNode.next = nextNode;
 
-        if (!previousNode) {
-            throw new Error('Previous node not found.');
-        }
+    //     if (nextNode) {
+    //         previousNode.expandable = previousNode.level < previousNode.next.level;
+    //     } else {
+    //         previousNode.expandable = false;
+    //     }
 
-        previousNode.next = nextNode;
+    //     this._selectedNode$.next(previousNode);
+    //     this.eventBus.emit({ name: AppEvents.NODE_REMOVED })
+    // }
 
-        if (nextNode) {
-            previousNode.expandable = previousNode.level < previousNode.next.level;
-        } else {
-            previousNode.expandable = false;
-        }
+    // expandNode(node: IQueryNode) {
+    //     node.expandable = true
+    //     if (!node.isExpanded) {
+    //         this.toggleNode(node)
+    //     }
+    // }
 
-        this._selectedNode$.next(previousNode);
-        this.eventBus.emit({ name: AppEvents.NODE_REMOVED })
-    }
+    // toggleNode(node: IQueryNode) {
+    //     if (!node.expandable) { return; }
 
-    expandNode(node: IQueryNode) {
-        node.expandable = true
-        if (!node.isExpanded) {
-            this.toggleNode(node)
-        }
-    }
+    //     node.isExpanded = !node.isExpanded;
 
-    toggleNode(node: IQueryNode) {
-        if (!node.expandable) { return; }
+    //     let parent = node;
+    //     let nextNestedChild = node.next;
 
-        node.isExpanded = !node.isExpanded;
+    //     while (nextNestedChild && nextNestedChild.level > parent.level) {
+    //         if (!parent.isExpanded) {
+    //             nextNestedChild.visible = false;
+    //         } else {
+    //             nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible;
+    //         }
+    //         nextNestedChild = nextNestedChild.next;
+    //     }
 
-        let parent = node;
-        let nextNestedChild = node.next;
+    //     if (this._selectedNode$ && !this._selectedNode$.value?.visible) {
+    //         this.selectedNode$ = null
+    //     }
+    // }
 
-        while (nextNestedChild && nextNestedChild.level > parent.level) {
-            if (!parent.isExpanded) {
-                nextNestedChild.visible = false;
-            } else {
-                nextNestedChild.visible = nextNestedChild.parent.isExpanded && nextNestedChild.parent.visible;
-            }
-            nextNestedChild = nextNestedChild.next;
-        }
+    // private getNextNodeWithTheSameLevel(node: IQueryNode): IQueryNode {
+    //     let nextNode = node.next;
 
-        if (this._selectedNode$ && !this._selectedNode$.value?.visible) {
-            this.selectedNode$ = null
-        }
-    }
+    //     while (nextNode && nextNode.level > node.level) {
+    //         nextNode = nextNode.next;
+    //     }
 
-    private getNextNodeWithTheSameLevel(node: IQueryNode): IQueryNode {
-        let nextNode = node.next;
+    //     return nextNode;
+    // }
 
-        while (nextNode && nextNode.level > node.level) {
-            nextNode = nextNode.next;
-        }
+    // private getPreviousNode(node: IQueryNode): IQueryNode {
+    //     const parent = node.parent;
 
-        return nextNode;
-    }
+    //     let previousNode = parent;
 
-    private getPreviousNode(node: IQueryNode): IQueryNode {
-        const parent = node.parent;
+    //     while (previousNode.next !== node) {
+    //         previousNode = previousNode.next;
+    //     }
 
-        let previousNode = parent;
-
-        while (previousNode.next !== node) {
-            previousNode = previousNode.next;
-        }
-
-        return previousNode;
-    }
+    //     return previousNode;
+    // }
 
     [Symbol.iterator](): Iterator<IQueryNode, any, undefined> {
 
-        let current = this._root
+        let current = this.root
 
         return {
             next: () => {

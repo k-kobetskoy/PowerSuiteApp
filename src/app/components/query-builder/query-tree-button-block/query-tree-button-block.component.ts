@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { QueryNodeTree } from '../models/query-node-tree';
-import { Subject, Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject, map } from 'rxjs';
+import { NodeTreeProcessorService } from '../services/node-tree-processor.service';
 
 @Component({
   selector: 'app-query-tree-button-block',
@@ -13,7 +13,7 @@ export class QueryTreeButtonBlockComponent implements OnInit {
 
   buttonDisabled$: Observable<boolean>;
 
-  constructor(private nodeTree: QueryNodeTree) { }
+  constructor(private nodeTreeProcessor: NodeTreeProcessorService) { }
 
   ngOnInit() {
     this.setToggleButtonState();
@@ -24,7 +24,7 @@ export class QueryTreeButtonBlockComponent implements OnInit {
   }
 
   private _getEntityNodeSetName(): BehaviorSubject<string> {
-    return this.nodeTree.root.next.entitySetName$;
+    return this.nodeTreeProcessor.getNodeTree().value.root.next.entitySetName$;
   }
 
   setToggleButtonState(): void {

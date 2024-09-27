@@ -1,7 +1,7 @@
+import { NodeTreeProcessorService } from './../services/node-tree-processor.service';
 import { LinterProviderService } from '../services/xml-parsing-services/linter-provider.service';
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
-import { QueryNodeTree } from '../models/query-node-tree';
 import { QueryRenderService } from '../services/query-render.service';
 import { basicSetup } from 'codemirror';
 import { DOCUMENT } from '@angular/common';
@@ -32,7 +32,7 @@ export class CodeEditorComponent implements OnInit {
   xmlSyntaxErrors: any;
 
   constructor(
-    private nodeTree: QueryNodeTree,
+    private nodeTreeProcessor: NodeTreeProcessorService,
     private linterProviderService: LinterProviderService,
     private queryRendererService: QueryRenderService,
     @Inject(DOCUMENT) private document: Document
@@ -41,7 +41,7 @@ export class CodeEditorComponent implements OnInit {
 
   ngOnInit() {
     this.queryRendererService.renderXmlRequest();
-    this.xmlRequest$ = this.nodeTree.xmlRequest$;
+    this.xmlRequest$ = this.nodeTreeProcessor.xmlRequest$;
   }
 
   ngAfterViewInit(): void {

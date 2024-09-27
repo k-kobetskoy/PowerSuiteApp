@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy} from '@angular/core';
-import { QueryNodeTree } from '../models/query-node-tree';
 import { BehaviorSubject, Observable, Subject, combineLatest, distinctUntilChanged, map, of, switchMap, takeUntil } from 'rxjs';
 import { IQueryNode } from '../models/abstract/i-query-node';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
+import { NodeTreeProcessorService } from './node-tree-processor.service';
 
 export class ClosingTagsStack {
   private store: string[] = [];
@@ -29,7 +29,7 @@ export class QueryRenderService implements OnDestroy {
   private _currentNode: IQueryNode;
   private _previousNodeIsExpandable: boolean = false;
 
-  constructor(private queryTree: QueryNodeTree, private eventBus: EventBusService) { 
+  constructor(private nodeTreeProcessor: NodeTreeProcessorService, private eventBus: EventBusService) { 
     this.eventBus.on(AppEvents.NODE_ADDED, () => this.renderXmlRequest());
     this.eventBus.on(AppEvents.NODE_REMOVED, () => this.renderXmlRequest());
   }
@@ -37,7 +37,7 @@ export class QueryRenderService implements OnDestroy {
   renderXmlRequest() {
     this._destroy$.next();
     this._previousNodeLevel = -1;
-    this._currentNode = this.queryTree.root;
+    this._currentNode = this.nodeTreeProcessor.getNodeTree().value.root;
 
     const observables$: Observable<string>[] = [];
     const dynamicObservables$: BehaviorSubject<Observable<string>[]> = new BehaviorSubject([]);
@@ -53,7 +53,7 @@ export class QueryRenderService implements OnDestroy {
       map(values => values.join('\n')),      
       distinctUntilChanged(),
       takeUntil(this._destroy$))
-      .subscribe(value => this.queryTree.xmlRequest$.next(value));
+      .subscribe(value => this.nodeTreeProcessor.xmlRequest$.next(value));
   }
 
   processNode(node: IQueryNode): Observable<string> {
@@ -82,6 +82,7 @@ export class QueryRenderService implements OnDestroy {
       node.expandable ? `${this.getIndent(node.level)}<${displayValue.tagPropertyDisplay}>` : `${this.getIndent(node.level)}<${displayValue.tagPropertyDisplay} />`
     ));
   }
+
   private getIndent(level: number): string {
     return ' '.repeat(level * 4);
   }
