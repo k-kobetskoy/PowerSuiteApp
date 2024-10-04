@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IQueryNode } from '../models/abstract/i-query-node';
 import { QueryNodeTree } from 'src/app/components/query-builder/models/query-node-tree';
 import { AppEvents } from 'src/app/services/event-bus/app-events';
 import { EventBusService } from 'src/app/services/event-bus/event-bus.service';
+import { NodeTreeProcessorService } from '../services/node-tree-processor.service';
 
 @Component({
   selector: 'app-tree-panel',
@@ -18,19 +19,18 @@ export class TreePanelComponent implements OnInit {
 
   constructor(
     private eventBus: EventBusService,
-    private tree: QueryNodeTree) { }
+    private nodeTreeProcessor: NodeTreeProcessorService) { }
 
   ngOnInit() {
-    this.dataSource$ = of(this.tree)
-    this.selectedNode$ = this.tree.selectedNode$
-    this.eventBus.on(AppEvents.ENVIRONMENT_CHANGED, () => this.ngOnInit())
+    this.dataSource$ = this.nodeTreeProcessor.getNodeTree()
+    this.selectedNode$ = this.nodeTreeProcessor.selectedNode$    
   }
 
   selectNode(node: IQueryNode) {
-    this.tree.selectedNode$ = node
+    this.nodeTreeProcessor.selectedNode$ = node
   }
 
   toggleNode(node: IQueryNode) {
-    this.tree.toggleNode(node)
+    this.nodeTreeProcessor.toggleNode(node)
   }
 }

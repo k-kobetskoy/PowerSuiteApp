@@ -18,7 +18,17 @@ export class QueryBuilder implements OnInit {
   ngOnInit() {
     this.navigationService.handleUrlParamOnComponentInit(QUERY_BUILDER_COMPONENT_URL)
   }
+
   toggleTab() {
     this.selectedTabIndex = 1;
+  }
+
+  parseXml(xml: string) {
+    // this.xmlParseService.parse(xml);    
+  }
+
+  validateXml(xml: string) {
+    // let validationResult =this.xmlParseService.validate(xml);
+    // console.log(validationResult);
   }
 }

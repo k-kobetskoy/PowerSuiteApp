@@ -3,6 +3,7 @@ import { IQueryNode } from "./abstract/i-query-node";
 import { BehaviorSubject, Observable } from "rxjs";
 import { QueryNodeType } from "./constants/query-node-type";
 import { IPropertyDisplay } from "./abstract/i-node-property-display";
+import { EntityServiceFactoryService } from "../services/entity-service-factory.service";
 
 export abstract class QueryNode implements IQueryNode {
     defaultNodeDisplayValue: string;
@@ -17,18 +18,28 @@ export abstract class QueryNode implements IQueryNode {
     parent?: IQueryNode | null;
     visible: boolean;
     tagProperties: ITagProperties;
+    validationErrors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
     entitySetName$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     relationship$?: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     showOnlyLookups$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    validationPassed$: Observable<boolean>;
+    entityServiceFactory: EntityServiceFactoryService;
 
-    constructor(tagProperties: ITagProperties) {
+
+    constructor(tagProperties: ITagProperties, entityServiceFactory: EntityServiceFactoryService) {
         this.expandable = false;
         this.level = 0;
         this.visible = true;
         this.isExpanded = true;
         this.next = null;
         this.tagProperties = tagProperties;
+        this.entityServiceFactory = entityServiceFactory;
     }
+
+    validateNode(): Observable<boolean>{
+        return new Observable<boolean>(observer => {
+            observer.next(true);
+    })};
 
     get displayValue$(): Observable<IPropertyDisplay> {
         return new Observable<IPropertyDisplay>(observer => {
@@ -54,8 +65,8 @@ export abstract class QueryNode implements IQueryNode {
     getParentEntityName(node: IQueryNode = this): BehaviorSubject<string> {
         const parent = this.getParentEntity(node);
 
-        if (!parent) return  new BehaviorSubject<string>('');       
+        if (!parent) return  new BehaviorSubject<string>('');
   
-        return parent.tagProperties.entityName?.value$ ?? parent.tagProperties.linkEntity.value$;
+        return parent.tagProperties.entityName?.constructorValue$ ?? parent.tagProperties.linkEntity.constructorValue$;
     }
 }

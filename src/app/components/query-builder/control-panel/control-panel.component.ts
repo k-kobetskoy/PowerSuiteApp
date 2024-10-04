@@ -1,6 +1,6 @@
+import { NodeTreeProcessorService } from './../services/node-tree-processor.service';
 import { Component, OnInit } from '@angular/core';
 import { IQueryNode } from '../models/abstract/i-query-node';
-import { QueryNodeTree } from '../models/query-node-tree';
 import { Observable } from 'rxjs';
 import { QueryNodeType } from '../models/constants/query-node-type';
 
@@ -14,8 +14,8 @@ export class ControlPanelComponent implements OnInit {
   selectedNode$: Observable<IQueryNode>
   nodeTypes = QueryNodeType
 
-  constructor(private nodeTree: QueryNodeTree) {
-    this.selectedNode$ = this.nodeTree.selectedNode$
+  constructor(private nodeTreeProcessorService: NodeTreeProcessorService) {
+    this.selectedNode$ = this.nodeTreeProcessorService.selectedNode$
   }
 
   ngOnInit() { }

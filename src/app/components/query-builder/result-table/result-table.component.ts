@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
-import { QueryNodeTree } from '../models/query-node-tree';
+import { BehaviorSubject, switchMap, tap } from 'rxjs';
 import { XmlExecutorService } from '../services/xml-executor.service';
+import { NodeTreeProcessorService } from '../services/node-tree-processor.service';
 
 @Component({
   selector: 'app-result-table',
@@ -15,7 +15,7 @@ export class ResultTableComponent implements OnInit {
 
   displayedColumns: string[];
   dataSource: Object[];
-  constructor(private xmlExecutor: XmlExecutorService, private nodeTree: QueryNodeTree) { }
+  constructor(private xmlExecutor: XmlExecutorService, private nodeTreeProcessor: NodeTreeProcessorService) { }
   @Output() resultTableGetResult = new EventEmitter<void>();
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class ResultTableComponent implements OnInit {
     this.resultTableGetResult.emit();
     const entitySetName = this._getEntityNodeSetName().value;
 
-    this.nodeTree.xmlRequest$.pipe(
+    this.nodeTreeProcessor.xmlRequest$.pipe(
       switchMap(xml => this.xmlExecutor.executeXmlRequest(xml, entitySetName)),
       tap(data => console.log(data))
     ).subscribe(data => {
@@ -36,7 +36,7 @@ export class ResultTableComponent implements OnInit {
   }
 
   private _getEntityNodeSetName(): BehaviorSubject<string> {
-    return this.nodeTree.root.next.entitySetName$;
+    return this.nodeTreeProcessor.getNodeTree().value.root.next.entitySetName$;
   }
 
   selectRow(row: any) {
@@ -51,9 +51,7 @@ export class ResultTableComponent implements OnInit {
       }
     }
 
-
     isTextHidden(cell: HTMLElement): boolean {
       return cell.scrollWidth > cell.clientWidth;
     }
-      
 }

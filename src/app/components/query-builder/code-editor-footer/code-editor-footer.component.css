@@ -6,6 +6,6 @@ app-code-editor-footer {
 app-code-editor-footer .code-editor-footer-content {
     display: flex;
     flex: 1;
-    height: 60px;
+    height: var(--code-footer-height);
     background-color: rgb(240, 240, 240);
 }

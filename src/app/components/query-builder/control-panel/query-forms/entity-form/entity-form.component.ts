@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EntityModel } from 'src/app/models/incoming/environment/entity-model';
-import { Observable, Subject, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { NodeEntity } from '../../../models/nodes/node-entity';
 import { EntityEntityService } from 'src/app/components/query-builder/services/entity-services/entity-entity.service';
 import { IFormPropertyModel } from '../../../models/abstract/i-form-property-model';
@@ -20,7 +20,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
   entityFormModel: IFormPropertyModel<EntityModel, string>;
   aliasFormModel: IFormPropertyModel<string, string>;
 
-  constructor(private _entityEntityService: EntityEntityService) { }
+  constructor(private _entityEntityService: EntityEntityService) {   }
 
   ngOnInit() {
     this.initializeFormControls();
@@ -31,7 +31,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
       formControl: new FormControl<string>(null),
       valuesObservable$: this._entityEntityService.getEntities(),
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.entityName.value$,
+      storedInputValue$: this.selectedNode.tagProperties.entityName.constructorValue$,
       filterFunc: (value: EntityModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase()) || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
       }
@@ -41,22 +41,20 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
     this.aliasFormModel = {
       formControl: new FormControl<string>(null),
-      storedInputValue$: this.selectedNode.tagProperties.entityAlias.value$,
+      storedInputValue$: this.selectedNode.tagProperties.entityAlias.constructorValue$,
     };
     this.setControlInitialValues(this.aliasFormModel);
-    this.subscribeOnInputChanges(this.aliasFormModel);    
+    this.subscribeOnInputChanges(this.aliasFormModel);
   }
 
-  setControlInitialValues<TProperty, TForm>(linkEntityForm: IFormPropertyModel<TProperty, TForm>) {
-    linkEntityForm.storedInputValue$
-      .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => linkEntityForm.formControl.setValue(value));
+  setControlInitialValues<TProperty, TForm>(propertyForm: IFormPropertyModel<TProperty, TForm>) {
+    propertyForm.formControl.setValue(propertyForm.storedInputValue$.value);
   }
 
-  subscribeOnInputChanges<TProperty, TForm>(linkEntityForm: IFormPropertyModel<TProperty, TForm>) {
-    linkEntityForm.formControl.valueChanges
+  subscribeOnInputChanges<TProperty, TForm>(propertyForm: IFormPropertyModel<TProperty, TForm>) {
+    propertyForm.formControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => linkEntityForm.storedInputValue$.next(value));
+      .subscribe(value => propertyForm.storedInputValue$.next(value));
   }
 
   addFilterToInput<TProperty extends EntityModel>(propertyForm: IFormPropertyModel<TProperty, string>) {
@@ -72,13 +70,17 @@ export class EntityFormComponent implements OnInit, OnDestroy {
     return propertyForm.valuesObservable$.pipe(
       map(
         properties => {
-          const property = properties.find(prop => prop.logicalName.toLowerCase() === filterValue);
-          if (property) {
-            propertyForm.storedInputValue$.next(filterValue);
-            this.selectedNode.entitySetName$.next(property.entitySetName);
-          };
+          propertyForm.storedInputValue$.next(filterValue);
           return properties.filter((property) => propertyForm.filterFunc(property, filterValue))
-        }));
+        }),
+        debounceTime(300),
+        tap(properties=>{
+          const property = properties.find(p => p.logicalName === value);
+          if (property) {
+            this.selectedNode.entitySetName$.next(property.entitySetName);
+          }
+        })
+    );
   }
 
   onInputChanged<TProperty, TForm>(event: Event, propertyForm: IFormPropertyModel<TProperty, TForm>) {

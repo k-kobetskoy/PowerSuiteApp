@@ -2,44 +2,44 @@
 
 <mat-form-field>
     <mat-label>Top</mat-label>
-    <input [ngModel]="selectedNode.tagProperties.rootTop.value$ | async"
-        (ngModelChange)="selectedNode.tagProperties.rootTop.value$.next($event)" type="number" matInput>
+    <input [ngModel]="selectedNode.tagProperties.rootTop.constructorValue$ | async"
+        (ngModelChange)="selectedNode.tagProperties.rootTop.constructorValue$.next($event)" type="number" matInput>
 </mat-form-field>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.rootDistinct.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.rootDistinct.value$.next($event)">Distinct</mat-checkbox>
-<mat-checkbox [ngModel]="selectedNode.tagProperties.rootAggregate.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.rootAggregate.value$.next($event)">Aggregate</mat-checkbox>
-<mat-checkbox [ngModel]="selectedNode.tagProperties.rootTotalRecordsCount.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.rootTotalRecordsCount.value$.next($event)">Total record count</mat-checkbox>
-<mat-checkbox [ngModel]="selectedNode.tagProperties.rootLateMaterialize.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.rootLateMaterialize.value$.next($event)">Late materialize</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.rootDistinct.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.rootDistinct.constructorValue$.next($event)">Distinct</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.rootAggregate.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.rootAggregate.constructorValue$.next($event)">Aggregate</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.rootTotalRecordsCount.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.rootTotalRecordsCount.constructorValue$.next($event)">Total record count</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.rootLateMaterialize.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.rootLateMaterialize.constructorValue$.next($event)">Late materialize</mat-checkbox>
 
 <mat-form-field>
     <mat-label>Page size</mat-label>
-    <input type="number" matInput [ngModel]="selectedNode.tagProperties.rootPageSize.value$| async"
-        (ngModelChange)="selectedNode.tagProperties.rootPageSize.value$.next($event)">
+    <input type="number" matInput [ngModel]="selectedNode.tagProperties.rootPageSize.constructorValue$| async"
+        (ngModelChange)="selectedNode.tagProperties.rootPageSize.constructorValue$.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Page</mat-label>
-    <input type="number" matInput [ngModel]="selectedNode.tagProperties.rootPage.value$| async"
-        (ngModelChange)="selectedNode.tagProperties.rootPage.value$.next($event)">
+    <input type="number" matInput [ngModel]="selectedNode.tagProperties.rootPage.constructorValue$| async"
+        (ngModelChange)="selectedNode.tagProperties.rootPage.constructorValue$.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Paging cookie</mat-label>
-    <input type="text" matInput [ngModel]="selectedNode.tagProperties.rootPagingCookie.value$| async"
-        (ngModelChange)="selectedNode.tagProperties.rootPagingCookie.value$.next($event)">
+    <input type="text" matInput [ngModel]="selectedNode.tagProperties.rootPagingCookie.constructorValue$| async"
+        (ngModelChange)="selectedNode.tagProperties.rootPagingCookie.constructorValue$.next($event)">
 
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Data source</mat-label>
-    <mat-select [ngModel]="selectedNode.tagProperties.rootDataSource.value$| async"
-        (ngModelChange)="selectedNode.tagProperties.rootDataSource.value$.next($event)">
+    <mat-select [ngModel]="selectedNode.tagProperties.rootDataSource.constructorValue$| async"
+        (ngModelChange)="selectedNode.tagProperties.rootDataSource.constructorValue$.next($event)">
         <mat-option></mat-option>
         <mat-option value="archive">Archive</mat-option>
     </mat-select>

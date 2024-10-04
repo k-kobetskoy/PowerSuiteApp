@@ -5,23 +5,25 @@ import { QueryNodeOrder } from "../constants/query-node-order.enum";
 import { QueryNodeType } from "../constants/query-node-type";
 import { QueryNode } from "../query-node";
 import { TagPropertyOrder } from "../tag-properties/tag-property-order";
+import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeOrder extends QueryNode {
 
     override tagProperties: TagPropertyOrder;
 
-    constructor(tagProperties: TagPropertyOrder) {
-        super(tagProperties);
+    constructor(tagProperties: TagPropertyOrder, entityServiceFactory: EntityServiceFactoryService) {
+        super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ORDER;
         this.order = QueryNodeOrder.ORDER;
         this.type = QueryNodeType.ORDER;
         this.actions = QueryNodeActions.ORDER;
     }
 
+
     override get displayValue$(): Observable<IPropertyDisplay> {
         const combined$ = combineLatest([
-            this.tagProperties.orderAttribute.value$,
-            this.tagProperties.orderDescending.value$,
+            this.tagProperties.orderAttribute.constructorValue$,
+            this.tagProperties.orderDescending.constructorValue$,
         ]);
 
         return combined$.pipe(
@@ -36,8 +38,8 @@ export class NodeOrder extends QueryNode {
                 const descendingString = descending === null || descending === false ? '' : descending.toString();
 
                 if (display) {
-                    propertyDisplay.nodePropertyDisplay = `${attributeName ? attributeName : ''} ${descendingString ? `${this.tagProperties.orderDescending.nodePropertyDisplay}` : ''}`.trim();
-                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName} ${attributeName ? `${this.tagProperties.orderAttribute.name}="${attributeName}"` : ''} ${descending ? `${this.tagProperties.orderDescending.name}="${descending}"` : ''}`.trim();
+                    propertyDisplay.nodePropertyDisplay = `${attributeName ? `${attributeName}` : ''}${descendingString ? ` ${this.tagProperties.orderDescending.nodePropertyDisplay}` : ''}`.trim();
+                    propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${attributeName ? ` ${this.tagProperties.orderAttribute.name}="${attributeName}"` : ''}${descending ? ` ${this.tagProperties.orderDescending.name}="${descending}"` : ''}`.trim();
                 }
 
                 return of(propertyDisplay);

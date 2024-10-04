@@ -47,7 +47,7 @@ export class OrderFormComponent implements OnChanges {
       ),
       previousValue$: this.attributePreviousValue$,
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.orderAttribute.value$,
+      storedInputValue$: this.selectedNode.tagProperties.orderAttribute.constructorValue$,
       filterFunc: (value: AttributeModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase())
           || value.displayName.toLowerCase().includes(filterValue.toLowerCase())

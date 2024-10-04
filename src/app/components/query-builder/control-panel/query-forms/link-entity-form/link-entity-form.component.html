@@ -26,7 +26,7 @@
   </mat-form-field>
 </ng-container>
 
-<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.value$|async)} as entity">
+<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.constructorValue$|async)} as entity">
   <mat-form-field>
 
     <mat-label>To{{entity.name ? '('+entity.name+')':''}}</mat-label>
@@ -43,8 +43,8 @@
 
 <mat-form-field>
   <mat-label>Link type</mat-label>
-  <mat-select [ngModel]="selectedNode.tagProperties.linkType.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.linkType.value$.next($event)">
+  <mat-select [ngModel]="selectedNode.tagProperties.linkType.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.linkType.constructorValue$.next($event)">
     <mat-option>--</mat-option>
     <mat-option *ngFor="let type of linkTypes" [value]="type">
       {{type}}
@@ -58,8 +58,8 @@
   <input type="text" matInput [formControl]="aliasForm.formControl">
 </mat-form-field>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.linkIntersect.value$ | async"
-  (ngModelChange)="selectedNode.tagProperties.linkIntersect.value$.next($event)">Intersect</mat-checkbox>
-<mat-checkbox [ngModel]="selectedNode.tagProperties.linkVisible.value$ | async"
-  (ngModelChange)="selectedNode.tagProperties.linkVisible.value$.next($event)">Visible</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.linkIntersect.constructorValue$ | async"
+  (ngModelChange)="selectedNode.tagProperties.linkIntersect.constructorValue$.next($event)">Intersect</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.linkVisible.constructorValue$ | async"
+  (ngModelChange)="selectedNode.tagProperties.linkVisible.constructorValue$.next($event)">Visible</mat-checkbox>
 <mat-checkbox matInput [formControl]="showOnlyLookupsForm.formControl">Show Only Lookups/Id Attributes</mat-checkbox>

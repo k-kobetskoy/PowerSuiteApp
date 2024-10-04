@@ -28,7 +28,7 @@ app-query-builder .as-split-gutter{
 
 app-query-tree-button-block{
   display: flex;
-  height: 40px;
+  height: var(--tab-bar-height);
   background-color: #e9e9e9;
 }
 
@@ -52,10 +52,8 @@ as-split-area{
 
 }
 
-
-
 app-query-builder .mat-mdc-tab-header {
-  --mdc-secondary-navigation-tab-container-height: 40px;
+  --mdc-secondary-navigation-tab-container-height: var(--tab-bar-height);
 }
 
 app-query-builder .mdc-tab {

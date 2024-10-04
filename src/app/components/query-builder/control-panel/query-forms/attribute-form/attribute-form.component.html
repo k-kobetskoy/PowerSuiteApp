@@ -3,11 +3,11 @@
 <app-loading-indicator [diameter]="50"></app-loading-indicator>
 <mat-form-field>
   <mat-label>Attrubute</mat-label>
-  <input type="text" matInput [formControl]="attributesFormControl" [matAutocomplete]="auto"
-    (keyup)="onKeyPressed($event)">
+  <input type="text" matInput [formControl]="attributeFormModel.formControl" [matAutocomplete]="auto"
+    (keyup)="onInputChanged($event, attributeFormModel)">
 
   <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredAttributes$ | async" [value]="option.logicalName">
+    <mat-option *ngFor="let option of attributeFormModel.filteredValues$| async" [value]="option.logicalName">
       {{option.logicalName + ' ' + option.displayName}}
 
     </mat-option>
@@ -17,5 +17,5 @@
 
 <mat-form-field>
   <mat-label>Alias</mat-label>
-  <input type="text" matInput [formControl]="aliasFormControl">
+  <input type="text" matInput [formControl]="aliasFormModel.formControl">
 </mat-form-field>

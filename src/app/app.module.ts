@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,6 @@ import { NodeStyleDirective } from './directives/node-style.directive';
 import { QuickActionsComponent } from './components/query-builder/control-panel/query-forms/quick-actions/quick-actions.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { QueryNodeTree } from './components/query-builder/models/query-node-tree';
 import { EntityFormComponent } from './components/query-builder/control-panel/query-forms/entity-form/entity-form.component';
 import { RootFormComponent } from './components/query-builder/control-panel/query-forms/root-form/root-form.component';
 import { AttributeFormComponent } from './components/query-builder/control-panel/query-forms/attribute-form/attribute-form.component';
@@ -57,71 +56,63 @@ import { BehaviorSubject } from 'rxjs';
 import { ACTIVE_ENVIRONMENT_URL, USER_IS_LOGGED_IN } from './models/tokens';
 import { ResultTableComponent } from './components/query-builder/result-table/result-table.component';
 
-
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    MainToolbarComponent,
-    QueryBuilder,
-    ConnectionsComponent,
-    MenuComponent,
-    UserInfoComponent,
-    ConnectionsDialogComponent,
-    ControlPanelComponent,
-    TreePanelComponent,
-    CodeEditorComponent,
-    CodeEditorFooterComponent,
-    NodeStyleDirective,
-    QuickActionsComponent,
-    ConnectionsComponent,
-    LoadingIndicatorComponent,
-    EntityFormComponent,
-    RootFormComponent,
-    AttributeFormComponent,
-    FilterFormComponent,
-    FilterConditionFormComponent,
-    NumberFormComponent,
-    BooleanFormComponent,
-    DateTimeFormComponent,
-    IdFormComponent,
-    PicklistFormComponent,
-    StringFormComponent,
-    LinkEntityFormComponent,
-    OrderFormComponent,
-    QueryTreeButtonBlockComponent,
-    ResultTableComponent
-  ],
-
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatListModule,
-    MatRippleModule,
-    AngularSplitModule,
-    MatTabsModule,
-    MatIconModule,
-    FormsModule,
-    CdkTreeModule,
-    MatProgressSpinnerModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MsalConfigDynamicModule.forRoot('assets/configuration.json')
-  ],
-  providers: [
-    // QueryNodeTree,
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
-    { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) }],
-  bootstrap: [AppComponent, MsalRedirectComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        MainToolbarComponent,
+        QueryBuilder,
+        ConnectionsComponent,
+        MenuComponent,
+        UserInfoComponent,
+        ConnectionsDialogComponent,
+        ControlPanelComponent,
+        TreePanelComponent,
+        CodeEditorComponent,
+        CodeEditorFooterComponent,
+        NodeStyleDirective,
+        QuickActionsComponent,
+        ConnectionsComponent,
+        LoadingIndicatorComponent,
+        EntityFormComponent,
+        RootFormComponent,
+        AttributeFormComponent,
+        FilterFormComponent,
+        FilterConditionFormComponent,
+        NumberFormComponent,
+        BooleanFormComponent,
+        DateTimeFormComponent,
+        IdFormComponent,
+        PicklistFormComponent,
+        StringFormComponent,
+        LinkEntityFormComponent,
+        OrderFormComponent,
+        QueryTreeButtonBlockComponent,
+        ResultTableComponent
+    ],
+    bootstrap: [AppComponent, MsalRedirectComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatListModule,
+        MatRippleModule,
+        AngularSplitModule,
+        MatTabsModule,
+        MatIconModule,
+        FormsModule,
+        CdkTreeModule,
+        MatProgressSpinnerModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatTableModule,        
+        MsalConfigDynamicModule.forRoot('assets/configuration.json')
+        ], providers: [
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+        { provide: ACTIVE_ENVIRONMENT_URL, useValue: new BehaviorSubject<string>('') },
+        { provide: USER_IS_LOGGED_IN, useValue: new BehaviorSubject<boolean>(false) },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
