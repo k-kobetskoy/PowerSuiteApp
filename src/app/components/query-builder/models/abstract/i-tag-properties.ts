@@ -1,8 +1,11 @@
+import { TagProperty } from "../tag-property";
 import { ITagProperty } from "./i-tag-property";
 
 export interface ITagProperties {
-    
-    tagName: string;    
+
+    tagName: string;
+
+    validProperties: { [key: string]: TagProperty<string | boolean | number> };
 
     conditionEntity?: ITagProperty<string>;
     conditionAttribute?: ITagProperty<string>;
@@ -17,9 +20,9 @@ export interface ITagProperties {
     attributeDistinct?: ITagProperty<boolean>;
     attributeUserTimeZone?: ITagProperty<boolean>;
     attributeDateGrouping?: ITagProperty<string>;
-    
-    entityName?:  ITagProperty<string>;
-    entityAlias?:  ITagProperty<string>;
+
+    entityName?: ITagProperty<string>;
+    entityAlias?: ITagProperty<string>;
 
     filterType?: ITagProperty<string>;
     filterIsQuickFind?: ITagProperty<boolean>;
@@ -49,6 +52,8 @@ export interface ITagProperties {
     orderDescending?: ITagProperty<boolean>;
     orderAlias?: ITagProperty<string>;
 
-    getOpeningTag(): string;
-    getClosingTag(): string;
+    default: { key: string, value: string }[];
+
+    validateTagPropertyName(propertyName: string): boolean;
+    getTagPropertyByName(propertyName: string): ITagProperty<string | boolean | number> | undefined;
 }

@@ -31,7 +31,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
       formControl: new FormControl<string>(null),
       valuesObservable$: this._entityEntityService.getEntities(),
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.entityName.value$,
+      storedInputValue$: this.selectedNode.tagProperties.entityName.constructorValue$,
       filterFunc: (value: EntityModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase()) || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
       }
@@ -41,7 +41,7 @@ export class EntityFormComponent implements OnInit, OnDestroy {
 
     this.aliasFormModel = {
       formControl: new FormControl<string>(null),
-      storedInputValue$: this.selectedNode.tagProperties.entityAlias.value$,
+      storedInputValue$: this.selectedNode.tagProperties.entityAlias.constructorValue$,
     };
     this.setControlInitialValues(this.aliasFormModel);
     this.subscribeOnInputChanges(this.aliasFormModel);

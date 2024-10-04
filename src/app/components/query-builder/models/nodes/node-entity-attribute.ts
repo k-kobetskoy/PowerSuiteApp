@@ -19,7 +19,7 @@ export class NodeEntityAttribute extends QueryNode {
         this.actions = QueryNodeActions.ATTRIBUTE;
     }
 
-    override validateNode(): Observable<boolean> {
+    override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);
         });
@@ -28,13 +28,13 @@ export class NodeEntityAttribute extends QueryNode {
     override get displayValue$(): Observable<IPropertyDisplay> {
 
         const combined$ = combineLatest([
-            this.tagProperties.attributeName.value$,
-            this.tagProperties.attributeAlias.value$,
-            this.tagProperties.attributeAggregate.value$,
-            this.tagProperties.attributeGroupBy.value$,
-            this.tagProperties.attributeDistinct.value$,
-            this.tagProperties.attributeUserTimeZone.value$,
-            this.tagProperties.attributeDateGrouping.value$
+            this.tagProperties.attributeName.constructorValue$,
+            this.tagProperties.attributeAlias.constructorValue$,
+            this.tagProperties.attributeAggregate.constructorValue$,
+            this.tagProperties.attributeGroupBy.constructorValue$,
+            this.tagProperties.attributeDistinct.constructorValue$,
+            this.tagProperties.attributeUserTimeZone.constructorValue$,
+            this.tagProperties.attributeDateGrouping.constructorValue$
         ]);
 
         return combined$.pipe(

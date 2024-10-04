@@ -2,11 +2,12 @@ import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
 import { TagProperty } from "../tag-property";
 
-export class TagPropertyConditionValue implements ITagProperties{
+export class TagPropertyDefault implements ITagProperties{
     
-    readonly tagName: string = QueryNodeTags.VALUE;
+    readonly tagName: string = QueryNodeTags.DEFAULT;
+
     default: { key: string; value: string; }[] = [];
-    
+
     validProperties: { [key: string]: TagProperty<string | boolean | number> };
     
     validateTagPropertyName(propertyName: string): boolean{

@@ -6,7 +6,7 @@ import { QueryNode } from "../query-node";
 import { TagPropertyConditionValue } from "../tag-properties/tag-property-condition-value";
 import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
-export class NodeConditionValue  extends QueryNode{
+export class NodeDefault  extends QueryNode{
     override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);

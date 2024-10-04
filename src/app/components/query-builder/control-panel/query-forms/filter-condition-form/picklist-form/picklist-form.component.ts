@@ -40,16 +40,16 @@ export class PicklistFormComponent implements OnChanges, OnDestroy {
 
   initializePicklistValues() {
     const entityLogicalName = this.selectedNode.getParentEntityName().value;
-    const conditionAttribute = this.selectedNode.tagProperties.conditionAttribute.value$.value;
+    const conditionAttribute = this.selectedNode.tagProperties.conditionAttribute.constructorValue$.value;
     this.picklistValues$ = this._picklistEntityService.getOptions(entityLogicalName, conditionAttribute, this.attribute.attributeType);
   }
 
   setControlsInitialValues() {
-    this.selectedNode.tagProperties.conditionOperator.value$
+    this.selectedNode.tagProperties.conditionOperator.constructorValue$
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => this.filterOperatorFormControl.setValue(value));
 
-    this.selectedNode.tagProperties.conditionValue.value$
+    this.selectedNode.tagProperties.conditionValue.constructorValue$
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => this.filterValueFormControl.setValue(value));
   }
@@ -57,11 +57,11 @@ export class PicklistFormComponent implements OnChanges, OnDestroy {
   bindDataToControls() {
     this.filterOperatorFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => this.selectedNode.tagProperties.conditionOperator.value$.next(value));
+      .subscribe(value => this.selectedNode.tagProperties.conditionOperator.constructorValue$.next(value));
 
     this.filterValueFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => this.selectedNode.tagProperties.conditionValue.value$.next(value));
+      .subscribe(value => this.selectedNode.tagProperties.conditionValue.constructorValue$.next(value));
   }
 
   ngOnDestroy(): void {

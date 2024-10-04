@@ -19,7 +19,7 @@ export class NodeCondition extends QueryNode {
         this.actions = QueryNodeActions.CONDITION;
     }
 
-    override validateNode(): Observable<boolean> {
+    override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);
         });
@@ -28,9 +28,9 @@ export class NodeCondition extends QueryNode {
     override get displayValue$(): Observable<IPropertyDisplay> {
 
         const combined$ = combineLatest([
-            this.tagProperties.conditionAttribute.value$,
-            this.tagProperties.conditionOperator.value$,
-            this.tagProperties.conditionValue.value$,
+            this.tagProperties.conditionAttribute.constructorValue$,
+            this.tagProperties.conditionOperator.constructorValue$,
+            this.tagProperties.conditionValue.constructorValue$,
         ]);
 
         return combined$.pipe(

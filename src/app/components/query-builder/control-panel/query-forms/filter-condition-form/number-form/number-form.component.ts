@@ -34,11 +34,11 @@ export class NumberFormComponent implements OnChanges, OnDestroy{
 
 
   setControlsInitialValues() {
-    this.selectedNode.tagProperties.conditionOperator.value$
+    this.selectedNode.tagProperties.conditionOperator.constructorValue$
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => this.filterOperatorFormControl.setValue(value));
 
-    this.selectedNode.tagProperties.conditionValue.value$
+    this.selectedNode.tagProperties.conditionValue.constructorValue$
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
       .subscribe(value => this.filterValueFormControl.setValue(+value));
   }
@@ -46,16 +46,16 @@ export class NumberFormComponent implements OnChanges, OnDestroy{
   bindDataToControls() {
     this.filterOperatorFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => this.selectedNode.tagProperties.conditionOperator.value$.next(value));
+      .subscribe(value => this.selectedNode.tagProperties.conditionOperator.constructorValue$.next(value));
 
     this.filterValueFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => this.selectedNode.tagProperties.conditionValue.value$.next(value.toString()));
+      .subscribe(value => this.selectedNode.tagProperties.conditionValue.constructorValue$.next(value.toString()));
   }
 
   onKeyPressed() {
     if (this.filterValueFormControl.value === null || this.filterValueFormControl.value === undefined) {
-      this.selectedNode.tagProperties.conditionValue.value$.next(null);
+      this.selectedNode.tagProperties.conditionValue.constructorValue$.next(null);
     }
   }
 

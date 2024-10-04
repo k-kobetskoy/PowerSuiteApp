@@ -37,7 +37,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy, OnChanges {
     this.attributeFormModel = {
       formControl: new FormControl<string>(null),
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.attributeName.value$,
+      storedInputValue$: this.selectedNode.tagProperties.attributeName.constructorValue$,
       filterFunc: (value: AttributeModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase()) || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
       }
@@ -48,7 +48,7 @@ export class AttributeFormComponent implements OnInit, OnDestroy, OnChanges {
 
     this.aliasFormModel = {
       formControl: new FormControl<string>(null),
-      storedInputValue$: this.selectedNode.tagProperties.attributeAlias.value$,
+      storedInputValue$: this.selectedNode.tagProperties.attributeAlias.constructorValue$,
     };
     this.setControlInitialValues(this.aliasFormModel);
     this.subscribeOnInputChanges(this.aliasFormModel);

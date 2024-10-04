@@ -10,29 +10,40 @@ import { EditorState, Extension } from '@codemirror/state';
 import { keymap, EditorView } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { linter, Diagnostic, lintGutter } from "@codemirror/lint"
-import { TagsValidationService } from './tags-validation.service';
+import { BasicXmlValidationService } from './basic-xml-validation.service';
+import { XmlParseService } from './xml-parse.service';
 
 
 @Injectable({ providedIn: 'root' })
 
 export class LinterProviderService {
 
-  constructor(private tagsValidator: TagsValidationService) { }
-
+  constructor(private tagsValidator: BasicXmlValidationService, private xmlParser: XmlParseService) { }
 
   getLinter(): Extension {
     return linter(view => {
 
-      let diagnostics: Diagnostic[] = []
+      let basicXmlValidationErrors: Diagnostic[] = [];
+      let xmlParseErrors: Diagnostic[] = [];
+
       let tagsValidationStack: { mandatoryNodes: string[], from: number, to: number }[] = [];
       let sequenceValidationStack: string[] = [];
 
       syntaxTree(view.state).cursor().iterate(iteratingNode => {
-        this.tagsValidator.validateTagNode(iteratingNode, tagsValidationStack, diagnostics, sequenceValidationStack, view)
+        this.tagsValidator.validateTagNode(iteratingNode, tagsValidationStack, basicXmlValidationErrors, sequenceValidationStack, view)
+
+        if (basicXmlValidationErrors.length === 0) {
+          this.xmlParser.parseNode(iteratingNode, view, xmlParseErrors)
+        }
+
       });
-      return diagnostics;
+
+
+      if (basicXmlValidationErrors.length > 0) {
+        return basicXmlValidationErrors;
+      }
+
+      return xmlParseErrors;
     });
   }
-
-
 }

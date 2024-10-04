@@ -18,12 +18,12 @@ export interface IQueryNode {
     visible: boolean;
     tagProperties: ITagProperties;
     entitySetName$: BehaviorSubject<string>;
-    validationErrors$: BehaviorSubject<string[]>;    
+    validationErrors$: BehaviorSubject<string[]>;
     validationPassed$: Observable<boolean>;
     entityServiceFactory: EntityServiceFactoryService;
     
     get displayValue$(): Observable<IPropertyDisplay>;
     getParentEntity(node: IQueryNode): IQueryNode;
     getParentEntityName(node: IQueryNode): BehaviorSubject<string>
-    validateNode(): Observable<boolean>;
+    validateNodeAttributeValues(): Observable<boolean>;
 }

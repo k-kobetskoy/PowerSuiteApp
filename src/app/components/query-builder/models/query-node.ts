@@ -42,7 +42,7 @@ export abstract class QueryNode implements IQueryNode {
         });
     }
 
-    abstract validateNode(): Observable<boolean> 
+    abstract validateNodeAttributeValues(): Observable<boolean> 
 
     getParentEntity(node: IQueryNode = this): IQueryNode {
 
@@ -64,6 +64,6 @@ export abstract class QueryNode implements IQueryNode {
 
         if (!parent) return  new BehaviorSubject<string>('');
   
-        return parent.tagProperties.entityName?.value$ ?? parent.tagProperties.linkEntity.value$;
+        return parent.tagProperties.entityName?.constructorValue$ ?? parent.tagProperties.linkEntity.constructorValue$;
     }
 }

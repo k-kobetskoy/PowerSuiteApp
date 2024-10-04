@@ -2,8 +2,8 @@
 
 <mat-form-field>
   <mat-label>Filter type</mat-label>
-  <mat-select [ngModel]="selectedNode.tagProperties.filterType.value$| async"
-    (ngModelChange)="selectedNode.tagProperties.filterType.value$.next($event)">
+  <mat-select [ngModel]="selectedNode.tagProperties.filterType.constructorValue$| async"
+    (ngModelChange)="selectedNode.tagProperties.filterType.constructorValue$.next($event)">
     <mat-option>--</mat-option>
     <mat-option *ngFor="let type of filterTypeOptions" [value]="type.value">
       {{type.name}}
@@ -11,11 +11,11 @@
   </mat-select>
 </mat-form-field>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.filterIsQuickFind.value$ | async"
-  (ngModelChange)="selectedNode.tagProperties.filterIsQuickFind.value$.next($event)">Is quick find</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.filterIsQuickFind.constructorValue$ | async"
+  (ngModelChange)="selectedNode.tagProperties.filterIsQuickFind.constructorValue$.next($event)">Is quick find</mat-checkbox>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.filterOverrideRecordLimit.value$| async"
-  (ngModelChange)="selectedNode.tagProperties.filterOverrideRecordLimit.value$.next($event)">Apply quick find record limit</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.filterOverrideRecordLimit.constructorValue$| async"
+  (ngModelChange)="selectedNode.tagProperties.filterOverrideRecordLimit.constructorValue$.next($event)">Apply quick find record limit</mat-checkbox>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.filterBypassQuickFind.value$ | async"
-  (ngModelChange)="selectedNode.tagProperties.filterBypassQuickFind.value$.next($event)">Bypass quick find record limit</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.filterBypassQuickFind.constructorValue$ | async"
+  (ngModelChange)="selectedNode.tagProperties.filterBypassQuickFind.constructorValue$.next($event)">Bypass quick find record limit</mat-checkbox>

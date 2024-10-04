@@ -44,9 +44,16 @@ export class NodeTreeProcessorService {
   initializeNodeTree() {
     const nodeTree = new QueryNodeTree();
 
-    nodeTree.root = this.addNode(QueryNodeType.ROOT);
+    const rootNodeAdder = this._nodeAdderFactory.getAdder(QueryNodeType.ROOT);
+    const rootNode = rootNodeAdder.addNode(QueryNodeType.ROOT, null);
 
-    this.addNode(QueryNodeType.ENTITY);
+    nodeTree.root = rootNode;
+
+    const entityNodeAdder = this._nodeAdderFactory.getAdder(QueryNodeType.ENTITY);
+    const entityNode = entityNodeAdder.addNode(QueryNodeType.ENTITY, rootNode);
+
+    this.expandNode(rootNode);
+    this.selectedNode$ = entityNode;
         
     this._nodeTree$.next(nodeTree);
   }

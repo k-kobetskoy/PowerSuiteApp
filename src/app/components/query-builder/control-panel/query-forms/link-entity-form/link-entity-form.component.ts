@@ -50,7 +50,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
       formControl: new FormControl<string>(null),
       valuesObservable$: this._entityEntityService.getEntities().pipe(map(entities => entities.filter(entity => entity.logicalName !== this.selectedNode.getParentEntityName().value))),
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.linkEntity.value$,
+      storedInputValue$: this.selectedNode.tagProperties.linkEntity.constructorValue$,
       previousValue$: this.linkEntityPreviousValue$,
       filterFunc: (value: EntityModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase()) || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
@@ -62,7 +62,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
 
     this.fromAttributeForm = {
       formControl: new FormControl<string>(null),
-      valuesObservable$: combineLatest([this.selectedNode.tagProperties.linkEntity.value$.pipe(switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))),
+      valuesObservable$: combineLatest([this.selectedNode.tagProperties.linkEntity.constructorValue$.pipe(switchMap(entityName => entityName === null ? of([]) : this._attributeService.getAttributes(entityName))),
       this.selectedNode.showOnlyLookups$]).pipe(
         map(([attributes, showOnlyLookups]) => {
           return attributes.filter(attribute => !(showOnlyLookups && attribute.attributeType !== AttributeTypes.LOOKUP));
@@ -70,7 +70,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
       ),
       previousValue$: this.fromAttributePreviousValue$,
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.linkFromAttribute.value$,
+      storedInputValue$: this.selectedNode.tagProperties.linkFromAttribute.constructorValue$,
       filterFunc: (value: AttributeModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase())
           || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
@@ -102,7 +102,7 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
       ),
       previousValue$: this.toAttributePreviousValue$,
       filteredValues$: null,
-      storedInputValue$: this.selectedNode.tagProperties.linkToAttribute.value$,
+      storedInputValue$: this.selectedNode.tagProperties.linkToAttribute.constructorValue$,
       filterFunc: (value: AttributeModel, filterValue: string) => {
         return value.logicalName.toLowerCase().includes(filterValue.toLowerCase())
           || value.displayName.toLowerCase().includes(filterValue.toLowerCase())
@@ -126,14 +126,14 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
     this.linkTypeForm = {
       formControl: new FormControl<string>(null),
       values: LinkTypeOptions,
-      storedInputValue$: this.selectedNode.tagProperties.linkType.value$,
+      storedInputValue$: this.selectedNode.tagProperties.linkType.constructorValue$,
     };
     this.setControlInitialValues(this.linkTypeForm);
     this.subscribeOnInputChanges(this.linkTypeForm);
 
     this.aliasForm = {
       formControl: new FormControl<string>(null),
-      storedInputValue$: this.selectedNode.tagProperties.linkAlias.value$,
+      storedInputValue$: this.selectedNode.tagProperties.linkAlias.constructorValue$,
     };
     this.setControlInitialValues(this.aliasForm);
     this.subscribeOnInputChanges(this.aliasForm);
@@ -184,10 +184,10 @@ export class LinkEntityFormComponent implements OnChanges, OnDestroy {
 
   private _linkEntityChangeLogic(entity: EntityModel): void {
     if (!entity) {
-      this.selectedNode.tagProperties.linkFromAttribute.value$.next(null); return;
+      this.selectedNode.tagProperties.linkFromAttribute.constructorValue$.next(null); return;
     }
     if (!this.linkEntityForm.previousValue$.value || entity.logicalName === this.linkEntityForm.previousValue$.value) return;
-    this.selectedNode.tagProperties.linkFromAttribute.value$.next(null);
+    this.selectedNode.tagProperties.linkFromAttribute.constructorValue$.next(null);
   }
 
   onInputChanged<TProperty, TForm>(event: Event, propertyForm: IFormPropertyModel<TProperty, TForm>) {

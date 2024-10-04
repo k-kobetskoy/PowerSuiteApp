@@ -10,15 +10,16 @@ import { EditorState, Extension } from '@codemirror/state';
 import { keymap, EditorView } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { linter, Diagnostic, lintGutter } from "@codemirror/lint"
+import { ParsingHelperService } from './parsing-helper.service';
 
 
 export const TAG_NODE_NAMES = {
   openTag: 'OpenTag',
   closeTag: 'CloseTag',
-  startNode: 'StartTag',
+  startTag: 'StartTag',
   startCloseNode: 'StartCloseTag',
   tagName: 'TagName',
-  endNode: 'EndTag',
+  endTag: 'EndTag',
   text: 'Text',
   selfClosingTag: 'SelfClosingTag',
   selfClosingEndNode: 'SelfCloseEndTag',
@@ -45,9 +46,9 @@ export const TAG_NODES = {
 @Injectable({
   providedIn: 'root'
 })
-export class TagsValidationService {
+export class BasicXmlValidationService {
 
-  constructor() { }
+  constructor(private parsingHelper: ParsingHelperService) { }
 
   validateTagNode(iteratingNode: SyntaxNodeRef, tagsValidationStack: { mandatoryNodes: string[]; from: number; to: number; }[], diagnostics: Diagnostic[], sequenceValidationStack: string[], view: EditorView) {
     switch (iteratingNode.name) {
@@ -67,7 +68,7 @@ export class TagsValidationService {
       case TAG_NODE_NAMES.text:
         this.validateTextNode(iteratingNode, diagnostics, view);
         break;
-      case TAG_NODE_NAMES.startNode:
+      case TAG_NODE_NAMES.startTag:
         if (this.validateStartNode(iteratingNode, sequenceValidationStack, diagnostics)) {
           this.removeNodeFromStack(tagsValidationStack, diagnostics, iteratingNode);
         }
@@ -80,7 +81,7 @@ export class TagsValidationService {
       case TAG_NODE_NAMES.tagName:
         this.removeNodeFromStack(tagsValidationStack, diagnostics, iteratingNode);
         break;
-      case TAG_NODE_NAMES.endNode:
+      case TAG_NODE_NAMES.endTag:
         this.removeNodeFromStack(tagsValidationStack, diagnostics, iteratingNode);
         this.validateElementNodes(tagsValidationStack, diagnostics);
         tagsValidationStack.pop();
@@ -100,7 +101,7 @@ export class TagsValidationService {
   }
 
   validateTextNode(iteratingNode: SyntaxNodeRef, diagnostics: Diagnostic[], view: EditorView) {
-    let text = this.getNodeAsString(view, iteratingNode.from, iteratingNode.to);
+    let text = this.parsingHelper.getNodeAsString(view, iteratingNode.from, iteratingNode.to);
 
     if(!text) return;
 
@@ -260,10 +261,5 @@ export class TagsValidationService {
       from: openingTag.from,
       to: openingTag.to
     });
-  }
-
-  getNodeAsString(view: EditorView, from: number | undefined, to: number | undefined): string | undefined {
-    if (!from || !to) return undefined;
-    return view.state.sliceDoc(from, to);
-  }
+  }  
 }

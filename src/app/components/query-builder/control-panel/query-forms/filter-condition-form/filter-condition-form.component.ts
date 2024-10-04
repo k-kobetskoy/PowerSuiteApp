@@ -48,11 +48,11 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
   bindDataToControls() {
     this.attributesFormControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this._destroy$))
-      .subscribe(value => this.selectedNode.tagProperties.conditionAttribute.value$.next(value));
+      .subscribe(value => this.selectedNode.tagProperties.conditionAttribute.constructorValue$.next(value));
   }
 
   setControlsInitialValues() {
-    const attributeInitialValue = this.selectedNode.tagProperties.conditionAttribute.value$.getValue();
+    const attributeInitialValue = this.selectedNode.tagProperties.conditionAttribute.constructorValue$.getValue();
 
     this.attributesFormControl.setValue(attributeInitialValue);
   }
@@ -73,7 +73,7 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
 
   addFilterToInput() {
     this.filteredAttributes$ = this.attributesFormControl.valueChanges.pipe(
-      startWith(this.selectedNode.tagProperties.conditionAttribute.value$.getValue() ?? ''),
+      startWith(this.selectedNode.tagProperties.conditionAttribute.constructorValue$.getValue() ?? ''),
       switchMap(value => value ? this._filter(value) : this.attributes$),
     );
   }
@@ -95,21 +95,21 @@ export class FilterConditionFormComponent implements OnChanges, OnDestroy {
             entity.displayName.toLowerCase().includes(filterValue)
           )
         }),
-      tap(_ => this.selectedNode.tagProperties.conditionAttribute.value$.next(filterValue)));
+      tap(_ => this.selectedNode.tagProperties.conditionAttribute.constructorValue$.next(filterValue)));
   }
 
   onKeyPressed($event: KeyboardEvent) {
     if ($event.key === 'Delete' || $event.key === 'Backspace') {
       if (this.attributesFormControl.value === '') {
-        this.selectedNode.tagProperties.conditionAttribute.value$.next(null);
+        this.selectedNode.tagProperties.conditionAttribute.constructorValue$.next(null);
       }
     }
   }
 
   handleAttributeChange(attribute: AttributeModel): void {  
     if (!this.previousAttribute || attribute.logicalName === this.previousAttribute?.logicalName) return;    
-    this.selectedNode.tagProperties.conditionOperator.value$.next(null);
-    this.selectedNode.tagProperties.conditionValue.value$.next(null);
+    this.selectedNode.tagProperties.conditionOperator.constructorValue$.next(null);
+    this.selectedNode.tagProperties.conditionValue.constructorValue$.next(null);
   }
 
   getFilterOperatorType(attribute: AttributeModel) {    

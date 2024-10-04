@@ -19,7 +19,7 @@ export class NodeOrder extends QueryNode {
         this.actions = QueryNodeActions.ORDER;
     }
 
-    override validateNode(): Observable<boolean> {
+    override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);
         });
@@ -27,8 +27,8 @@ export class NodeOrder extends QueryNode {
 
     override get displayValue$(): Observable<IPropertyDisplay> {
         const combined$ = combineLatest([
-            this.tagProperties.orderAttribute.value$,
-            this.tagProperties.orderDescending.value$,
+            this.tagProperties.orderAttribute.constructorValue$,
+            this.tagProperties.orderDescending.constructorValue$,
         ]);
 
         return combined$.pipe(

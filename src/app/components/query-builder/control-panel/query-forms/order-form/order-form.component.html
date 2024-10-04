@@ -1,7 +1,7 @@
 <app-quick-actions [selectedNode]="selectedNode"></app-quick-actions>
 
 
-<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.value$|async)} as entity">
+<ng-container *ngIf="{name: (selectedNode.getParentEntity().tagProperties.entityName.constructorValue$|async)} as entity">
   <mat-form-field>
 
     <mat-label>Attribute name</mat-label>
@@ -16,5 +16,5 @@
   </mat-form-field>
 </ng-container>
 
-<mat-checkbox [ngModel]="selectedNode.tagProperties.orderDescending.value$| async"
-  (ngModelChange)="selectedNode.tagProperties.orderDescending.value$.next($event)">Descencing</mat-checkbox>
+<mat-checkbox [ngModel]="selectedNode.tagProperties.orderDescending.constructorValue$| async"
+  (ngModelChange)="selectedNode.tagProperties.orderDescending.constructorValue$.next($event)">Descencing</mat-checkbox>

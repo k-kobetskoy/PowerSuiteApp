@@ -20,7 +20,7 @@ export class NodeFilter extends QueryNode {
         this.actions = QueryNodeActions.FILTER;
     }
 
-    override validateNode(): Observable<boolean> {
+    override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);
         });
@@ -29,10 +29,10 @@ export class NodeFilter extends QueryNode {
     override get displayValue$(): Observable<IPropertyDisplay> {
 
         const combined$ = combineLatest([
-            this.tagProperties.filterType.value$,
-            this.tagProperties.filterBypassQuickFind.value$,
-            this.tagProperties.filterIsQuickFind.value$,
-            this.tagProperties.filterOverrideRecordLimit.value$,
+            this.tagProperties.filterType.constructorValue$,
+            this.tagProperties.filterBypassQuickFind.constructorValue$,
+            this.tagProperties.filterIsQuickFind.constructorValue$,
+            this.tagProperties.filterOverrideRecordLimit.constructorValue$,
         ]);
 
         return combined$.pipe(

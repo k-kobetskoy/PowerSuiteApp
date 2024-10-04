@@ -19,7 +19,7 @@ export class NodeLink extends QueryNode {
         this.actions = QueryNodeActions.LINK;
     }
 
-    override validateNode(): Observable<boolean> {
+    override validateNodeAttributeValues(): Observable<boolean> {
         return new Observable<boolean>(observer => {
             observer.next(true);
         });
@@ -28,13 +28,13 @@ export class NodeLink extends QueryNode {
     override get displayValue$(): Observable<IPropertyDisplay> {
 
         let combined$ = combineLatest([
-            this.tagProperties.linkEntity.value$,
-            this.tagProperties.linkType.value$,
-            this.tagProperties.linkAlias.value$,
-            this.tagProperties.linkIntersect.value$,
-            this.tagProperties.linkFromAttribute.value$,
-            this.tagProperties.linkToAttribute.value$,
-            this.tagProperties.linkVisible.value$,
+            this.tagProperties.linkEntity.constructorValue$,
+            this.tagProperties.linkType.constructorValue$,
+            this.tagProperties.linkAlias.constructorValue$,
+            this.tagProperties.linkIntersect.constructorValue$,
+            this.tagProperties.linkFromAttribute.constructorValue$,
+            this.tagProperties.linkToAttribute.constructorValue$,
+            this.tagProperties.linkVisible.constructorValue$,
         ]);
 
         return combined$?.pipe(
