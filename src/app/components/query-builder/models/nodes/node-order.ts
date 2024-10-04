@@ -38,7 +38,7 @@ export class NodeOrder extends QueryNode {
                 const descendingString = descending === null || descending === false ? '' : descending.toString();
 
                 if (display) {
-                    propertyDisplay.nodePropertyDisplay = `${attributeName ? `${attributeName}` : ''}${descendingString ? ` ${this.tagProperties.orderDescending.nodePropertyDisplay}` : ''}`.trim();
+                    propertyDisplay.nodePropertyDisplay = `${attributeName ? `${attributeName}` : ''}${descendingString ? ` ${this.tagProperties.orderDescending.treeViewDisplayValue}` : ''}`.trim();
                     propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${attributeName ? ` ${this.tagProperties.orderAttribute.name}="${attributeName}"` : ''}${descending ? ` ${this.tagProperties.orderDescending.name}="${descending}"` : ''}`.trim();
                 }
 

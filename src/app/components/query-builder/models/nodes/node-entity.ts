@@ -21,7 +21,7 @@ export class NodeEntity extends QueryNode {
         this.order = QueryNodeOrder.ENTITY;
         this.type = QueryNodeType.ENTITY;
         this.actions = QueryNodeActions.ENTITY;
-        this.validationPassed$ = this.validateNode();        
+        this.validationPassed$ = this.validateNode();
     }
 
     override validateNode(): Observable<boolean> {
@@ -41,7 +41,7 @@ export class NodeEntity extends QueryNode {
                         }
                     })
                 );
-            })               
+            })
         )
     }
 

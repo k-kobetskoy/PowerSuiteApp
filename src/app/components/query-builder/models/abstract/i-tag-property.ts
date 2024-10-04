@@ -5,7 +5,7 @@ export interface ITagProperty<T> {
   name: string;
   constructorValue$?: BehaviorSubject<T> ;
   parsedValue$: BehaviorSubject<string>;
-  nodePropertyDisplay: string;
+  treeViewDisplayValue: string;
   tagPropertyErrorMessage: BehaviorSubject<string>;
   validateTagPropertyValue: () => Observable<boolean>;
   typeValidationPassed$: BehaviorSubject<boolean>;

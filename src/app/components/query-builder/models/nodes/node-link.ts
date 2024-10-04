@@ -47,7 +47,7 @@ export class NodeLink extends QueryNode {
 
                 if (tagDisplay) {
                     if (nodeDisplay) {
-                        propertyDisplay.nodePropertyDisplay = `${entityName ? `${entityName}` : ''}${linkType ? ` ${linkType}` : ''}${intersect ? ` ${this.tagProperties.linkIntersect.nodePropertyDisplay}` : ''}${linkAlias ? ` (${linkAlias})` : ''}`;
+                        propertyDisplay.nodePropertyDisplay = `${entityName ? `${entityName}` : ''}${linkType ? ` ${linkType}` : ''}${intersect ? ` ${this.tagProperties.linkIntersect.treeViewDisplayValue}` : ''}${linkAlias ? ` (${linkAlias})` : ''}`;
                     }
                     propertyDisplay.tagPropertyDisplay = [
                         this.tagProperties.tagName,

@@ -50,7 +50,7 @@ export class NodeEntityAttribute extends QueryNode {
                 if (tagDisplay) {
                     if (nodeDisplay) {
                         propertyDisplay.nodePropertyDisplay = attributeGroupBy
-                            ? `${attributeAlias ? `${attributeAlias}` : ''}=count(${attributeName})${this.tagProperties.attributeGroupBy.nodePropertyDisplay}`
+                            ? `${attributeAlias ? `${attributeAlias}` : ''}=count(${attributeName})${this.tagProperties.attributeGroupBy.treeViewDisplayValue}`
                             : `${attributeName ? attributeName : ''}${attributeAlias ? ` (${attributeAlias})` : ''}`;
                     }
                     propertyDisplay.tagPropertyDisplay = `${this.tagProperties.tagName}${[

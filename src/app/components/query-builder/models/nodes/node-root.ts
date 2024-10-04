@@ -116,12 +116,12 @@ export class NodeRoot extends QueryNode {
                         propertyDisplay.nodePropertyDisplay =
                             [
                                 this.defaultNodeDisplayValue,
-                                topString ? ` ${this.tagProperties.rootTop.nodePropertyDisplay}: ${topString}` : '',
-                                pageSizeString ? ` ${this.tagProperties.rootPageSize.nodePropertyDisplay}: ${pageSizeString}` : '',
-                                pageString ? ` ${this.tagProperties.rootPage.nodePropertyDisplay}: ${pageString}` : '',
-                                distinctString ? ` ${this.tagProperties.rootDistinct.nodePropertyDisplay}` : '',
-                                aggregateString ? ` ${this.tagProperties.rootAggregate.nodePropertyDisplay}` : '',
-                                totalRecordsCountString ? ` ${this.tagProperties.rootTotalRecordsCount.nodePropertyDisplay}` : ''
+                                topString ? ` ${this.tagProperties.rootTop.treeViewDisplayValue}: ${topString}` : '',
+                                pageSizeString ? ` ${this.tagProperties.rootPageSize.treeViewDisplayValue}: ${pageSizeString}` : '',
+                                pageString ? ` ${this.tagProperties.rootPage.treeViewDisplayValue}: ${pageString}` : '',
+                                distinctString ? ` ${this.tagProperties.rootDistinct.treeViewDisplayValue}` : '',
+                                aggregateString ? ` ${this.tagProperties.rootAggregate.treeViewDisplayValue}` : '',
+                                totalRecordsCountString ? ` ${this.tagProperties.rootTotalRecordsCount.treeViewDisplayValue}` : ''
                             ].filter(part => part).join('');
                     }
                     propertyDisplay.tagPropertyDisplay =

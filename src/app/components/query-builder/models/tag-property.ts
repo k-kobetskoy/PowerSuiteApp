@@ -7,17 +7,17 @@ export class TagProperty<T> implements ITagProperty<T> {
     name: string;
     constructorValue$?: BehaviorSubject<T>;
     parsedValue$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-    nodePropertyDisplay: string;
+    treeViewDisplayValue: string; // Value to display on tree view
     typeValidationPassed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     tagPropertyErrorMessage: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     destroy$: Subject<void> = new Subject<void>();
 
     validateTagPropertyValue: () => Observable<boolean>;
 
-    constructor(name: string, type: string, nodeDisplayValue: string = '', value?: T) {
+    constructor(name: string, type: string, treeViewDisplayValue: string = '', value?: T) {
         this.typeIndicator = type;
         this.name = name;
-        this.nodePropertyDisplay = nodeDisplayValue;
+        this.treeViewDisplayValue = treeViewDisplayValue;
 
         if (value) {
             this.constructorValue$ = new BehaviorSubject<T>(value);
