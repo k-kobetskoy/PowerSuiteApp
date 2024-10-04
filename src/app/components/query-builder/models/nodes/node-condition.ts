@@ -19,11 +19,6 @@ export class NodeCondition extends QueryNode {
         this.actions = QueryNodeActions.CONDITION;
     }
 
-    override validateNodeAttributeValues(): Observable<boolean> {
-        return new Observable<boolean>(observer => {
-            observer.next(true);
-        });
-    }
 
     override get displayValue$(): Observable<IPropertyDisplay> {
 

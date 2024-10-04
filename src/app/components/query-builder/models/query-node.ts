@@ -36,13 +36,16 @@ export abstract class QueryNode implements IQueryNode {
         this.entityServiceFactory = entityServiceFactory;
     }
 
+    validateNode(): Observable<boolean>{
+        return new Observable<boolean>(observer => {
+            observer.next(true);
+    })};
+
     get displayValue$(): Observable<IPropertyDisplay> {
         return new Observable<IPropertyDisplay>(observer => {
             observer.next({ nodePropertyDisplay: this.defaultNodeDisplayValue, tagPropertyDisplay: this.tagProperties.tagName });
         });
     }
-
-    abstract validateNodeAttributeValues(): Observable<boolean> 
 
     getParentEntity(node: IQueryNode = this): IQueryNode {
 

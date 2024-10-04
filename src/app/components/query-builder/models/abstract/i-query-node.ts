@@ -25,5 +25,5 @@ export interface IQueryNode {
     get displayValue$(): Observable<IPropertyDisplay>;
     getParentEntity(node: IQueryNode): IQueryNode;
     getParentEntityName(node: IQueryNode): BehaviorSubject<string>
-    validateNodeAttributeValues(): Observable<boolean>;
+    validateNode(): Observable<boolean>;
 }

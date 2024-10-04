@@ -7,11 +7,6 @@ import { TagPropertyConditionValue } from "../tag-properties/tag-property-condit
 import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
 
 export class NodeConditionValue  extends QueryNode{
-    override validateNodeAttributeValues(): Observable<boolean> {
-        return new Observable<boolean>(observer => {
-            observer.next(true);
-        });
-    }
 
     override tagProperties: TagPropertyConditionValue;
 

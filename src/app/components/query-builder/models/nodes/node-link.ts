@@ -19,11 +19,6 @@ export class NodeLink extends QueryNode {
         this.actions = QueryNodeActions.LINK;
     }
 
-    override validateNodeAttributeValues(): Observable<boolean> {
-        return new Observable<boolean>(observer => {
-            observer.next(true);
-        });
-    }
 
     override get displayValue$(): Observable<IPropertyDisplay> {
 

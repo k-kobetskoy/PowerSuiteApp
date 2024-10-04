@@ -21,47 +21,31 @@ export class NodeEntity extends QueryNode {
         this.order = QueryNodeOrder.ENTITY;
         this.type = QueryNodeType.ENTITY;
         this.actions = QueryNodeActions.ENTITY;
-        this.validationPassed$ = this.validateNodeAttributeValues();
-
-        function validateEntityName(): Observable<boolean> {
-            const entityService = this.entityServiceFactory.getEntityService("Entity") as EntityEntityService;
-
-            return entityService.getEntities().pipe(
-                distinctUntilChanged(),
-                switchMap(entities => {
-                    return this.tagProperties.entityName.value$.pipe(
-                        distinctUntilChanged(),
-                        debounceTime(500),
-                        map(entityName => {
-                            if (!entityName) {
-                                return true;
-                            } else {
-                                const entity = entities.find(e => e.logicalName === entityName);
-                                return !!entity;
-                            }
-                        })
-                    );
-                })
-            ) as Observable<boolean>;
-         }
-
-        this.tagProperties.entityName.validateTagPropertyValue = validateEntityName.bind(this);
-        this.tagProperties.entityAlias.validateTagPropertyValue = () => TAG_PROPERTY_VALIDATION_FUNCIONS.validateAlias();
+        this.validationPassed$ = this.validateNode();        
     }
 
-    override validateNodeAttributeValues(): Observable<boolean> {
-        const combined$ = combineLatest([
-            this.tagProperties.entityName.validateTagPropertyValue(),
-            this.tagProperties.entityAlias.validateTagPropertyValue()
-        ]);
-
-        return combined$.pipe(
-            mergeMap(([entityNameValid, entityAliasValid]) => {
-                return of(entityNameValid && entityAliasValid);
-            }),
-            distinctUntilChanged()
-        );
+    override validateNode(): Observable<boolean> {
+        const entityService = this.entityServiceFactory.getEntityService("Entity") as EntityEntityService;
+        return entityService.getEntities().pipe(     
+            distinctUntilChanged(),            
+            switchMap(entities => {
+                return this.tagProperties.entityName.constructorValue$.pipe(
+                    distinctUntilChanged(),
+                    debounceTime(500),
+                    map(entityName => {
+                        if (!entityName) {
+                            return true;
+                        } else {
+                            const entity = entities.find(e => e.logicalName === entityName);
+                            return !!entity;
+                        }
+                    })
+                );
+            })               
+        )
     }
+
+
 
     override get displayValue$(): Observable<IPropertyDisplay> {
         const combined$ = combineLatest([

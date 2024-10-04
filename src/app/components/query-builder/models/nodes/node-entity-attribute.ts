@@ -19,12 +19,6 @@ export class NodeEntityAttribute extends QueryNode {
         this.actions = QueryNodeActions.ATTRIBUTE;
     }
 
-    override validateNodeAttributeValues(): Observable<boolean> {
-        return new Observable<boolean>(observer => {
-            observer.next(true);
-        });
-    }
-
     override get displayValue$(): Observable<IPropertyDisplay> {
 
         const combined$ = combineLatest([
