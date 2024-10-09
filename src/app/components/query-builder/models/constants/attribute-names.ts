@@ -1,4 +1,4 @@
-export const TagPropertyNames = {
+export const AttributeNames = {
     
     conditionEntity: 'entityname',
     conditionAttribute: 'attribute',
@@ -44,7 +44,7 @@ export const TagPropertyNames = {
 
     orderAttribute: 'attribute',
     orderDescending: 'descending',
-    orderAlias: 'alias'
+    orderAlias: 'alias',
 
 } as const;
-export type TagPropertyNames = (typeof TagPropertyNames)[keyof typeof TagPropertyNames];
+export type AttributeNames = (typeof AttributeNames)[keyof typeof AttributeNames];

@@ -1,7 +1,7 @@
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
-import { TagPropertyNames } from "../constants/tag-property-names";
-import { TagPropertyType } from "../constants/tag-property-type";
+import { AttributeNames } from "../constants/attribute-names";
+import { AttributeValueTypes } from "../constants/attribute-value-types";
 import { TagProperty } from "../tag-property";
 
 export class TagPropertyRoot implements ITagProperties {
@@ -24,28 +24,28 @@ export class TagPropertyRoot implements ITagProperties {
     validProperties: { [key: string]: TagProperty<string | boolean | number> };
 
     constructor(){
-        this.rootTop = new TagProperty<number>(TagPropertyNames.rootTop, TagPropertyType.NUMBER, 'Top');
-        this.rootDistinct = new TagProperty<boolean>(TagPropertyNames.rootDistinct, TagPropertyType.BOOLEAN, 'Dst', false);
-        this.rootAggregate = new TagProperty<boolean>(TagPropertyNames.rootAggregate, TagPropertyType.BOOLEAN, 'Agg', false);
-        this.rootTotalRecordsCount = new TagProperty<boolean>(TagPropertyNames.rootTotalRecordsCount, TagPropertyType.BOOLEAN, 'Trc', false);
-        this.rootLateMaterialize = new TagProperty<boolean>(TagPropertyNames.rootLateMaterialize, TagPropertyType.BOOLEAN, '', false);
-        this.rootPageSize = new TagProperty<number>(TagPropertyNames.rootPageSize, TagPropertyType.NUMBER, 'PgSz');
-        this.rootPage = new TagProperty<number>(TagPropertyNames.rootPage, TagPropertyType.NUMBER, 'Pg');
-        this.rootPagingCookie = new TagProperty<string>(TagPropertyNames.rootPagingCookie, TagPropertyType.STRING);
-        this.rootDataSource = new TagProperty<string>(TagPropertyNames.rootDataSource, TagPropertyType.STRING);
-        this.rootOptions = new TagProperty<string>(TagPropertyNames.rootOptions, TagPropertyType.STRING);
+        this.rootTop = new TagProperty<number>(AttributeNames.rootTop, AttributeValueTypes.NUMBER, 'Top');
+        this.rootDistinct = new TagProperty<boolean>(AttributeNames.rootDistinct, AttributeValueTypes.boolean, 'Dst', false);
+        this.rootAggregate = new TagProperty<boolean>(AttributeNames.rootAggregate, AttributeValueTypes.boolean, 'Agg', false);
+        this.rootTotalRecordsCount = new TagProperty<boolean>(AttributeNames.rootTotalRecordsCount, AttributeValueTypes.boolean, 'Trc', false);
+        this.rootLateMaterialize = new TagProperty<boolean>(AttributeNames.rootLateMaterialize, AttributeValueTypes.boolean, '', false);
+        this.rootPageSize = new TagProperty<number>(AttributeNames.rootPageSize, AttributeValueTypes.NUMBER, 'PgSz');
+        this.rootPage = new TagProperty<number>(AttributeNames.rootPage, AttributeValueTypes.NUMBER, 'Pg');
+        this.rootPagingCookie = new TagProperty<string>(AttributeNames.rootPagingCookie, AttributeValueTypes.STRING);
+        this.rootDataSource = new TagProperty<string>(AttributeNames.rootDataSource, AttributeValueTypes.STRING);
+        this.rootOptions = new TagProperty<string>(AttributeNames.rootOptions, AttributeValueTypes.STRING);
 
         this.validProperties = {
-            [TagPropertyNames.rootTop]: this.rootTop,
-            [TagPropertyNames.rootDistinct]: this.rootDistinct,
-            [TagPropertyNames.rootAggregate]: this.rootAggregate,
-            [TagPropertyNames.rootTotalRecordsCount]: this.rootTotalRecordsCount,
-            [TagPropertyNames.rootLateMaterialize]: this.rootLateMaterialize,
-            [TagPropertyNames.rootPageSize]: this.rootPageSize,
-            [TagPropertyNames.rootPage]: this.rootPage,
-            [TagPropertyNames.rootPagingCookie]: this.rootPagingCookie,
-            [TagPropertyNames.rootDataSource]: this.rootDataSource,
-            [TagPropertyNames.rootOptions]: this.rootOptions
+            [AttributeNames.rootTop]: this.rootTop,
+            [AttributeNames.rootDistinct]: this.rootDistinct,
+            [AttributeNames.rootAggregate]: this.rootAggregate,
+            [AttributeNames.rootTotalRecordsCount]: this.rootTotalRecordsCount,
+            [AttributeNames.rootLateMaterialize]: this.rootLateMaterialize,
+            [AttributeNames.rootPageSize]: this.rootPageSize,
+            [AttributeNames.rootPage]: this.rootPage,
+            [AttributeNames.rootPagingCookie]: this.rootPagingCookie,
+            [AttributeNames.rootDataSource]: this.rootDataSource,
+            [AttributeNames.rootOptions]: this.rootOptions
         };
     }
 

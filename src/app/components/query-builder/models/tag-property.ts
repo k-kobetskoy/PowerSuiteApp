@@ -1,6 +1,6 @@
 import { BehaviorSubject, distinctUntilChanged, Observable, Subject, takeUntil } from "rxjs";
 import { ITagProperty } from "./abstract/i-tag-property";
-import { TagPropertyType } from "./constants/tag-property-type";
+import { AttributeValueTypes } from "./constants/attribute-value-types";
 
 export class TagProperty<T> implements ITagProperty<T> {
     typeIndicator: string;

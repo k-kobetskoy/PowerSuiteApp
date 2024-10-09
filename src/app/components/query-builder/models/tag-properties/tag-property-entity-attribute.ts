@@ -1,7 +1,7 @@
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
-import { TagPropertyNames } from "../constants/tag-property-names";
-import { TagPropertyType } from "../constants/tag-property-type";
+import { AttributeNames } from "../constants/attribute-names";
+import { AttributeValueTypes } from "../constants/attribute-value-types";
 import { TagProperty } from "../tag-property";
 
 export class TagPropertyEntityAttribute implements ITagProperties {
@@ -20,22 +20,22 @@ export class TagPropertyEntityAttribute implements ITagProperties {
     default: { key: string; value: string; }[] = [];
 
     constructor() {
-        this.attributeName = new TagProperty<string>(TagPropertyNames.attributeName, TagPropertyType.STRING);
-        this.attributeAlias = new TagProperty<string>(TagPropertyNames.attributeAlias, TagPropertyType.STRING);
-        this.attributeAggregate = new TagProperty<string>(TagPropertyNames.attributeAggregate, TagPropertyType.STRING);
-        this.attributeGroupBy = new TagProperty<boolean>(TagPropertyNames.attributeGroupBy, TagPropertyType.BOOLEAN, 'GrpBy');
-        this.attributeDistinct = new TagProperty<boolean>(TagPropertyNames.attributeDistinct, TagPropertyType.BOOLEAN);
-        this.attributeUserTimeZone = new TagProperty<boolean>(TagPropertyNames.attributeUserTimeZone, TagPropertyType.BOOLEAN);
-        this.attributeDateGrouping = new TagProperty<string>(TagPropertyNames.attributeDateGrouping, TagPropertyType.STRING);
+        this.attributeName = new TagProperty<string>(AttributeNames.attributeName, AttributeValueTypes.STRING);
+        this.attributeAlias = new TagProperty<string>(AttributeNames.attributeAlias, AttributeValueTypes.STRING);
+        this.attributeAggregate = new TagProperty<string>(AttributeNames.attributeAggregate, AttributeValueTypes.STRING);
+        this.attributeGroupBy = new TagProperty<boolean>(AttributeNames.attributeGroupBy, AttributeValueTypes.boolean, 'GrpBy');
+        this.attributeDistinct = new TagProperty<boolean>(AttributeNames.attributeDistinct, AttributeValueTypes.boolean);
+        this.attributeUserTimeZone = new TagProperty<boolean>(AttributeNames.attributeUserTimeZone, AttributeValueTypes.boolean);
+        this.attributeDateGrouping = new TagProperty<string>(AttributeNames.attributeDateGrouping, AttributeValueTypes.STRING);
 
         this.validProperties = {
-            [TagPropertyNames.attributeName]: this.attributeName,
-            [TagPropertyNames.attributeAlias]: this.attributeAlias,
-            [TagPropertyNames.attributeAggregate]: this.attributeAggregate,
-            [TagPropertyNames.attributeGroupBy]: this.attributeGroupBy,
-            [TagPropertyNames.attributeDistinct]: this.attributeDistinct,
-            [TagPropertyNames.attributeUserTimeZone]: this.attributeUserTimeZone,
-            [TagPropertyNames.attributeDateGrouping]: this.attributeDateGrouping,
+            [AttributeNames.attributeName]: this.attributeName,
+            [AttributeNames.attributeAlias]: this.attributeAlias,
+            [AttributeNames.attributeAggregate]: this.attributeAggregate,
+            [AttributeNames.attributeGroupBy]: this.attributeGroupBy,
+            [AttributeNames.attributeDistinct]: this.attributeDistinct,
+            [AttributeNames.attributeUserTimeZone]: this.attributeUserTimeZone,
+            [AttributeNames.attributeDateGrouping]: this.attributeDateGrouping,
         };
     }
 

@@ -15,7 +15,7 @@ export class NodeOrder extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ORDER;
         this.order = QueryNodeOrder.ORDER;
-        this.type = QueryNodeType.ORDER;
+        this.name = QueryNodeType.ORDER;
         this.actions = QueryNodeActions.ORDER;
     }
 

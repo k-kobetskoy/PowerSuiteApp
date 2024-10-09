@@ -1,7 +1,7 @@
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
-import { TagPropertyNames } from "../constants/tag-property-names";
-import { TagPropertyType } from "../constants/tag-property-type";
+import { AttributeNames } from "../constants/attribute-names";
+import { AttributeValueTypes } from "../constants/attribute-value-types";
 import { TagProperty } from "../tag-property";
 
 export class TagPropertyFilter implements ITagProperties {
@@ -17,16 +17,16 @@ export class TagPropertyFilter implements ITagProperties {
     validProperties: { [key: string]: TagProperty<string | boolean | number> };
 
     constructor() {
-        this.filterType = new TagProperty<string>(TagPropertyNames.filterType, TagPropertyType.STRING);
-        this.filterIsQuickFind = new TagProperty<boolean>(TagPropertyNames.filterIsQuickFind, TagPropertyType.BOOLEAN, '', false);
-        this.filterOverrideRecordLimit = new TagProperty<boolean>(TagPropertyNames.filterOverrideRecordLimit, TagPropertyType.BOOLEAN, '', false);
-        this.filterBypassQuickFind = new TagProperty<boolean>(TagPropertyNames.filterBypassQuickFind, TagPropertyType.BOOLEAN, '', false);
+        this.filterType = new TagProperty<string>(AttributeNames.filterType, AttributeValueTypes.STRING);
+        this.filterIsQuickFind = new TagProperty<boolean>(AttributeNames.filterIsQuickFind, AttributeValueTypes.boolean, '', false);
+        this.filterOverrideRecordLimit = new TagProperty<boolean>(AttributeNames.filterOverrideRecordLimit, AttributeValueTypes.boolean, '', false);
+        this.filterBypassQuickFind = new TagProperty<boolean>(AttributeNames.filterBypassQuickFind, AttributeValueTypes.boolean, '', false);
 
         this.validProperties = {
-            [TagPropertyNames.filterType]: this.filterType,
-            [TagPropertyNames.filterIsQuickFind]: this.filterIsQuickFind,
-            [TagPropertyNames.filterOverrideRecordLimit]: this.filterOverrideRecordLimit,
-            [TagPropertyNames.filterBypassQuickFind]: this.filterBypassQuickFind
+            [AttributeNames.filterType]: this.filterType,
+            [AttributeNames.filterIsQuickFind]: this.filterIsQuickFind,
+            [AttributeNames.filterOverrideRecordLimit]: this.filterOverrideRecordLimit,
+            [AttributeNames.filterBypassQuickFind]: this.filterBypassQuickFind
         };
     };
 

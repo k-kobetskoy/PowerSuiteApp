@@ -7,7 +7,7 @@ export interface IQueryNode {
     defaultNodeDisplayValue: string;
     order: number;
     expandable: boolean;
-    type: string;
+    name: string;
     id?: string;
     actions?: string[];
     inputs?: string[];

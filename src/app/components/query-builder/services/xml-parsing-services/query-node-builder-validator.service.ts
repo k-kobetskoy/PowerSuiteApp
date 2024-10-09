@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { ITagBuildEntity, IBuildQueryError, ITagBuildEntityAttribute } from './query-node-builder.service';
 import { QueryNodeType } from '../../models/constants/query-node-type';
 import { IQueryNode } from '../../models/abstract/i-query-node';
-import { TagPropertyType } from '../../models/constants/tag-property-type';
+import { AttributeValueTypes } from '../../models/constants/attribute-value-types';
 
 
 export const UNEXPECTED_ERROR_TEXT = 'Unexpected error. Please check you XML';
 
-export interface IAttributeTypeValidation{
-  success: boolean;
-  errorMessage: string;
-}
 
 const queryNodeTypeValues = new Set(Object.values(QueryNodeType));
 
@@ -76,7 +72,7 @@ export class QueryNodeBuilderValidatorService {
       const tagPropertyType = tagProperty.typeIndicator;
       const errorMessage = this.getAttributeValueErrorMessage(attributeValue);
 
-      if (tagPropertyType === TagPropertyType.STRING && typeof attributeValue !== 'string') {        
+      if (tagPropertyType === AttributeValueTypes.STRING && typeof attributeValue !== 'string') {        
 
         errors.push({ errorMessage: errorMessage, from: attribute.valueFrom, to: attribute.valueTo });
         return {success: false, errorMessage: errorMessage};

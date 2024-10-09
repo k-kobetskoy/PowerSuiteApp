@@ -19,7 +19,7 @@ export class NodeEntity extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ENTITY;
         this.order = QueryNodeOrder.ENTITY;
-        this.type = QueryNodeType.ENTITY;
+        this.name = QueryNodeType.ENTITY;
         this.actions = QueryNodeActions.ENTITY;
         this.validationPassed$ = this.validateNode();
     }
@@ -44,7 +44,6 @@ export class NodeEntity extends QueryNode {
             })
         )
     }
-
 
 
     override get displayValue$(): Observable<IPropertyDisplay> {

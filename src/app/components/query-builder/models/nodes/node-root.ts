@@ -16,7 +16,7 @@ export class NodeRoot extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ROOT;
         this.order = QueryNodeOrder.ROOT;
-        this.type = QueryNodeType.ROOT;
+        this.name = QueryNodeType.ROOT;
         this.actions = QueryNodeActions.ROOT;
     }
 

@@ -9,7 +9,7 @@ export abstract class QueryNode implements IQueryNode {
     defaultNodeDisplayValue: string;
     order: number;
     expandable: boolean;
-    type: string;
+    name: string;
     id?: string;
     actions?: string[];
     level?: number;
@@ -49,13 +49,13 @@ export abstract class QueryNode implements IQueryNode {
 
     getParentEntity(node: IQueryNode = this): IQueryNode {
 
-        if (node.type === QueryNodeType.ROOT) return null;
+        if (node.name === QueryNodeType.ROOT) return null;
 
         const parent = node.parent;
 
         if (!parent) throw new Error('Parent not found');
 
-        if (parent?.type === QueryNodeType.ENTITY || parent?.type === QueryNodeType.LINK) {
+        if (parent?.name === QueryNodeType.ENTITY || parent?.name === QueryNodeType.LINK) {
             return parent;
         } else {
             return this.getParentEntity(parent);

@@ -1,7 +1,7 @@
 import { ITagProperties } from "../abstract/i-tag-properties";
 import { QueryNodeTags } from "../constants/query-node-tags";
-import { TagPropertyNames } from "../constants/tag-property-names";
-import { TagPropertyType } from "../constants/tag-property-type";
+import { AttributeNames } from "../constants/attribute-names";
+import { AttributeValueTypes } from "../constants/attribute-value-types";
 import { TagProperty } from "../tag-property";
 
 export class TagPropertyOrder implements ITagProperties {
@@ -17,14 +17,14 @@ export class TagPropertyOrder implements ITagProperties {
     validProperties: { [key: string]: TagProperty<string | boolean | number> };
 
     constructor() {
-        this.orderAttribute = new TagProperty<string>(TagPropertyNames.orderAttribute, TagPropertyType.STRING);
-        this.orderDescending = new TagProperty<boolean>(TagPropertyNames.orderDescending, TagPropertyType.BOOLEAN, 'Desc', false);
-        this.orderAlias = new TagProperty<string>(TagPropertyNames.orderAlias, TagPropertyType.STRING);
+        this.orderAttribute = new TagProperty<string>(AttributeNames.orderAttribute, AttributeValueTypes.STRING);
+        this.orderDescending = new TagProperty<boolean>(AttributeNames.orderDescending, AttributeValueTypes.boolean, 'Desc', false);
+        this.orderAlias = new TagProperty<string>(AttributeNames.orderAlias, AttributeValueTypes.STRING);
 
         this.validProperties = {
-            [TagPropertyNames.orderAttribute]: this.orderAttribute,
-            [TagPropertyNames.orderDescending]: this.orderDescending,
-            [TagPropertyNames.orderAlias]: this.orderAlias
+            [AttributeNames.orderAttribute]: this.orderAttribute,
+            [AttributeNames.orderDescending]: this.orderDescending,
+            [AttributeNames.orderAlias]: this.orderAlias
         };
     }
 

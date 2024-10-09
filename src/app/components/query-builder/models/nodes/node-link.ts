@@ -15,7 +15,7 @@ export class NodeLink extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.LINK;
         this.order = QueryNodeOrder.LINK;
-        this.type = QueryNodeType.LINK;
+        this.name = QueryNodeType.LINK;
         this.actions = QueryNodeActions.LINK;
     }
 

@@ -15,7 +15,7 @@ export class NodeEntityAttribute extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.ATTRIBUTE;
         this.order = QueryNodeOrder.ATTRIBUTE;
-        this.type = QueryNodeType.ATTRIBUTE;
+        this.name = QueryNodeType.ATTRIBUTE;
         this.actions = QueryNodeActions.ATTRIBUTE;
     }
 

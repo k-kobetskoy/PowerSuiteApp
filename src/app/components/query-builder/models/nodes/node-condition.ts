@@ -15,7 +15,7 @@ export class NodeCondition extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.CONDITION;
         this.order = QueryNodeOrder.CONDITION;
-        this.type = QueryNodeType.CONDITION;
+        this.name = QueryNodeType.CONDITION;
         this.actions = QueryNodeActions.CONDITION;
     }
 

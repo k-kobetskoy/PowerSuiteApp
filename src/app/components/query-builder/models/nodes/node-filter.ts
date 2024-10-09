@@ -16,7 +16,7 @@ export class NodeFilter extends QueryNode {
         super(tagProperties, entityServiceFactory);
         this.defaultNodeDisplayValue = QueryNodeType.FILTER;
         this.order = QueryNodeOrder.FILTER;
-        this.type = QueryNodeType.FILTER;
+        this.name = QueryNodeType.FILTER;
         this.actions = QueryNodeActions.FILTER;
     }
 
