@@ -26,7 +26,7 @@ export class NodeEntity extends QueryNode {
 
     override validateNode(): Observable<boolean> {
         const entityService = this.entityServiceFactory.getEntityService("Entity") as EntityEntityService;
-        return entityService.getEntities().pipe(     
+        return entityService.getEntities().pipe(
             distinctUntilChanged(),            
             switchMap(entities => {
                 return this.tagProperties.entityName.constructorValue$.pipe(
@@ -44,7 +44,6 @@ export class NodeEntity extends QueryNode {
             })
         )
     }
-
 
     override get displayValue$(): Observable<IPropertyDisplay> {
         const combined$ = combineLatest([

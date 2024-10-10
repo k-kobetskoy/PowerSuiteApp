@@ -2,9 +2,11 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { ITagProperties } from "./i-tag-properties";
 import { IPropertyDisplay } from "./i-node-property-display";
 import { EntityServiceFactoryService } from "../../services/entity-service-factory.service";
+import { NodeAttribute } from "../node-attribute";
 
 export interface IQueryNode {
     defaultNodeDisplayValue: string;
+    attributes: NodeAttribute[];
     order: number;
     expandable: boolean;
     name: string;
@@ -21,7 +23,7 @@ export interface IQueryNode {
     validationErrors$: BehaviorSubject<string[]>;
     validationPassed$: Observable<boolean>;
     entityServiceFactory: EntityServiceFactoryService;
-    
+
     get displayValue$(): Observable<IPropertyDisplay>;
     getParentEntity(node: IQueryNode): IQueryNode;
     getParentEntityName(node: IQueryNode): BehaviorSubject<string>

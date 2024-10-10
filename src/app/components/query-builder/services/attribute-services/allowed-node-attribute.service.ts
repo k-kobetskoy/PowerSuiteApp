@@ -65,7 +65,7 @@ export class AllowedNodeAttributeService {
           AttributesNames.rootAggregate,
           AttributesNames.rootTotalRecordsCount,
           AttributesNames.rootLateMaterialize,
-          AttributesNames.rootPageSize,
+          AttributesNames.rootRecordsPerPage,
           AttributesNames.rootPage,
           AttributesNames.rootPagingCookie,
           AttributesNames.rootDataSource,

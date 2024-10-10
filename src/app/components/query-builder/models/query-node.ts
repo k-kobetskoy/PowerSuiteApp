@@ -4,10 +4,12 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { QueryNodeType } from "./constants/query-node-type";
 import { IPropertyDisplay } from "./abstract/i-node-property-display";
 import { EntityServiceFactoryService } from "../services/entity-service-factory.service";
+import { NodeAttribute } from "./node-attribute";
 
 export abstract class QueryNode implements IQueryNode {
     defaultNodeDisplayValue: string;
     order: number;
+    attributes: NodeAttribute[] = [];
     expandable: boolean;
     name: string;
     id?: string;

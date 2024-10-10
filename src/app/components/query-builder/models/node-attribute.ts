@@ -1,19 +1,14 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IQueryNode } from './abstract/i-query-node';
-import { IAttributeValidator } from '../services/attribute-services/abstract/i-attribute-validator';
+import { AttributeValidationProperties } from './attribute-validation-properties';
+import { AttributeDisplayProperties } from './attribute-display-properties';
 
 export class NodeAttribute {
-
     parentNode: IQueryNode;
     name: string;
-    validators: IAttributeValidator[] = [];
-    oneTimeValidators: IAttributeValidator[] = [];
-    isValidName: boolean;
-    
-    value$: BehaviorSubject<string> = new BehaviorSubject<string>('');        
-
-    validationPassed$: Observable<boolean>;
-
+    value$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    attributeValidationProperties: AttributeValidationProperties = new AttributeValidationProperties();
+    attributeDisplayProperties: AttributeDisplayProperties;
 
     constructor(node: IQueryNode, name: string, value: string) {
         this.parentNode = node;

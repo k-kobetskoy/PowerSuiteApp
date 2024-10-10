@@ -36,7 +36,7 @@ export const AttributeNames = {
     rootAggregate: 'aggregate',
     rootTotalRecordsCount: 'returntotalrecordcount',
     rootLateMaterialize: 'latematerialize',
-    rootPageSize: 'count',
+    rootRecordsPerPage: 'count',
     rootPage: 'page',
     rootPagingCookie: 'paging-cookie',
     rootDataSource: 'datasource',
