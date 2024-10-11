@@ -3,7 +3,6 @@ import { debounceTime, distinctUntilChanged, map, of } from 'rxjs';
 import { IAttributeValidator } from "../abstract/i-attribute-validator";
 import { NodeAttribute } from '../../../models/node-attribute';
 import { IAttributeValidationResult } from '../abstract/i-attribute-validation-result';
-import { AttributeValueTypes } from '../../../models/constants/attribute-value-types';
 
 export class AttributeTypeValidator implements IAttributeValidator {
 

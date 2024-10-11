@@ -4,11 +4,10 @@ import { AttributeValidators } from "../../attribute-validators";
 import { AttributeNames } from "../../constants/attribute-names";
 import { NodeAttribute } from "../../node-attribute";
 
-export class RootOptionsAttribute extends NodeAttribute {
+export class FilterOverrideRecordLimitAttribute extends NodeAttribute {
 
     constructor(node: IQueryNode, validators: AttributeValidators, value?: string, order?: number) {
-        super(node, AttributeNames.rootOptions,validators, true,  value);
-        this.attributeDisplayProperties = new AttributeDisplayProperties(this.value$, AttributeNames.rootOptions);
-        this.validators = validators;
+        super(node, AttributeNames.filterOverrideRecordLimit, value);
+        this.attributeDisplayProperties = new AttributeDisplayProperties(this.value$, AttributeNames.filterOverrideRecordLimit);
     }
 }

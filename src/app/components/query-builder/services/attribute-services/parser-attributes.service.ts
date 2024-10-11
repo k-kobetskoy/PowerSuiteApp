@@ -1,7 +1,7 @@
 import { AllowedNodeAttributeService } from './allowed-node-attribute.service';
 import { Injectable } from '@angular/core';
 import { NodeAttribute } from '../../models/node-attribute';
-import { ValidatorsFactoryResorlverService } from './validators-factory-resorlver.service';
+import { AttributeFactoryResorlverService } from './attribute-factory-resorlver.service';
 import { IQueryNode } from '../../models/abstract/i-query-node';
 import { IAttributeValidator } from './abstract/i-attribute-validator';
 import { IAttributesService } from './abstract/i-attributes-service';
@@ -10,7 +10,10 @@ import { IAttributesService } from './abstract/i-attributes-service';
 
 export class ParserAttributesService implements IAttributesService {
 
-  constructor(private factoryResolver: ValidatorsFactoryResorlverService, private allowedNodeAttributeService: AllowedNodeAttributeService) { }
+  constructor(
+    private factoryResolver: AttributeFactoryResorlverService,
+    private allowedNodeAttributeService: AllowedNodeAttributeService
+  ) { }
 
   getAttribute(node: IQueryNode, attributeName: string, attributeValue?: string): NodeAttribute {
 
@@ -34,11 +37,9 @@ export class ParserAttributesService implements IAttributesService {
     const validatorsFactory = this.factoryResolver.getValidatorsFactory(nodeName);
 
     if (validatorsFactory) {
-      validatorsFactory.getAsyncValidators(attributeName);
+      validatorsFactory.getDefaultAsyncValidators(attributeName);
     }
 
-    return validatorsFactory === null ? [] : validatorsFactory.getAsyncValidators(attributeName);
+    return validatorsFactory === null ? [] : validatorsFactory.getDefaultAsyncValidators(attributeName);
   }
 }
-
-

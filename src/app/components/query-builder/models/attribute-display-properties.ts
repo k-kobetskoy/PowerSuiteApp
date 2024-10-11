@@ -6,15 +6,24 @@ export class AttributeDisplayProperties {
     treeViewDisplayValue$: Observable<string>;
     editorViewDisplayValue$: Observable<string>;
 
-    constructor(attributeValue$: BehaviorSubject<string>, editorViewDisplayName: string, treeViewDisplayName?: string, treeViewDisplayStyle: string = AttributeTreeViewDisplayStyle.onlyName) {
+    constructor(attributeValue$: BehaviorSubject<string>, editorViewDisplayName: string, treeViewDisplayName?: string, treeViewDisplayStyle: string = AttributeTreeViewDisplayStyle.none) {
         this.displayOnTreeView = !!treeViewDisplayName;
 
-        if (this.displayOnTreeView) {
-            if (treeViewDisplayStyle === AttributeTreeViewDisplayStyle.onlyName) {
+        switch (treeViewDisplayStyle) {
+            case AttributeTreeViewDisplayStyle.onlyName:
                 this.treeViewDisplayValue$ = attributeValue$.pipe(distinctUntilChanged(), map(value => value ? `${treeViewDisplayName}` : ''));
-            } else if (treeViewDisplayStyle === AttributeTreeViewDisplayStyle.withValue) {
+                break;
+            case AttributeTreeViewDisplayStyle.nameWithValue:
                 this.treeViewDisplayValue$ = attributeValue$.pipe(distinctUntilChanged(), map(value => value ? `${treeViewDisplayName}:${value}` : ''));
-            }
+                break;
+            case AttributeTreeViewDisplayStyle.onlyValue:
+                this.treeViewDisplayValue$ = attributeValue$.pipe(distinctUntilChanged(), map(value => value ? `${value}` : ''));
+                break;
+            case AttributeTreeViewDisplayStyle.alias:
+                this.treeViewDisplayValue$ = attributeValue$.pipe(distinctUntilChanged(), map(value => value ? `(${value})` : ''));
+                break;
+            default:
+                break;
         }
 
         this.editorViewDisplayValue$ = attributeValue$.pipe(distinctUntilChanged(), map(value => value ? `${editorViewDisplayName}="${value}"` : ''));

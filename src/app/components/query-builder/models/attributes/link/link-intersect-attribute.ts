@@ -5,11 +5,10 @@ import { AttributeNames } from "../../constants/attribute-names";
 import { AttributeTreeViewDisplayStyle } from "../../constants/attribute-tree-view-display-style";
 import { NodeAttribute } from "../../node-attribute";
 
-export class RootPageSizeAttribute extends NodeAttribute {
-
+export class LinkIntersectAttribute extends NodeAttribute {
     constructor(node: IQueryNode, validators: AttributeValidators, value?: string, order?: number) {
-        super(node, AttributeNames.rootRecordsPerPage,validators, true,  value);
-        this.attributeDisplayProperties = new AttributeDisplayProperties(this.value$, AttributeNames.rootRecordsPerPage, 'Cnt', AttributeTreeViewDisplayStyle.nameWithValue);
+        super(node, AttributeNames.linkIntersect,validators, true,  value);
+        this.attributeDisplayProperties = new AttributeDisplayProperties(this.value$, AttributeNames.linkIntersect, 'M:M', AttributeTreeViewDisplayStyle.onlyName);
         this.validators = validators;
     }
 }
